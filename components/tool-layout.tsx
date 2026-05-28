@@ -77,7 +77,7 @@ export function ToolLayout({ tool, children, instructions, faq }: ToolLayoutProp
             <p className="text-muted-foreground">{tool.description}</p>
           </div>
 
-          <div className="mb-6 rounded-xl border border-border bg-card/50 p-4 sm:p-6">{children}</div>
+          <div className="mb-6 overflow-visible rounded-xl border border-border bg-card/50 p-4 sm:p-6">{children}</div>
 
           <AdSlot name="toolBottom" />
 
