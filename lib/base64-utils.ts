@@ -21,13 +21,47 @@ export function encodeBytesAsBase64(bytes: Uint8Array, urlSafe = false): string 
   return encoded.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
 }
 
-/** Base64 → 二进制 */
+/** Base64 → 二进制（兼容 atob 严格模式无法解码的 padding 场景） */
 export function decodeBase64ToBytes(base64: string): Uint8Array {
   let cleaned = cleanBase64(base64).replace(/-/g, "+").replace(/_/g, "/")
   const pad = cleaned.length % 4
   if (pad) cleaned += "=".repeat(4 - pad)
-  const binary = atob(cleaned)
-  return Uint8Array.from(binary, (c) => c.charCodeAt(0))
+
+  try {
+    const binary = atob(cleaned)
+    return Uint8Array.from(binary, (c) => c.charCodeAt(0))
+  } catch {
+    return decodeBase64ToBytesManual(cleaned)
+  }
+}
+
+function decodeBase64ToBytesManual(cleaned: string): Uint8Array {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+  const lookup = new Uint8Array(256).fill(255)
+  for (let i = 0; i < alphabet.length; i++) lookup[alphabet.charCodeAt(i)] = i
+
+  const placeHolders = cleaned.endsWith("==") ? 2 : cleaned.endsWith("=") ? 1 : 0
+  const outputLen = Math.floor((cleaned.length * 3) / 4) - placeHolders
+  const bytes = new Uint8Array(Math.max(0, outputLen))
+
+  let buffer = 0
+  let bits = 0
+  let index = 0
+
+  for (let i = 0; i < cleaned.length; i++) {
+    const char = cleaned.charCodeAt(i)
+    if (char === 61) break
+    const value = lookup[char]
+    if (value === 255) throw new Error("无效的 Base64 字符")
+    buffer = (buffer << 6) | value
+    bits += 6
+    if (bits >= 8) {
+      bits -= 8
+      bytes[index++] = (buffer >> bits) & 0xff
+    }
+  }
+
+  return bytes.subarray(0, index)
 }
 
 /** URL 安全 Base64 编码 */
@@ -52,10 +86,13 @@ export function detectBase64Input(value: string): Base64InputKind {
   const trimmed = value.trim()
   if (!trimmed) return "empty"
   if (trimmed.startsWith("data:")) return "data-uri"
-  const cleaned = cleanBase64(trimmed)
-  if (/^[0-9a-fA-F\s]+$/.test(trimmed) && cleaned.length % 2 === 0 && cleaned.length >= 2 && !isLikelyBase64(trimmed)) {
+
+  const hexCleaned = trimmed.replace(/\s/g, "")
+  if (/^[0-9a-fA-F]+$/.test(hexCleaned) && hexCleaned.length >= 2 && hexCleaned.length % 2 === 0) {
     return "hex"
   }
+
+  const cleaned = cleanBase64(trimmed)
   if (/^[A-Za-z0-9_-]+=*$/.test(cleaned) && (cleaned.includes("-") || cleaned.includes("_"))) {
     return "base64url"
   }

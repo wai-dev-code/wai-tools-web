@@ -197,9 +197,29 @@ export function Base64Tool({ module: lockedModule }: Base64ToolProps) {
 
     if (!input.trim()) {
       setFileError(null)
-      if (uploadMeta) return
-      setFileInfo(null)
-      setOutput("")
+      if (uploadMeta && output.trim()) {
+        try {
+          const result = applyFileAutoProcess(output, urlSafe)
+          setOutput(result.output)
+          setFileInfo((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  label: `已上传 · ${result.mime ?? "unknown"} · ${formatByteSize(result.byteSize)}`,
+                  mime: result.mime,
+                  byteSize: result.byteSize,
+                }
+              : null
+          )
+        } catch {
+          /* 保留上传结果 */
+        }
+        return
+      }
+      if (!uploadMeta) {
+        setFileInfo(null)
+        setOutput("")
+      }
       return
     }
 
@@ -214,7 +234,7 @@ export function Base64Tool({ module: lockedModule }: Base64ToolProps) {
       setFileInfo(null)
       setFileError(e instanceof Error ? e.message : "处理失败")
     }
-  }, [input, urlSafe, currentModule, uploadMeta])
+  }, [input, output, urlSafe, currentModule, uploadMeta])
 
   const doEncode = (useUrlSafe = urlSafe) => {
     runAction(() => {

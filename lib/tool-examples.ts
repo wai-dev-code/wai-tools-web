@@ -126,14 +126,6 @@ export const base64Examples: ToolExampleItem<Base64Example>[] = [
       urlSafe: true,
     },
   },
-  {
-    id: "image-png",
-    label: "PNG 图片",
-    description: "1×1 像素 Base64",
-    data: {
-      input: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-    },
-  },
 ]
 
 export const base64ConvertExamples: ToolExampleItem<Base64Example>[] = [
