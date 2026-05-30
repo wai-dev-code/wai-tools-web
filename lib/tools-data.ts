@@ -44,11 +44,11 @@ export const tools: ToolDefinition[] = [
   {
     slug: "base64",
     name: "Base64 编解码",
-    description: "快速进行 Base64 编码与解码，支持 UTF-8 文本",
-    shortDescription: "Base64 编码与解码",
+    description: "Base64 编解码、文件转换、Hex/Data URI 互转、图片预览与校验，四模块开发者工具",
+    shortDescription: "Base64 全功能开发者工具",
     icon: FileCode2,
     category: "encoding",
-    keywords: ["base64", "编码", "解码", "encode", "decode"],
+    keywords: ["base64", "编码", "解码", "encode", "decode", "file", "hex", "data uri"],
   },
   {
     slug: "timestamp",

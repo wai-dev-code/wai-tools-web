@@ -1,3 +1,5 @@
+import type { ConvertMode } from "@/lib/base64-utils"
+
 export interface ToolExampleItem<T> {
   id: string
   label: string
@@ -12,6 +14,7 @@ export interface JsonFormatterExample {
 export interface Base64Example {
   input: string
   urlSafe?: boolean
+  convertMode?: ConvertMode
 }
 
 export interface JwtDecoderExample {
@@ -121,6 +124,60 @@ export const base64Examples: ToolExampleItem<Base64Example>[] = [
     data: {
       input: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
       urlSafe: true,
+    },
+  },
+  {
+    id: "image-png",
+    label: "PNG 图片",
+    description: "1×1 像素 Base64",
+    data: {
+      input: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+    },
+  },
+]
+
+export const base64ConvertExamples: ToolExampleItem<Base64Example>[] = [
+  {
+    id: "text-to-datauri",
+    label: "文本 → Data URI",
+    description: "嵌入 HTML/CSS",
+    data: { input: "Hello, WaiHub!", convertMode: "text-to-datauri" },
+  },
+  {
+    id: "hex-to-text",
+    label: "Hex → 文本",
+    description: "48656c6c6f = Hello",
+    data: { input: "48656c6c6f", convertMode: "hex-to-text" },
+  },
+  {
+    id: "base64-to-hex",
+    label: "Base64 → Hex",
+    description: "查看字节 Hex",
+    data: { input: "SGVsbG8=", convertMode: "base64-to-hex" },
+  },
+]
+
+export const base64FileExamples: ToolExampleItem<Base64Example>[] = [
+  {
+    id: "file-text",
+    label: "文本文件",
+    description: "编码为 Base64",
+    data: { input: "Hello, WaiHub!" },
+  },
+  {
+    id: "file-image",
+    label: "PNG 图片",
+    description: "1×1 像素预览",
+    data: {
+      input: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+    },
+  },
+  {
+    id: "file-datauri",
+    label: "Data URI",
+    description: "提取 Base64",
+    data: {
+      input: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
     },
   },
 ]

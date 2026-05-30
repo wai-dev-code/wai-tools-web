@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { blogPosts } from "@/lib/blog-data"
 import { jsonToolPages } from "@/lib/json-tool-pages"
+import { base64ToolPages } from "@/lib/base64-tool-pages"
 import { siteConfig, tools } from "@/lib/tools-data"
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -36,5 +37,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.95,
   }))
 
-  return [...staticPages, ...toolPages, ...jsonSeoPages, ...blogPages]
+  const base64SeoPages = base64ToolPages.map((page) => ({
+    url: `${base}${page.path}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.95,
+  }))
+
+  return [...staticPages, ...toolPages, ...jsonSeoPages, ...base64SeoPages, ...blogPages]
 }

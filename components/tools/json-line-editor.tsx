@@ -143,6 +143,12 @@ export function JsonLineEditor({
   }
 
   const wrapClass = wordWrap ? "whitespace-pre-wrap break-all" : "whitespace-pre"
+  const needsHighlightLayer = syntaxHighlight || highlights.length > 0
+  const editorFontStyle = {
+    lineHeight: `${LINE_HEIGHT}px`,
+    tabSize: 2,
+    fontVariantLigatures: "none" as const,
+  }
 
   return (
     <div
@@ -172,21 +178,23 @@ export function JsonLineEditor({
       )}
 
       <div className="relative min-h-0 min-w-0 flex-1">
-        <pre
-          ref={highlightRef}
-          aria-hidden
-          className={cn(
-            "pointer-events-none absolute inset-0 overflow-hidden px-3 py-3 font-mono text-sm",
-            wrapClass
-          )}
-          style={{ lineHeight: `${LINE_HEIGHT}px`, tabSize: 2 }}
-        >
-          {lines.map((line, i) => (
-            <div key={i} style={{ minHeight: LINE_HEIGHT, lineHeight: `${LINE_HEIGHT}px` }}>
-              {renderHighlightedLine(line, i + 1)}
-            </div>
-          ))}
-        </pre>
+        {needsHighlightLayer && (
+          <pre
+            ref={highlightRef}
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-0 overflow-hidden px-3 py-3 font-mono text-sm [font-variant-ligatures:none]",
+              wrapClass
+            )}
+            style={editorFontStyle}
+          >
+            {lines.map((line, i) => (
+              <div key={i} style={{ minHeight: LINE_HEIGHT, lineHeight: `${LINE_HEIGHT}px` }}>
+                {renderHighlightedLine(line, i + 1)}
+              </div>
+            ))}
+          </pre>
+        )}
 
         <textarea
           ref={textareaRef}
@@ -198,13 +206,15 @@ export function JsonLineEditor({
           placeholder={placeholder}
           spellCheck={false}
           className={cn(
-            "absolute inset-0 resize-none overflow-auto bg-transparent px-3 py-3 font-mono text-sm outline-none",
+            "absolute inset-0 resize-none overflow-auto bg-transparent px-3 py-3 font-mono text-sm outline-none [font-variant-ligatures:none]",
             wrapClass,
-            "text-transparent caret-foreground selection:bg-primary/25",
+            needsHighlightLayer
+              ? "text-transparent caret-foreground selection:bg-primary/25"
+              : "text-foreground",
             "placeholder:text-muted-foreground/60",
             readOnly && "cursor-default"
           )}
-          style={{ lineHeight: `${LINE_HEIGHT}px`, tabSize: 2 }}
+          style={editorFontStyle}
         />
       </div>
     </div>

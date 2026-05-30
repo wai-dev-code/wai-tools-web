@@ -15,11 +15,11 @@ export default function Base64Page() {
       instructions={
         <>
           <p>
-            采用<strong className="text-foreground">双栏布局</strong>：左侧输入原文或 Base64，右侧显示编码/解码结果。
-            支持标准 Base64、URL 安全 Base64、Hex 互转、Data URI 生成与解析。
+            采用<strong className="text-foreground">四模块 + 双栏布局</strong>：编解码、文件工具、格式转换、实用工具。
+            左侧为可编辑源数据，右侧为只读结果，互不污染。
           </p>
           <p>
-            「智能」按钮会自动识别输入类型：Base64 则解码，普通文本则编码；也支持 Hex 和 Data URI。
+            支持智能识别 Base64 / Hex / Data URI、文件上传与下载、图片预览、URL 安全 Base64。
             所有处理在浏览器本地完成，支持中文等 UTF-8 字符。
           </p>
         </>
@@ -34,8 +34,12 @@ export default function Base64Page() {
           answer: "将 + 和 / 替换为 - 和 _，并省略末尾 =，适合放在 URL 参数中使用。",
         },
         {
+          question: "如何预览 Base64 图片？",
+          answer: "在「文件」模块上传图片或粘贴图片 Base64，工具会自动识别并显示预览。",
+        },
+        {
           question: "解码失败怎么办？",
-          answer: "尝试点击「去空白」清除换行和空格，或确认字符串长度是 4 的倍数、字符集正确。",
+          answer: "在「实用工具」模块点击「去空白」清除换行和空格，或使用「校验」检查格式。",
         },
       ]}
     >
