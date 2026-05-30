@@ -25,7 +25,7 @@ export default function JwtDecoderPage() {
         },
         {
           question: "数据会上传吗？",
-          answer: "不会。所有解码在浏览器本地完成，Token 不会发送到任何服务器。",
+          answer: "不会。所有解码在浏览器内完成，Token 不会发送到任何服务器。",
         },
       ]}
     >

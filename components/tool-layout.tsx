@@ -7,35 +7,66 @@ import { JsonLd } from "@/components/json-ld"
 import { AdSlot } from "@/components/ad-slot"
 import { ToolContentShell } from "@/components/tool-content-shell"
 import {
-  categoryLabels,
   getToolBySlug,
   getToolsByCategory,
   siteConfig,
   type ToolDefinition,
 } from "@/lib/tools-data"
+import { defaultLocale, type Locale } from "@/lib/i18n/config"
+import {
+  getLocalizedToolText,
+  getMessages,
+  localizeHref,
+} from "@/lib/i18n"
 
 interface ToolLayoutProps {
   tool: ToolDefinition
+  locale?: Locale
   children: React.ReactNode
   instructions: React.ReactNode
   faq?: { question: string; answer: string }[]
 }
 
-export function ToolLayout({ tool, children, instructions, faq }: ToolLayoutProps) {
-  const toolUrl = `${siteConfig.url}/tools/${tool.slug}`
+function getLocalizedToolInfo(tool: ToolDefinition, locale: Locale) {
+  if (tool.slug === "json-formatter" || tool.slug === "base64") {
+    const text = getLocalizedToolText(tool.slug, locale)
+    return { name: text.name, description: text.desc }
+  }
+  return { name: tool.name, description: tool.description }
+}
+
+function getCategoryLabel(locale: Locale, category: ToolDefinition["category"]): string {
+  const m = getMessages(locale).categories
+  if (category === "json") return m.json
+  if (category === "encoding") return m.encoding
+  return category
+}
+
+export function ToolLayout({
+  tool,
+  locale = defaultLocale,
+  children,
+  instructions,
+  faq,
+}: ToolLayoutProps) {
+  const m = getMessages(locale)
+  const localized = getLocalizedToolInfo(tool, locale)
+  const toolUrl = `${siteConfig.url}${localizeHref(locale, `tools/${tool.slug}`)}`
+  const lang = locale === "zh" ? "zh-CN" : locale === "ja" ? "ja" : "en"
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" lang={lang}>
       <JsonLd
         data={{
           "@context": "https://schema.org",
           "@type": "WebApplication",
-          name: tool.name,
-          description: tool.description,
+          name: localized.name,
+          description: localized.description,
           applicationCategory: "DeveloperApplication",
           operatingSystem: "Any",
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           url: toolUrl,
+          inLanguage: lang,
         }}
       />
       {faq && faq.length > 0 && (
@@ -51,16 +82,20 @@ export function ToolLayout({ tool, children, instructions, faq }: ToolLayoutProp
           }}
         />
       )}
-      <Header />
+      <Header locale={locale} />
       <div className="mx-auto flex max-w-7xl gap-8 px-4 pt-20 pb-16 lg:px-6">
-        <ToolSidebar currentSlug={tool.slug} />
+        <ToolSidebar currentSlug={tool.slug} locale={locale} />
         <main className="min-w-0 flex-1">
-          <nav aria-label="面包屑" className="mb-6 flex items-center gap-1 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-foreground">首页</Link>
+          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1 text-sm text-muted-foreground">
+            <Link href={localizeHref(locale, "")} className="hover:text-foreground">
+              {m.common.home}
+            </Link>
             <ChevronRight className="h-4 w-4" />
-            <Link href="/tools" className="hover:text-foreground">工具</Link>
+            <Link href={localizeHref(locale, "tools")} className="hover:text-foreground">
+              {m.common.tools}
+            </Link>
             <ChevronRight className="h-4 w-4" />
-            <span className="text-foreground">{tool.name}</span>
+            <span className="text-foreground">{localized.name}</span>
           </nav>
 
           <div className="mb-6">
@@ -69,13 +104,13 @@ export function ToolLayout({ tool, children, instructions, faq }: ToolLayoutProp
                 <tool.icon className="h-5 w-5" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{tool.name}</h1>
+                <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{localized.name}</h1>
                 <p className="text-sm text-muted-foreground">
-                  {categoryLabels[tool.category]} · 本地运行 · 免费
+                  {getCategoryLabel(locale, tool.category)} · {m.common.localRun} · {m.common.free}
                 </p>
               </div>
             </div>
-            <p className="text-muted-foreground">{tool.description}</p>
+            <p className="text-muted-foreground">{localized.description}</p>
           </div>
 
           <ToolContentShell>
@@ -85,13 +120,13 @@ export function ToolLayout({ tool, children, instructions, faq }: ToolLayoutProp
           <AdSlot name="toolBottom" />
 
           <section className="mb-10 rounded-xl border border-border bg-card/50 p-6">
-            <h2 className="mb-4 text-lg font-semibold text-foreground">使用说明</h2>
+            <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.instructions}</h2>
             <div className="space-y-3 text-sm text-muted-foreground">{instructions}</div>
           </section>
 
           {faq && faq.length > 0 && (
             <section className="rounded-xl border border-border bg-card/50 p-6">
-              <h2 className="mb-4 text-lg font-semibold text-foreground">常见问题</h2>
+              <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.faq}</h2>
               <dl className="space-y-4">
                 {faq.map((item) => (
                   <div key={item.question}>
@@ -103,15 +138,16 @@ export function ToolLayout({ tool, children, instructions, faq }: ToolLayoutProp
             </section>
           )}
 
-          <RelatedTools currentSlug={tool.slug} />
+          <RelatedTools currentSlug={tool.slug} locale={locale} />
         </main>
       </div>
-      <Footer />
+      <Footer locale={locale} />
     </div>
   )
 }
 
-function RelatedTools({ currentSlug }: { currentSlug: string }) {
+function RelatedTools({ currentSlug, locale }: { currentSlug: string; locale: Locale }) {
+  const m = getMessages(locale)
   const current = getToolBySlug(currentSlug)
   if (!current) return null
   const related = getToolsByCategory(current.category)
@@ -121,18 +157,28 @@ function RelatedTools({ currentSlug }: { currentSlug: string }) {
 
   return (
     <section className="mt-10">
-      <h2 className="mb-4 text-lg font-semibold text-foreground">相关工具</h2>
+      <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.relatedTools}</h2>
       <div className="grid gap-3 sm:grid-cols-3">
-        {related.map((t) => (
-          <Link
-            key={t.slug}
-            href={`/tools/${t.slug}`}
-            className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/50 hover:bg-card/80"
-          >
-            <div className="font-medium text-foreground">{t.name}</div>
-            <div className="mt-1 text-xs text-muted-foreground">{t.shortDescription}</div>
-          </Link>
-        ))}
+        {related.map((t) => {
+          const label =
+            t.slug === "json-formatter" || t.slug === "base64"
+              ? getLocalizedToolText(t.slug, locale).name
+              : t.name
+          const short =
+            t.slug === "json-formatter" || t.slug === "base64"
+              ? getLocalizedToolText(t.slug, locale).short
+              : t.shortDescription
+          return (
+            <Link
+              key={t.slug}
+              href={localizeHref(locale, `tools/${t.slug}`)}
+              className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/50 hover:bg-card/80"
+            >
+              <div className="font-medium text-foreground">{label}</div>
+              <div className="mt-1 text-xs text-muted-foreground">{short}</div>
+            </Link>
+          )
+        })}
       </div>
     </section>
   )

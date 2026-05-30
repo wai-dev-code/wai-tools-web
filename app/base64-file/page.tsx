@@ -1,5 +1,5 @@
-import { createBase64ToolPage } from "@/lib/create-base64-tool-page"
+import { createLocalizedBase64SeoPage } from "@/lib/create-localized-seo-page"
 
-const { metadata, Page } = createBase64ToolPage("base64-file")
+const { metadata, Page } = createLocalizedBase64SeoPage("base64-file", "zh")
 export { metadata }
 export default Page

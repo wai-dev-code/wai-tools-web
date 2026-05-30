@@ -14,12 +14,14 @@ interface ToolExampleMenuProps<T> {
   examples: ToolExampleItem<T>[]
   onApply: (data: T) => void
   className?: string
+  label?: string
 }
 
 export function ToolExampleMenu<T>({
   examples,
   onApply,
   className,
+  label = "Example",
 }: ToolExampleMenuProps<T>) {
   if (examples.length === 0) return null
 
@@ -33,7 +35,7 @@ export function ToolExampleMenu<T>({
           className={className ?? "h-7 gap-1 px-2 text-xs"}
         >
           <BookOpen className="h-3.5 w-3.5" />
-          Example
+          {label}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="max-w-xs">

@@ -1,3 +1,5 @@
+import { siteConfig } from "@/lib/tools-data"
+
 export interface BlogPost {
   slug: string
   title: string
@@ -14,7 +16,7 @@ export const blogPosts: BlogPost[] = [
     slug: "json-formatter-guide",
     title: "如何高效使用 JSON 格式化工具",
     description: "学习 JSON 格式化的最佳实践，提升 API 调试与配置文件管理效率。",
-    date: "2024-01-15",
+    date: siteConfig.contentUpdatedAt,
     category: "教程",
     readTime: "5 分钟",
     content: [
@@ -34,13 +36,13 @@ export const blogPosts: BlogPost[] = [
         heading: "常见错误排查",
         paragraphs: [
           "JSON 解析失败通常由以下原因导致：尾部多余逗号（JSON 标准不允许）、单引号代替双引号、未转义的特殊字符、或混入了 JavaScript 注释。使用验证功能可快速定位错误行。",
-          "处理大型 JSON 时，建议先在本地工具中验证，再粘贴到代码中，避免将格式错误的配置部署到生产环境。",
+          "处理大型 JSON 时，建议先在浏览器中验证，再粘贴到代码中，避免将格式错误的配置部署到生产环境。",
         ],
       },
       {
         heading: "隐私与安全建议",
         paragraphs: [
-          "JSON 中可能包含用户数据、API 密钥或 Token。使用 WaiHub 等本地运行的工具，数据不会上传到服务器，适合处理敏感信息。对于生产环境的密钥，切勿在任何在线工具中粘贴。",
+          "JSON 中可能包含用户数据、API 密钥或 Token。使用 WaiHub 等浏览器内运行的工具，数据不会上传到服务器，适合处理敏感信息。对于生产环境的密钥，切勿在任何在线工具中粘贴。",
         ],
       },
     ],
@@ -49,7 +51,7 @@ export const blogPosts: BlogPost[] = [
     slug: "base64-encoding-explained",
     title: "Base64 编码原理与应用场景",
     description: "深入了解 Base64 编码的工作原理、适用场景及常见误区。",
-    date: "2024-01-10",
+    date: siteConfig.contentUpdatedAt,
     category: "技术",
     readTime: "8 分钟",
     content: [
@@ -85,7 +87,7 @@ export const blogPosts: BlogPost[] = [
     slug: "jwt-security-best-practices",
     title: "JWT 安全最佳实践",
     description: "确保 JWT 实现安全可靠的关键技巧与常见陷阱。",
-    date: "2024-01-05",
+    date: siteConfig.contentUpdatedAt,
     category: "安全",
     readTime: "10 分钟",
     hidden: true,
@@ -123,6 +125,12 @@ export const blogPosts: BlogPost[] = [
     ],
   },
 ]
+
+export function formatBlogDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number)
+  if (!y || !m || !d) return iso
+  return `${y} 年 ${m} 月 ${d} 日`
+}
 
 export function getVisibleBlogPosts(): BlogPost[] {
   return blogPosts.filter((p) => !p.hidden)

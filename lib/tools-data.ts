@@ -85,7 +85,7 @@ export const tools: ToolDefinition[] = [
   {
     slug: "jwt-decoder",
     name: "JWT 解码器",
-    description: "解析 JWT Header 与 Payload，本地解码不发送网络请求",
+    description: "解析 JWT Header 与 Payload，浏览器内解码不发送网络请求",
     shortDescription: "解析 JSON Web Token",
     icon: KeyRound,
     category: "api",
@@ -134,7 +134,16 @@ export const siteConfig = {
   name: "WaiHub",
   title: "WaiHub - 开发者在线工具",
   description:
-    "WaiHub 提供 JSON 格式化、Base64 编解码等免费开发者工具，浏览器本地运行，无需注册。",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://waihub.dev",
+    "WaiHub（开发者工具中心）提供 JSON 格式化、Base64 编解码等免费开发者工具，浏览器内运行，无需注册。",
+  url: (() => {
+    const configured = process.env.NEXT_PUBLIC_SITE_URL ?? "https://waihub.dev"
+    if (process.env.NODE_ENV === "production" && /localhost|127\.0\.0\.1/i.test(configured)) {
+      return "https://waihub.dev"
+    }
+    return configured
+  })(),
   contactEmail: "w8732787@gmail.com",
+  /** 文章、隐私政策、服务条款等内容的统一更新日期（ISO） */
+  contentUpdatedAt: "2026-04-20",
+  contentUpdatedLabel: "2026 年 4 月 20 日",
 }

@@ -15,7 +15,7 @@ const benefits = [
   },
   {
     title: "隐私优先",
-    description: "数据不会上传到服务器，完全在本地处理",
+    description: "数据不会上传到服务器，完全在浏览器内处理",
     icon: Shield,
   },
   {

@@ -10,12 +10,16 @@ interface JsonTreeViewProps {
   data: unknown
   defaultCollapsedDepth?: number
   foldMode?: FoldMode
+  expandLabel?: string
+  collapseLabel?: string
 }
 
 export function JsonTreeView({
   data,
   defaultCollapsedDepth = 2,
   foldMode = "default",
+  expandLabel = "Expand",
+  collapseLabel = "Collapse",
 }: JsonTreeViewProps) {
   const forceCollapsed =
     foldMode === "collapsed" ? true : foldMode === "expanded" ? false : undefined
@@ -28,6 +32,8 @@ export function JsonTreeView({
         depth={0}
         defaultCollapsedDepth={defaultCollapsedDepth}
         forceCollapsed={forceCollapsed}
+        expandLabel={expandLabel}
+        collapseLabel={collapseLabel}
         isRoot
       />
     </div>
@@ -40,6 +46,8 @@ function TreeNode({
   depth,
   defaultCollapsedDepth,
   forceCollapsed,
+  expandLabel,
+  collapseLabel,
   isRoot,
 }: {
   name: string
@@ -47,6 +55,8 @@ function TreeNode({
   depth: number
   defaultCollapsedDepth: number
   forceCollapsed?: boolean
+  expandLabel: string
+  collapseLabel: string
   isRoot?: boolean
 }) {
   const initialCollapsed =
@@ -104,7 +114,12 @@ function TreeNode({
     return (
       <div>
         <Line depth={depth} isRoot={isRoot}>
-          <CollapseBtn collapsed={collapsed} onClick={toggle} />
+          <CollapseBtn
+            collapsed={collapsed}
+            onClick={toggle}
+            expandLabel={expandLabel}
+            collapseLabel={collapseLabel}
+          />
           {!isRoot && <Key name={name} />}
           <span className="text-muted-foreground">[</span>
           {!collapsed && (
@@ -123,6 +138,8 @@ function TreeNode({
               depth={depth + 1}
               defaultCollapsedDepth={defaultCollapsedDepth}
               forceCollapsed={forceCollapsed}
+              expandLabel={expandLabel}
+              collapseLabel={collapseLabel}
             />
           ))}
         {!collapsed && (
@@ -139,7 +156,12 @@ function TreeNode({
     return (
       <div>
         <Line depth={depth} isRoot={isRoot}>
-          <CollapseBtn collapsed={collapsed} onClick={toggle} />
+          <CollapseBtn
+            collapsed={collapsed}
+            onClick={toggle}
+            expandLabel={expandLabel}
+            collapseLabel={collapseLabel}
+          />
           {!isRoot && <Key name={name} />}
           <span className="text-muted-foreground">{"{"}</span>
           {collapsed && (
@@ -155,6 +177,8 @@ function TreeNode({
               depth={depth + 1}
               defaultCollapsedDepth={defaultCollapsedDepth}
               forceCollapsed={forceCollapsed}
+              expandLabel={expandLabel}
+              collapseLabel={collapseLabel}
             />
           ))}
         {!collapsed && (
@@ -195,16 +219,20 @@ function Key({ name }: { name: string }) {
 function CollapseBtn({
   collapsed,
   onClick,
+  expandLabel,
+  collapseLabel,
 }: {
   collapsed: boolean
   onClick: () => void
+  expandLabel: string
+  collapseLabel: string
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
       className="flex h-4 w-4 shrink-0 items-center justify-center rounded hover:bg-muted"
-      aria-label={collapsed ? "展开" : "折叠"}
+      aria-label={collapsed ? expandLabel : collapseLabel}
     >
       {collapsed ? (
         <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />

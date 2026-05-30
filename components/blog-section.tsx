@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, Calendar } from "lucide-react"
-import { getVisibleBlogPosts } from "@/lib/blog-data"
+import { getVisibleBlogPosts, formatBlogDate } from "@/lib/blog-data"
 
 export function BlogSection() {
   const articles = getVisibleBlogPosts().slice(0, 3)
@@ -48,7 +48,7 @@ export function BlogSection() {
                   </p>
                   <div className="flex items-center text-xs text-muted-foreground">
                     <Calendar className="mr-1.5 h-3.5 w-3.5" />
-                    {article.date}
+                    {formatBlogDate(article.date)}
                   </div>
                 </CardContent>
               </Card>

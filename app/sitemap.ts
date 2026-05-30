@@ -2,47 +2,44 @@ import type { MetadataRoute } from "next"
 import { getVisibleBlogPosts } from "@/lib/blog-data"
 import { base64ToolPages } from "@/lib/base64-tool-pages"
 import { jsonToolPages } from "@/lib/json-tool-pages"
-import { siteConfig, getVisibleTools } from "@/lib/tools-data"
+import { coreLocalizedPaths } from "@/lib/i18n/config"
+import { getAllLocalizedUrls } from "@/lib/i18n"
+import { siteConfig } from "@/lib/tools-data"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = siteConfig.url
+  const staticPages = ["/privacy", "/terms"].map((path) => ({
+    url: `${siteConfig.url}${path}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }))
 
-  const staticPages = ["", "/tools", "/blog", "/about", "/contact", "/privacy", "/terms"].map(
-    (path) => ({
-      url: `${base}${path}`,
+  const localizedCorePages = coreLocalizedPaths.flatMap((path) =>
+    getAllLocalizedUrls(path).map((url) => ({
+      url,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
-      priority: path === "" ? 1 : 0.8,
-    })
+      priority: path === "" ? 1 : path.startsWith("tools/") ? 0.9 : path === "tools" ? 0.8 : 0.95,
+    }))
   )
 
-  const toolPages = getVisibleTools().map((tool) => ({
-    url: `${base}/tools/${tool.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.9,
-  }))
+  const blogArticlePages = getVisibleBlogPosts().flatMap((post) =>
+    getAllLocalizedUrls(`blog/${post.slug}`).map((url) => ({
+      url,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
+  )
 
-  const blogPages = getVisibleBlogPosts().map((post) => ({
-    url: `${base}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }))
+  const seoLandingPages = [...jsonToolPages, ...base64ToolPages].flatMap((page) =>
+    getAllLocalizedUrls(page.slug).map((url) => ({
+      url,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.95,
+    }))
+  )
 
-  const jsonSeoPages = jsonToolPages.map((page) => ({
-    url: `${base}${page.path}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.95,
-  }))
-
-  const base64SeoPages = base64ToolPages.map((page) => ({
-    url: `${base}${page.path}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.95,
-  }))
-
-  return [...staticPages, ...toolPages, ...jsonSeoPages, ...base64SeoPages, ...blogPages]
+  return [...localizedCorePages, ...staticPages, ...seoLandingPages, ...blogArticlePages]
 }

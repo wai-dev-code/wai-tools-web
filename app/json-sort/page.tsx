@@ -1,5 +1,5 @@
-import { createJsonToolPage } from "@/lib/create-json-tool-page"
+import { createLocalizedJsonSeoPage } from "@/lib/create-localized-seo-page"
 
-const { metadata, Page } = createJsonToolPage("json-sort")
+const { metadata, Page } = createLocalizedJsonSeoPage("json-sort", "zh")
 export { metadata }
 export default Page
