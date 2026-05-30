@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { categoryLabels, tools, type ToolCategory } from "@/lib/tools-data"
+import { categoryLabels, getVisibleTools, type ToolCategory } from "@/lib/tools-data"
 
 const categories = Object.keys(categoryLabels) as ToolCategory[]
 
@@ -25,7 +25,7 @@ export function ToolSidebar({ currentSlug }: { currentSlug?: string }) {
           </Link>
         </div>
         {categories.map((cat) => {
-          const catTools = tools.filter((t) => t.category === cat)
+          const catTools = getVisibleTools().filter((t) => t.category === cat)
           if (catTools.length === 0) return null
           return (
             <div key={cat}>

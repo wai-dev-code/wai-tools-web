@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next"
-import { blogPosts } from "@/lib/blog-data"
-import { jsonToolPages } from "@/lib/json-tool-pages"
+import { getVisibleBlogPosts } from "@/lib/blog-data"
 import { base64ToolPages } from "@/lib/base64-tool-pages"
-import { siteConfig, tools } from "@/lib/tools-data"
+import { jsonToolPages } from "@/lib/json-tool-pages"
+import { siteConfig, getVisibleTools } from "@/lib/tools-data"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.url
@@ -16,14 +16,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   )
 
-  const toolPages = tools.map((tool) => ({
+  const toolPages = getVisibleTools().map((tool) => ({
     url: `${base}/tools/${tool.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.9,
   }))
 
-  const blogPages = blogPosts.map((post) => ({
+  const blogPages = getVisibleBlogPosts().map((post) => ({
     url: `${base}/blog/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,

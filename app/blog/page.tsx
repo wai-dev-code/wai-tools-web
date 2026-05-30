@@ -3,7 +3,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Calendar, ArrowRight } from "lucide-react"
 import type { Metadata } from "next"
-import { blogPosts } from "@/lib/blog-data"
+import { getVisibleBlogPosts } from "@/lib/blog-data"
 import { siteConfig } from "@/lib/tools-data"
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function BlogPage() {
         <p className="mb-10 text-muted-foreground">开发者技巧、教程与最佳实践</p>
 
         <div className="space-y-6">
-          {blogPosts.map((post) => (
+          {getVisibleBlogPosts().map((post) => (
             <article
               key={post.slug}
               className="rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary/50"

@@ -1,3 +1,4 @@
+/** 广告位配置：按页面类型划分，与具体工具 slug 无关 */
 export const adsenseConfig = {
   clientId: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID,
   slots: {

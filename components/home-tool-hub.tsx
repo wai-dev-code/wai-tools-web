@@ -6,18 +6,22 @@ import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   categoryLabels,
+  getVisibleTools,
   searchTools,
-  tools,
   type ToolCategory,
 } from "@/lib/tools-data"
 import { cn } from "@/lib/utils"
 import { AdSlot } from "@/components/ad-slot"
 
-const categories = ["all", ...Object.keys(categoryLabels)] as const
+const visibleTools = getVisibleTools()
+const visibleCategories = [
+  "all",
+  ...Array.from(new Set(visibleTools.map((t) => t.category))),
+] as const
 
 export function HomeToolHub() {
   const [query, setQuery] = useState("")
-  const [activeCategory, setActiveCategory] = useState<(typeof categories)[number]>("all")
+  const [activeCategory, setActiveCategory] = useState<(typeof visibleCategories)[number]>("all")
 
   const filtered = useMemo(() => {
     let result = searchTools(query)
@@ -35,7 +39,7 @@ export function HomeToolHub() {
             开发者工具，即开即用
           </h1>
           <p className="text-muted-foreground">
-            JSON、Base64、时间戳、UUID、正则、JWT — 浏览器本地运行，无需注册
+            JSON、Base64 — 浏览器本地运行，无需注册
           </p>
         </div>
 
@@ -43,7 +47,7 @@ export function HomeToolHub() {
           <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="搜索工具，如 JSON、Base64、JWT..."
+            placeholder="搜索工具，如 JSON、Base64..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="h-12 rounded-xl border-border bg-secondary/50 pl-10 text-base"
@@ -52,7 +56,7 @@ export function HomeToolHub() {
         </div>
 
         <div className="mb-8 flex flex-wrap justify-center gap-2">
-          {categories.map((cat) => (
+          {visibleCategories.map((cat) => (
             <button
               key={cat}
               type="button"
@@ -97,7 +101,7 @@ export function HomeToolHub() {
         <AdSlot name="homeMid" className="mx-auto max-w-2xl" />
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          共 {tools.length} 个工具 ·{" "}
+          共 {visibleTools.length} 个工具 ·{" "}
           <Link href="/tools" className="text-primary hover:underline">
             查看完整列表
           </Link>

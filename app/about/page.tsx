@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import type { Metadata } from "next"
-import { siteConfig, tools } from "@/lib/tools-data"
+import { siteConfig, getVisibleTools } from "@/lib/tools-data"
 
 export const metadata: Metadata = {
   title: `关于我们 | ${siteConfig.name}`,
@@ -18,7 +18,7 @@ export default function AboutPage() {
         <h1 className="mb-8 text-3xl font-bold text-foreground">关于 {siteConfig.name}</h1>
         <div className="space-y-6 text-muted-foreground">
           <p>
-            {siteConfig.name} 是一个面向开发者与创作者的免费在线工具平台。我们相信日常开发中的 JSON 格式化、编码转换、时间戳处理等需求，应该能在浏览器中即时完成，无需注册、无需安装、无需担心数据泄露。
+            {siteConfig.name} 是一个面向开发者与创作者的免费在线工具平台。我们相信日常开发中的 JSON 格式化、Base64 编解码等需求，应该能在浏览器中即时完成，无需注册、无需安装、无需担心数据泄露。
           </p>
 
           <section>
@@ -33,7 +33,7 @@ export default function AboutPage() {
 
           <section>
             <h2 className="mb-3 text-xl font-semibold text-foreground">目前提供的工具</h2>
-            <p className="mb-3">我们目前提供 {tools.length} 个开发者工具，涵盖 JSON、编码、时间戳、UUID、正则表达式和 JWT 等常见场景。</p>
+            <p className="mb-3">我们目前提供 {getVisibleTools().length} 个开发者工具，涵盖 JSON 格式化与 Base64 编解码等常见场景。</p>
             <Link href="/tools" className="text-primary hover:underline">浏览全部工具 →</Link>
           </section>
 

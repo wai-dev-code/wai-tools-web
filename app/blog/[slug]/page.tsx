@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 import { AdSlot } from "@/components/ad-slot"
 import { ChevronRight, Calendar } from "lucide-react"
 import type { Metadata } from "next"
-import { getBlogPost, blogPosts } from "@/lib/blog-data"
+import { getBlogPost, getVisibleBlogPosts } from "@/lib/blog-data"
 import { siteConfig } from "@/lib/tools-data"
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }))
+  return getVisibleBlogPosts().map((post) => ({ slug: post.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

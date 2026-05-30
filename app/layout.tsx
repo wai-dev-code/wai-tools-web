@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { AdSenseScript } from "@/components/adsense-script"
 import { AppToaster } from "@/components/app-toaster"
 import { ThemeProvider } from "@/components/theme-provider"
-import { siteConfig } from "@/lib/tools-data"
+import { siteConfig, getSiteKeywords } from "@/lib/tools-data"
 import './globals.css'
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" })
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['开发者工具', 'JSON格式化', 'Base64编码', '时间戳转换', 'UUID生成器', '正则表达式测试', 'JWT解码', '在线工具'],
+  keywords: getSiteKeywords(),
   authors: [{ name: siteConfig.name }],
   metadataBase: new URL(siteConfig.url),
   openGraph: {

@@ -22,6 +22,8 @@ export interface ToolDefinition {
   icon: LucideIcon
   category: ToolCategory
   keywords: string[]
+  /** 为 true 时不在导航/列表中展示，直接访问 URL 亦 404 */
+  hidden?: boolean
 }
 
 export const categoryLabels: Record<ToolCategory, string> = {
@@ -58,6 +60,7 @@ export const tools: ToolDefinition[] = [
     icon: Clock,
     category: "dev",
     keywords: ["timestamp", "时间戳", "unix", "日期", "epoch"],
+    hidden: true,
   },
   {
     slug: "uuid-generator",
@@ -67,6 +70,7 @@ export const tools: ToolDefinition[] = [
     icon: Fingerprint,
     category: "dev",
     keywords: ["uuid", "guid", "唯一标识", "生成器"],
+    hidden: true,
   },
   {
     slug: "regex-tester",
@@ -76,6 +80,7 @@ export const tools: ToolDefinition[] = [
     icon: FileSearch,
     category: "dev",
     keywords: ["regex", "正则", "regexp", "匹配", "pattern"],
+    hidden: true,
   },
   {
     slug: "jwt-decoder",
@@ -85,17 +90,34 @@ export const tools: ToolDefinition[] = [
     icon: KeyRound,
     category: "api",
     keywords: ["jwt", "token", "解码", "decode", "bearer"],
+    hidden: true,
   },
 ]
+
+export function getVisibleTools(): ToolDefinition[] {
+  return tools.filter((t) => !t.hidden)
+}
+
+/** 站点 SEO 关键词，从当前可见工具动态生成 */
+export function getSiteKeywords(): string[] {
+  return [
+    ...new Set([
+      "开发者工具",
+      "在线工具",
+      ...getVisibleTools().flatMap((t) => [t.name, ...t.keywords]),
+    ]),
+  ]
+}
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
   return tools.find((t) => t.slug === slug)
 }
 
 export function searchTools(query: string): ToolDefinition[] {
+  const visible = getVisibleTools()
   const q = query.trim().toLowerCase()
-  if (!q) return tools
-  return tools.filter(
+  if (!q) return visible
+  return visible.filter(
     (t) =>
       t.name.toLowerCase().includes(q) ||
       t.description.toLowerCase().includes(q) ||
@@ -105,14 +127,14 @@ export function searchTools(query: string): ToolDefinition[] {
 }
 
 export function getToolsByCategory(category: ToolCategory): ToolDefinition[] {
-  return tools.filter((t) => t.category === category)
+  return getVisibleTools().filter((t) => t.category === category)
 }
 
 export const siteConfig = {
   name: "WaiHub",
   title: "WaiHub - 开发者在线工具",
   description:
-    "WaiHub 提供 JSON 格式化、Base64 编解码、时间戳转换、UUID 生成、正则测试、JWT 解码等免费开发者工具，浏览器本地运行，无需注册。",
+    "WaiHub 提供 JSON 格式化、Base64 编解码等免费开发者工具，浏览器本地运行，无需注册。",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://waihub.dev",
   contactEmail: "w8732787@gmail.com",
 }

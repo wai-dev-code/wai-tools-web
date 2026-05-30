@@ -4,6 +4,9 @@ import { useState } from "react"
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { getVisibleTools } from "@/lib/tools-data"
+
+const visibleToolCount = getVisibleTools().length
 
 export function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -37,7 +40,7 @@ export function HeroSection() {
         {/* Subtitle */}
         <p className="mx-auto mb-10 max-w-2xl text-pretty text-lg text-muted-foreground sm:text-xl">
           WaiHub 为程序员和创作者提供强大的在线工具集。
-          JSON 格式化、编码转换、时间戳处理等，一切尽在浏览器中完成。
+          JSON 格式化、Base64 编解码等，一切尽在浏览器中完成。
         </p>
 
         {/* Search Bar */}
@@ -69,11 +72,10 @@ export function HeroSection() {
         </div>
 
         {/* Stats */}
-        <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-3">
           {[
-            { value: "20+", label: "开发者工具" },
-            { value: "100K+", label: "月活用户" },
-            { value: "99.9%", label: "服务可用性" },
+            { value: String(visibleToolCount), label: "在线工具" },
+            { value: "本地", label: "浏览器运行" },
             { value: "0", label: "需要注册" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">

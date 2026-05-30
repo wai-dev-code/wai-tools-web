@@ -6,6 +6,7 @@ export interface BlogPost {
   category: string
   readTime: string
   content: { heading?: string; paragraphs: string[] }[]
+  hidden?: boolean
 }
 
 export const blogPosts: BlogPost[] = [
@@ -87,6 +88,7 @@ export const blogPosts: BlogPost[] = [
     date: "2024-01-05",
     category: "安全",
     readTime: "10 分钟",
+    hidden: true,
     content: [
       {
         paragraphs: [
@@ -122,6 +124,12 @@ export const blogPosts: BlogPost[] = [
   },
 ]
 
+export function getVisibleBlogPosts(): BlogPost[] {
+  return blogPosts.filter((p) => !p.hidden)
+}
+
 export function getBlogPost(slug: string) {
-  return blogPosts.find((p) => p.slug === slug)
+  const post = blogPosts.find((p) => p.slug === slug)
+  if (!post || post.hidden) return undefined
+  return post
 }

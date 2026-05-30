@@ -7,7 +7,6 @@ const footerLinks = {
       { name: "全部工具", href: "/tools" },
       { name: "JSON 格式化", href: "/tools/json-formatter" },
       { name: "Base64 编解码", href: "/tools/base64" },
-      { name: "时间戳转换", href: "/tools/timestamp" },
     ],
   },
   resources: {

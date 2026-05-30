@@ -1,55 +1,63 @@
+import Link from "next/link"
 import {
   Braces,
   Binary,
-  Wrench,
-  Globe,
-  Sparkles,
   ArrowRight,
+  type LucideIcon,
 } from "lucide-react"
+import {
+  categoryLabels,
+  getVisibleTools,
+  type ToolCategory,
+} from "@/lib/tools-data"
 
-const categories = [
-  {
-    name: "JSON 工具",
-    description: "格式化、验证、压缩、比较 JSON 数据",
+const categoryMeta: Record<
+  ToolCategory,
+  { icon: LucideIcon; color: string; description: string }
+> = {
+  json: {
     icon: Braces,
-    toolCount: 5,
     color: "from-blue-500/20 to-blue-600/20",
+    description: "格式化、验证、压缩与 JSON 互转",
   },
-  {
-    name: "编码工具",
-    description: "Base64、URL、HTML 编解码转换",
+  encoding: {
     icon: Binary,
-    toolCount: 4,
     color: "from-green-500/20 to-green-600/20",
+    description: "Base64 编解码、文件与格式转换",
   },
-  {
-    name: "开发实用工具",
-    description: "UUID、哈希、密码生成等常用工具",
-    icon: Wrench,
-    toolCount: 6,
+  dev: {
+    icon: Braces,
     color: "from-orange-500/20 to-orange-600/20",
+    description: "开发实用工具",
   },
-  {
-    name: "API 工具",
-    description: "请求测试、响应格式化、Mock 数据",
-    icon: Globe,
-    toolCount: 3,
+  api: {
+    icon: Braces,
     color: "from-purple-500/20 to-purple-600/20",
+    description: "API 相关工具",
   },
-  {
-    name: "AI 开发工具",
-    description: "Prompt 优化、Token 计算、模型对比",
-    icon: Sparkles,
-    toolCount: 4,
-    color: "from-pink-500/20 to-pink-600/20",
-  },
-]
+}
 
 export function CategoriesSection() {
+  const visible = getVisibleTools()
+  const grouped = visible.reduce(
+    (acc, tool) => {
+      acc[tool.category] = (acc[tool.category] ?? 0) + 1
+      return acc
+    },
+    {} as Partial<Record<ToolCategory, number>>
+  )
+
+  const categories = (Object.keys(grouped) as ToolCategory[]).map((cat) => ({
+    name: categoryLabels[cat],
+    toolCount: grouped[cat] ?? 0,
+    ...categoryMeta[cat],
+  }))
+
+  if (categories.length === 0) return null
+
   return (
     <section id="categories" className="px-6 py-20 lg:px-8 lg:py-28">
       <div className="mx-auto max-w-7xl">
-        {/* Section Header */}
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             工具分类
@@ -59,18 +67,16 @@ export function CategoriesSection() {
           </p>
         </div>
 
-        {/* Categories Grid */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
-            <div
+            <Link
               key={category.name}
-              className="group relative cursor-pointer overflow-hidden rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/50"
+              href="/tools"
+              className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/50"
             >
-              {/* Background gradient */}
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 transition-opacity group-hover:opacity-100`}
               />
-
               <div className="relative">
                 <div className="mb-4 flex items-center justify-between">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary text-foreground">
@@ -91,7 +97,7 @@ export function CategoriesSection() {
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

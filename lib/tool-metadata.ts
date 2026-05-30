@@ -22,6 +22,6 @@ export function generateToolMetadata(slug: string): Metadata {
 
 export function getToolOrNotFound(slug: string) {
   const tool = getToolBySlug(slug)
-  if (!tool) return null
+  if (!tool || tool.hidden) return null
   return tool
 }
