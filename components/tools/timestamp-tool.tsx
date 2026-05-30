@@ -1,20 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ToolExampleMenu } from "@/components/tool-example-menu"
+import { timestampExamples, type TimestampExample } from "@/lib/tool-examples"
 
 export function TimestampTool() {
   const [timestamp, setTimestamp] = useState("")
   const [datetime, setDatetime] = useState("")
   const [unit, setUnit] = useState<"s" | "ms">("s")
 
-  useEffect(() => {
-    const now = Math.floor(Date.now() / 1000)
-    setTimestamp(String(now))
-    setDatetime(new Date().toISOString().slice(0, 19))
-  }, [])
+  const applyExample = (example: TimestampExample) => {
+    setTimestamp(example.timestamp)
+    setDatetime(example.datetime)
+    setUnit(example.unit)
+  }
 
   const tsToDate = () => {
     let ts = Number(timestamp)
@@ -39,7 +41,7 @@ export function TimestampTool() {
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Button variant={unit === "s" ? "default" : "outline"} size="sm" onClick={() => setUnit("s")}>
           秒 (s)
         </Button>
@@ -49,6 +51,7 @@ export function TimestampTool() {
         <Button variant="outline" size="sm" onClick={useNow}>
           当前时间
         </Button>
+        <ToolExampleMenu examples={timestampExamples} onApply={applyExample} className="h-8 gap-1 px-2 text-xs" />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -59,19 +62,24 @@ export function TimestampTool() {
             value={timestamp}
             onChange={(e) => setTimestamp(e.target.value)}
             className="font-mono"
+            placeholder="输入时间戳..."
           />
-          <Button onClick={tsToDate} className="w-full">时间戳 → 日期</Button>
+          <Button variant="outline" size="sm" onClick={tsToDate}>
+            转为日期 →
+          </Button>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="dt">日期时间 (YYYY-MM-DD HH:mm:ss)</Label>
+          <Label htmlFor="dt">日期时间</Label>
           <Input
             id="dt"
             value={datetime}
             onChange={(e) => setDatetime(e.target.value)}
             className="font-mono"
-            placeholder="2024-01-15 12:30:00"
+            placeholder="YYYY-MM-DD HH:mm:ss"
           />
-          <Button onClick={dateToTs} className="w-full">日期 → 时间戳</Button>
+          <Button variant="outline" size="sm" onClick={dateToTs}>
+            ← 转为时间戳
+          </Button>
         </div>
       </div>
     </div>

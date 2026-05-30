@@ -16,9 +16,11 @@ import {
   Sparkles,
   ListOrdered,
 } from "lucide-react"
-import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { toolNotify } from "@/lib/tool-notify"
 import { JsonLineEditor } from "@/components/tools/json-line-editor"
+import { ToolExampleMenu } from "@/components/tool-example-menu"
+import { base64Examples, type Base64Example } from "@/lib/tool-examples"
 import {
   encodeBase64,
   decodeBase64,
@@ -36,24 +38,10 @@ import {
   getByteLength,
 } from "@/lib/base64-utils"
 
-const SAMPLE_TEXT = "Hello, WaiHub! 你好"
-
-const TOAST_ID = "base64-tool-notify"
-
-function notify(
-  message: string,
-  type: "success" | "error" | "warning" | "info" = "success"
-) {
-  toast.dismiss(TOAST_ID)
-  const opts = { id: TOAST_ID }
-  if (type === "error") toast.error(message, opts)
-  else if (type === "warning") toast.warning(message, opts)
-  else if (type === "info") toast.message(message, opts)
-  else toast.success(message, opts)
-}
+const NOTIFY_ID = "base64-tool"
 
 export function Base64Tool() {
-  const [input, setInput] = useState(SAMPLE_TEXT)
+  const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [showLineNumbers, setShowLineNumbers] = useState(true)
   const [urlSafe, setUrlSafe] = useState(false)
@@ -61,10 +49,17 @@ export function Base64Tool() {
   const runAction = useCallback((fn: () => void, successMsg?: string) => {
     try {
       fn()
-      if (successMsg) notify(successMsg)
+      if (successMsg) toolNotify(successMsg, "success", NOTIFY_ID)
     } catch (e) {
-      notify(e instanceof Error ? e.message : "操作失败", "error")
+      toolNotify(e instanceof Error ? e.message : "操作失败", "error", NOTIFY_ID)
     }
+  }, [])
+
+  const applyExample = useCallback((example: Base64Example) => {
+    setInput(example.input)
+    setOutput("")
+    if (example.urlSafe !== undefined) setUrlSafe(example.urlSafe)
+    toolNotify("已加载示例", "success", NOTIFY_ID)
   }, [])
 
   const doEncode = (useUrlSafe = urlSafe) => {
@@ -84,20 +79,20 @@ export function Base64Tool() {
       const trimmed = input.trim()
       if (trimmed.startsWith("data:")) {
         setOutput(fromDataUri(trimmed))
-        notify("已从 Data URI 解码")
+        toolNotify("已从 Data URI 解码", "success", NOTIFY_ID)
         return
       }
       if (/^[0-9a-fA-F\s]+$/.test(trimmed) && trimmed.replace(/\s/g, "").length % 2 === 0 && !isLikelyBase64(trimmed)) {
         setOutput(hexToText(trimmed))
-        notify("已从 Hex 解码")
+        toolNotify("已从 Hex 解码", "success", NOTIFY_ID)
         return
       }
       if (isLikelyBase64(trimmed)) {
         setOutput(urlSafe ? decodeBase64Url(trimmed) : decodeBase64(trimmed))
-        notify("已自动解码")
+        toolNotify("已自动解码", "success", NOTIFY_ID)
       } else {
         setOutput(urlSafe ? encodeBase64Url(input) : encodeBase64(input))
-        notify("已自动编码")
+        toolNotify("已自动编码", "success", NOTIFY_ID)
       }
     })
   }
@@ -106,22 +101,22 @@ export function Base64Tool() {
     try {
       const trimmed = input.trim()
       if (!trimmed) {
-        notify("输入区为空", "warning")
+        toolNotify("输入区为空", "warning", NOTIFY_ID)
         return
       }
       if (trimmed.startsWith("data:")) {
         fromDataUri(trimmed)
-        notify("✓ 有效的 Data URI")
+        toolNotify("✓ 有效的 Data URI", "success", NOTIFY_ID)
         return
       }
       if (isLikelyBase64(trimmed)) {
         validateBase64(trimmed)
-        notify("✓ 有效的 Base64 字符串")
+        toolNotify("✓ 有效的 Base64 字符串", "success", NOTIFY_ID)
         return
       }
-      notify("输入不像 Base64，可直接编码", "info")
+      toolNotify("输入不像 Base64，可直接编码", "info", NOTIFY_ID)
     } catch (e) {
-      notify(e instanceof Error ? e.message : "校验失败", "error")
+      toolNotify(e instanceof Error ? e.message : "校验失败", "error", NOTIFY_ID)
     }
   }
 
@@ -166,7 +161,7 @@ export function Base64Tool() {
     const prevInput = input
     setInput(output)
     setOutput(prevInput)
-    notify("已交换输入与输出")
+    toolNotify("已交换输入与输出", "success", NOTIFY_ID)
   }
 
   const handleClearInput = () => {
@@ -179,20 +174,20 @@ export function Base64Tool() {
 
   const handleCopyOutput = async () => {
     if (!output) {
-      notify("输出区没有内容", "warning")
+      toolNotify("输出区没有内容", "warning", NOTIFY_ID)
       return
     }
     try {
       await navigator.clipboard.writeText(output)
-      notify("已复制输出")
+      toolNotify("已复制输出", "success", NOTIFY_ID)
     } catch {
-      notify("复制失败", "error")
+      toolNotify("复制失败", "error", NOTIFY_ID)
     }
   }
 
   const handleSaveOutput = () => {
     if (!output) {
-      notify("输出区没有内容", "warning")
+      toolNotify("输出区没有内容", "warning", NOTIFY_ID)
       return
     }
     const blob = new Blob([output], { type: "text/plain;charset=utf-8" })
@@ -204,24 +199,26 @@ export function Base64Tool() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    notify("已保存 base64-result.txt")
+    toolNotify("已保存 base64-result.txt", "success", NOTIFY_ID)
   }
 
   const handleApplyToInput = () => {
     if (!output) {
-      notify("输出区没有内容", "warning")
+      toolNotify("输出区没有内容", "warning", NOTIFY_ID)
       return
     }
     setInput(output)
-    notify("已同步到输入区")
+    toolNotify("已同步到输入区", "success", NOTIFY_ID)
   }
 
   const inputBytes = getByteLength(input)
   const outputBytes = getByteLength(output)
 
   return (
-    <div className="relative z-10 space-y-3">
-      <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-border bg-muted/30 p-2">
+    <div className="space-y-3">
+      <div className="relative z-20 flex flex-wrap items-center gap-1.5 rounded-lg border border-border bg-muted/30 p-2">
+        <ToolExampleMenu examples={base64Examples} onApply={applyExample} className="h-8 gap-1 px-2 text-xs" />
+        <span className="mx-0.5 hidden h-5 w-px bg-border sm:inline" />
         <ToolbarButton icon={Lock} label="编码" onClick={() => doEncode()} />
         <ToolbarButton icon={Unlock} label="解码" onClick={() => doDecode()} />
         <ToolbarButton icon={Sparkles} label="智能" onClick={handleSmart} title="自动识别 Base64/Hex/Data URI 并转换" />
@@ -391,7 +388,10 @@ function MiniButton({
       type="button"
       size="sm"
       variant="ghost"
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault()
+        onClick()
+      }}
       title={title ?? label}
       className="h-7 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
     >

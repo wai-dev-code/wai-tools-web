@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
+import { useState, useCallback, useMemo, useEffect, useRef, useDeferredValue } from "react"
 import {
   AlignLeft,
   Minimize2,
@@ -16,10 +16,24 @@ import {
   ChevronsUpDown,
   ArrowDownToLine,
   SortAsc,
+  SortDesc,
   FileText,
+  Search,
+  AlertCircle,
+  Upload,
+  WrapText,
+  ChevronDown,
+  SlidersHorizontal,
+  Quote,
 } from "lucide-react"
-import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { toolNotify } from "@/lib/tool-notify"
 import { JsonLineEditor } from "@/components/tools/json-line-editor"
 import { JsonTreeView } from "@/components/tools/json-tree-view"
 import {
@@ -33,66 +47,192 @@ import {
   tryParseJson,
   xmlToJson,
 } from "@/lib/json-xml"
+import { isLikelyYaml, jsonToYaml, yamlToJson } from "@/lib/json-yaml"
+import { escapeJsonForCodeQuoted, unescapeJsonFromCode } from "@/lib/json-escape"
+import {
+  buildErrorHighlight,
+  buildSearchHighlights,
+  countJsonNodes,
+  evaluateJsonPath,
+  formatJsonPathResult,
+  formatSearchValue,
+  getJsonSizeStats,
+  getTextByteSize,
+  MAX_JSON_BYTES,
+  parseJsonDetailed,
+  searchJson,
+  stripJsonPathPrefix,
+  type LineHighlight,
+} from "@/lib/json-utils"
+import type { JsonToolFocus } from "@/lib/json-tool-pages"
+import { jsonFormatterExamples, type JsonFormatterExample } from "@/lib/tool-examples"
+import { ToolExampleMenu } from "@/components/tool-example-menu"
 import { cn } from "@/lib/utils"
 
-const SAMPLE_JSON = `{
-  "name": "WaiHub",
-  "version": 1,
-  "features": ["format", "compress", "xml"]
-}`
+const NOTIFY_ID = "json-formatter"
 
 type ViewMode = "text" | "tree"
-type ContentType = "json" | "xml"
+type ContentType = "json" | "xml" | "yaml"
 type FoldMode = "default" | "collapsed" | "expanded"
-
-const TOAST_ID = "json-formatter-notify"
-
-function notify(
-  message: string,
-  type: "success" | "error" | "warning" | "info" = "success"
-) {
-  toast.dismiss(TOAST_ID)
-  const opts = { id: TOAST_ID }
-  if (type === "error") toast.error(message, opts)
-  else if (type === "warning") toast.warning(message, opts)
-  else if (type === "info") toast.message(message, opts)
-  else toast.success(message, opts)
-}
+type SortOrder = "asc" | "desc"
 
 function detectContentType(text: string): ContentType {
   if (isLikelyXml(text)) return "xml"
+  if (isLikelyYaml(text)) return "yaml"
   return "json"
 }
 
-export function JsonFormatterTool() {
-  const [input, setInput] = useState(SAMPLE_JSON)
+interface JsonFormatterToolProps {
+  focus?: JsonToolFocus
+}
+
+export function JsonFormatterTool({ focus }: JsonFormatterToolProps) {
+  const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [inputType, setInputType] = useState<ContentType>("json")
   const [outputType, setOutputType] = useState<ContentType>("json")
   const [showLineNumbers, setShowLineNumbers] = useState(true)
+  const [wordWrap, setWordWrap] = useState(false)
+  const [syntaxHighlight, setSyntaxHighlight] = useState(true)
   const [viewMode, setViewMode] = useState<ViewMode>("text")
   const [foldMode, setFoldMode] = useState<FoldMode>("default")
   const [treeKey, setTreeKey] = useState(0)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [jsonPathQuery, setJsonPathQuery] = useState("")
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
+  const [scrollToLine, setScrollToLine] = useState<number | undefined>()
+  const [toolsOpen, setToolsOpen] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const deferredInput = useDeferredValue(input)
+  const inputByteSize = useMemo(() => getTextByteSize(input), [input])
+  const isOversized = inputByteSize > MAX_JSON_BYTES
+
+  const isInputJson = inputType === "json" && !isLikelyXml(input) && !isLikelyYaml(input)
+
+  const inputAnalysis = useMemo(() => {
+    if (isOversized) {
+      return {
+        parsed: null as unknown | null,
+        error: null,
+        nodeStats: null,
+        sizeStats: getJsonSizeStats(input, null),
+        searchMatches: [] as ReturnType<typeof searchJson>,
+        jsonPathResult: null as string | null,
+        jsonPathError: "输入超过 5MB，已暂停实时分析",
+      }
+    }
+
+    if (!isInputJson || !deferredInput.trim()) {
+      return {
+        parsed: null,
+        error: null,
+        nodeStats: null,
+        sizeStats: getJsonSizeStats(deferredInput, null),
+        searchMatches: [],
+        jsonPathResult: null,
+        jsonPathError: null as string | null,
+      }
+    }
+
+    const result = parseJsonDetailed(deferredInput)
+    if (!result.ok) {
+      return {
+        parsed: null,
+        error: result.error,
+        nodeStats: null,
+        sizeStats: getJsonSizeStats(deferredInput, null),
+        searchMatches: [],
+        jsonPathResult: null,
+        jsonPathError: null,
+      }
+    }
+
+    const parsed = result.value
+    let jsonPathResult: string | null = null
+    let jsonPathError: string | null = null
+
+    if (jsonPathQuery.trim()) {
+      try {
+        jsonPathResult = formatJsonPathResult(evaluateJsonPath(parsed, jsonPathQuery))
+      } catch (e) {
+        jsonPathError = e instanceof Error ? e.message : "JSONPath 解析失败"
+      }
+    }
+
+    return {
+      parsed,
+      error: null,
+      nodeStats: countJsonNodes(parsed),
+      sizeStats: getJsonSizeStats(deferredInput, parsed),
+      searchMatches: searchQuery.trim() ? searchJson(parsed, searchQuery) : [],
+      jsonPathResult,
+      jsonPathError,
+    }
+  }, [deferredInput, isInputJson, isOversized, searchQuery, jsonPathQuery, input])
+
+  const inputHighlights = useMemo(() => {
+    const highlights: LineHighlight[] = []
+
+    if (inputAnalysis.error) {
+      highlights.push(...buildErrorHighlight(inputAnalysis.error, input))
+    }
+
+    if (inputAnalysis.searchMatches.length > 0 && searchQuery.trim()) {
+      highlights.push(
+        ...buildSearchHighlights(input, inputAnalysis.searchMatches, searchQuery)
+      )
+    }
+
+    return highlights
+  }, [input, inputAnalysis.error, inputAnalysis.searchMatches, searchQuery])
+
+  useEffect(() => {
+    if (inputAnalysis.error) {
+      setScrollToLine(inputAnalysis.error.line)
+    }
+  }, [inputAnalysis.error])
+
+  useEffect(() => {
+    if (focus === "validate" && isInputJson && inputAnalysis.error) {
+      // auto-scroll on validate-focused page
+      setScrollToLine(inputAnalysis.error.line)
+    }
+  }, [focus, isInputJson, inputAnalysis.error])
 
   const treeData = useMemo(() => {
     return tryParseJson(output) ?? tryParseJson(input)
   }, [input, output])
 
-  const convertLabel = inputType === "xml" ? "转 JSON" : "转 XML"
-  const ConvertIcon = inputType === "xml" ? Braces : FileCode
+  const convertLabel =
+    inputType === "xml" ? "转 JSON" : inputType === "yaml" ? "转 JSON" : "转 XML"
+  const yamlLabel = inputType === "yaml" ? "转 JSON" : "转 YAML"
+  const ConvertIcon = inputType === "xml" || inputType === "yaml" ? Braces : FileCode
 
   const runAction = useCallback((fn: () => void, successMsg?: string) => {
     try {
       fn()
-      if (successMsg) notify(successMsg)
+      if (successMsg) toolNotify(successMsg, "success", NOTIFY_ID)
     } catch (e) {
-      notify(e instanceof Error ? e.message : "操作失败", "error")
+      toolNotify(e instanceof Error ? e.message : "操作失败", "error", NOTIFY_ID)
     }
   }, [])
 
   const handleInputChange = useCallback((value: string) => {
+    if (getTextByteSize(value) > MAX_JSON_BYTES) {
+      toolNotify("内容超过 5MB 上限", "warning", NOTIFY_ID)
+    }
     setInput(value)
     setInputType(detectContentType(value))
+  }, [])
+
+  const applyExample = useCallback((example: JsonFormatterExample) => {
+    setInput(example.input)
+    setInputType(detectContentType(example.input))
+    setOutput("")
+    setOutputType("json")
+    setViewMode("text")
+    toolNotify("已加载示例", "success", NOTIFY_ID)
   }, [])
 
   const handleOutputChange = useCallback((value: string) => {
@@ -101,8 +241,9 @@ export function JsonFormatterTool() {
   }, [])
 
   const parseFromInput = useCallback(() => {
+    if (isOversized) throw new Error("内容超过 5MB 上限")
     return parseInputToJson(input, inputType)
-  }, [input, inputType])
+  }, [input, inputType, isOversized])
 
   const handleFormat = () => {
     runAction(() => {
@@ -124,29 +265,74 @@ export function JsonFormatterTool() {
   }
 
   const handleConvert = () => {
-    const successMsg = inputType === "xml" || isLikelyXml(input) ? "已转为 JSON" : "已转为 XML"
+    const successMsg =
+      inputType === "xml" || isLikelyXml(input)
+        ? "已转为 JSON"
+        : inputType === "yaml" || isLikelyYaml(input)
+          ? "已转为 JSON"
+          : "已转为 XML"
     runAction(() => {
       if (inputType === "xml" || isLikelyXml(input)) {
-        const json = xmlToJson(input)
-        setOutput(formatJson(json, 2))
+        setOutput(formatJson(xmlToJson(input), 2))
+        setOutputType("json")
+      } else if (inputType === "yaml" || isLikelyYaml(input)) {
+        setOutput(formatJson(yamlToJson(input), 2))
         setOutputType("json")
       } else {
-        const parsed = parseJson(input)
-        setOutput(jsonToXml(parsed))
+        setOutput(jsonToXml(parseJson(input)))
         setOutputType("xml")
       }
       setViewMode("text")
     }, successMsg)
   }
 
-  const handleSortKeys = () => {
+  const handleYamlConvert = () => {
     runAction(() => {
-      const parsed = parseFromInput()
-      setOutput(formatJson(sortJsonKeys(parsed), 2))
+      if (inputType === "yaml" || isLikelyYaml(input)) {
+        setOutput(formatJson(yamlToJson(input), 2))
+        setOutputType("json")
+      } else {
+        const parsed = parseFromInput()
+        setOutput(jsonToYaml(parsed))
+        setOutputType("yaml")
+      }
+      setViewMode("text")
+    }, inputType === "yaml" || isLikelyYaml(input) ? "已转为 JSON" : "已转为 YAML")
+  }
+
+  const handleUnescape = () => {
+    runAction(() => {
+      const escaped = output.trim() || input.trim()
+      if (!escaped) throw new Error("没有可还原的内容")
+      setOutput(unescapeJsonFromCode(escaped))
       setOutputType("json")
       setViewMode("text")
-    }, "已按 key 排序")
+    }, "已 Unescape，结果在右侧")
   }
+
+  const handleEscape = () => {
+    runAction(() => {
+      if (!input.trim()) throw new Error("源数据为空")
+      setOutput(escapeJsonForCodeQuoted(input))
+      setOutputType("json")
+      setViewMode("text")
+    }, "已 Escape，结果在右侧")
+  }
+
+  const copyText = async (text: string, emptyMessage: string) => {
+    if (!text) {
+      toolNotify(emptyMessage, "warning", NOTIFY_ID)
+      return
+    }
+    try {
+      await navigator.clipboard.writeText(text)
+      toolNotify("已复制", "success", NOTIFY_ID)
+    } catch {
+      toolNotify("复制失败", "error", NOTIFY_ID)
+    }
+  }
+
+  const handleCopyInput = () => copyText(input, "输入区没有内容")
 
   const handleValidate = () => {
     try {
@@ -154,23 +340,54 @@ export function JsonFormatterTool() {
       if (inputType === "xml" || isLikelyXml(input)) {
         xmlToJson(input)
         parts.push("输入 XML 有效")
+      } else if (inputType === "yaml" || isLikelyYaml(input)) {
+        yamlToJson(input)
+        parts.push("输入 YAML 有效")
       } else {
-        parseJson(input)
+        const result = parseJsonDetailed(input)
+        if (!result.ok) {
+          toolNotify(
+            `第 ${result.error.line} 行，第 ${result.error.column} 列：${result.error.message}`,
+            "error",
+            NOTIFY_ID
+          )
+          return
+        }
         parts.push("输入 JSON 有效")
       }
       if (output.trim()) {
         if (outputType === "xml" || isLikelyXml(output)) {
           xmlToJson(output)
           parts.push("输出 XML 有效")
+        } else if (outputType === "yaml" || isLikelyYaml(output)) {
+          yamlToJson(output)
+          parts.push("输出 YAML 有效")
         } else {
           parseJson(output)
           parts.push("输出 JSON 有效")
         }
       }
-      notify(`✓ ${parts.join("，")}`)
+      toolNotify(`✓ ${parts.join("，")}`, "success", NOTIFY_ID)
     } catch (e) {
-      notify(e instanceof Error ? e.message : "校验失败", "error")
+      toolNotify(e instanceof Error ? e.message : "校验失败", "error", NOTIFY_ID)
     }
+  }
+
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ""
+    if (!file) return
+    if (file.size > MAX_JSON_BYTES) {
+      toolNotify("文件超过 5MB 限制", "error", NOTIFY_ID)
+      return
+    }
+    const reader = new FileReader()
+    reader.onload = () => {
+      handleInputChange(String(reader.result ?? ""))
+      toolNotify(`已加载 ${file.name}`, "success", NOTIFY_ID)
+    }
+    reader.onerror = () => toolNotify("文件读取失败", "error", NOTIFY_ID)
+    reader.readAsText(file)
   }
 
   const handleClearInput = () => {
@@ -185,25 +402,21 @@ export function JsonFormatterTool() {
   }
 
   const handleCopyOutput = async () => {
-    if (!output) {
-      notify("输出区没有内容", "warning")
-      return
-    }
-    try {
-      await navigator.clipboard.writeText(output)
-      notify("已复制输出内容")
-    } catch {
-      notify("复制失败", "error")
-    }
+    await copyText(output, "输出区没有内容")
   }
 
   const handleSaveOutput = () => {
     if (!output) {
-      notify("输出区没有内容", "warning")
+      toolNotify("输出区没有内容", "warning", NOTIFY_ID)
       return
     }
-    const ext = outputType === "xml" ? "xml" : "json"
-    const mime = outputType === "xml" ? "application/xml" : "application/json"
+    const ext = outputType === "xml" ? "xml" : outputType === "yaml" ? "yaml" : "json"
+    const mime =
+      outputType === "xml"
+        ? "application/xml"
+        : outputType === "yaml"
+          ? "application/x-yaml"
+          : "application/json"
     const blob = new Blob([output], { type: `${mime};charset=utf-8` })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -213,17 +426,17 @@ export function JsonFormatterTool() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    notify(`已保存 data.${ext}`)
+    toolNotify(`已保存 data.${ext}`, "success", NOTIFY_ID)
   }
 
   const handleApplyOutputToInput = () => {
     if (!output) {
-      notify("输出区没有内容", "warning")
+      toolNotify("输出区没有内容", "warning", NOTIFY_ID)
       return
     }
     setInput(output)
     setInputType(outputType)
-    notify("已将输出同步到输入区")
+    toolNotify("已将输出同步到输入区", "success", NOTIFY_ID)
   }
 
   const openTreeView = (fold: FoldMode) => {
@@ -246,73 +459,92 @@ export function JsonFormatterTool() {
     openTreeView("default")
   }
 
+  const editorCommonProps = {
+    showLineNumbers,
+    wordWrap,
+    syntaxHighlight: syntaxHighlight && isInputJson,
+  }
+
   return (
-    <div className="relative z-10 space-y-3">
-      {/* 全局操作栏 */}
-      <div className="flex flex-wrap items-center gap-1.5 rounded-lg border border-border bg-muted/30 p-2">
-        <ToolbarButton icon={AlignLeft} label="格式化" onClick={handleFormat} />
-        <ToolbarButton icon={Minimize2} label="压缩" onClick={handleCompress} />
-        <ToolbarButton icon={ConvertIcon} label={convertLabel} onClick={handleConvert} />
-        <ToolbarButton icon={SortAsc} label="排序" onClick={handleSortKeys} variant="outline" title="按 key 字母序排序" />
-        <ToolbarButton icon={CheckCircle2} label="校验" onClick={handleValidate} variant="outline" />
+    <div className="space-y-2">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json,.txt,.xml,.yaml,.yml,application/json,text/plain"
+        className="hidden"
+        onChange={handleUpload}
+      />
 
-        <span className="mx-0.5 hidden h-5 w-px bg-border sm:inline" />
-
-        <ToolbarButton
-          icon={ListOrdered}
-          label="行号"
-          onClick={() => setShowLineNumbers((v) => !v)}
-          active={showLineNumbers}
-          variant="outline"
-        />
-        <ToolbarButton
-          icon={FolderTree}
-          label="树形"
-          onClick={toggleTreeView}
-          active={viewMode === "tree"}
-          variant="outline"
-        />
-        <ToolbarButton
-          icon={ChevronsDownUp}
-          label="折叠"
-          onClick={() => openTreeView("collapsed")}
-          variant="outline"
-        />
-        <ToolbarButton
-          icon={ChevronsUpDown}
-          label="展开"
-          onClick={() => openTreeView("expanded")}
-          variant="outline"
-        />
-      </div>
-
-      {/* 双栏：输入 | 输出 */}
-      <div className="grid gap-3 lg:grid-cols-2">
+      {/* 编辑区优先：双栏占据主视觉 */}
+      <div className="grid gap-2 lg:grid-cols-2 lg:gap-3">
         <EditorPanel
           title="原数据"
           badge={inputType}
           value={input}
           onChange={handleInputChange}
-          showLineNumbers={showLineNumbers}
-          placeholder="粘贴 JSON 或 XML..."
-          actions={
-            <>
+          highlights={isInputJson ? inputHighlights : undefined}
+          errorLine={isInputJson ? inputAnalysis.error?.line : undefined}
+          scrollToLine={scrollToLine}
+          placeholder="粘贴 JSON、YAML 或 XML..."
+          {...editorCommonProps}
+          banner={
+            inputAnalysis.error && isInputJson ? (
+              <ErrorBanner error={inputAnalysis.error} />
+            ) : null
+          }
+          toolbar={
+            <PanelToolbar>
+              <ToolExampleMenu examples={jsonFormatterExamples} onApply={applyExample} />
+              <ToolbarDivider />
+              <ToolbarButton icon={AlignLeft} label="格式化" onClick={handleFormat} active={focus === "format"} />
+              <ToolbarButton icon={Minimize2} label="压缩" onClick={handleCompress} active={focus === "minify"} />
+              <ToolbarButton icon={CheckCircle2} label="校验" onClick={handleValidate} variant="outline" active={focus === "validate"} />
+              <ToolbarButton
+                icon={sortOrder === "asc" ? SortAsc : SortDesc}
+                label={sortOrder === "asc" ? "升序" : "降序"}
+                onClick={() => {
+                  const next: SortOrder = sortOrder === "asc" ? "desc" : "asc"
+                  setSortOrder(next)
+                  runAction(() => {
+                    const parsed = parseFromInput()
+                    setOutput(formatJson(sortJsonKeys(parsed, next), 2))
+                    setOutputType("json")
+                    setViewMode("text")
+                  }, next === "asc" ? "已按 key 升序排序" : "已按 key 降序排序")
+                }}
+                variant="outline"
+                title="切换升序/降序并排序"
+                active={focus === "sort"}
+              />
+              <ToolbarDivider />
+              <ToolbarButton icon={Quote} label="Escape" onClick={handleEscape} variant="outline" title="将源 JSON 转义输出到结果区" />
+              <ToolbarButton icon={Quote} label="Unescape" onClick={handleUnescape} variant="outline" title="将转义字符串还原 JSON 到结果区" />
+              <ToolbarDivider />
+              <ToolbarButton icon={ConvertIcon} label={convertLabel} onClick={handleConvert} variant="outline" active={focus === "to-xml"} />
+              <ToolbarButton icon={FileCode} label={yamlLabel} onClick={handleYamlConvert} variant="outline" />
+              <ToolbarButton icon={Upload} label="上传" onClick={() => fileInputRef.current?.click()} variant="outline" />
+              <MiniButton icon={Copy} label="复制" onClick={handleCopyInput} />
               <MiniButton icon={Trash2} label="清空" onClick={handleClearInput} />
-            </>
+            </PanelToolbar>
           }
         />
 
         <EditorPanel
           title="结果"
           badge={viewMode === "tree" ? "tree" : outputType}
-          showLineNumbers={showLineNumbers}
-          actions={
-            <>
+          {...editorCommonProps}
+          syntaxHighlight={syntaxHighlight}
+          toolbar={
+            <PanelToolbar>
               <MiniButton icon={Copy} label="复制" onClick={handleCopyOutput} />
               <MiniButton icon={Download} label="保存" onClick={handleSaveOutput} />
-              <MiniButton icon={ArrowDownToLine} label="同步到输入" onClick={handleApplyOutputToInput} title="将结果写回左侧输入区" />
+              <MiniButton icon={ArrowDownToLine} label="同步到输入" onClick={handleApplyOutputToInput} title="将结果写回左侧" />
               <MiniButton icon={Trash2} label="清空" onClick={handleClearOutput} />
-            </>
+              <ToolbarDivider />
+              <ToolbarButton icon={FolderTree} label="树形" onClick={toggleTreeView} active={viewMode === "tree"} variant="outline" />
+              <ToolbarButton icon={ChevronsDownUp} label="折叠" onClick={() => openTreeView("collapsed")} variant="outline" />
+              <ToolbarButton icon={ChevronsUpDown} label="展开" onClick={() => openTreeView("expanded")} variant="outline" />
+            </PanelToolbar>
           }
         >
           {viewMode === "tree" ? (
@@ -325,17 +557,126 @@ export function JsonFormatterTool() {
             <JsonLineEditor
               value={output}
               onChange={handleOutputChange}
-              showLineNumbers={showLineNumbers}
-              placeholder="点击上方「格式化」等按钮，结果将显示在这里..."
-              className="border-0 rounded-none h-full min-h-[min(50vh,480px)]"
+              placeholder="处理结果将显示在这里..."
+              className="border-0 rounded-none h-full min-h-[min(58vh,520px)]"
+              {...editorCommonProps}
             />
           )}
         </EditorPanel>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        左侧保留原始数据，右侧显示处理结果。需要对比或多次尝试时不必反复粘贴。
-      </p>
+      {/* 紧凑状态条：实时反馈，不抢编辑区空间 */}
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 rounded-md border border-border/60 bg-muted/20 px-3 py-1.5 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+          {inputAnalysis.nodeStats ? (
+            <>
+              <StatItem label="Objects" value={String(inputAnalysis.nodeStats.objects)} />
+              <StatItem label="Arrays" value={String(inputAnalysis.nodeStats.arrays)} />
+              <StatItem label="Keys" value={String(inputAnalysis.nodeStats.keys)} />
+              <span className="hidden text-border sm:inline">|</span>
+            </>
+          ) : null}
+          <StatItem label="Original" value={inputAnalysis.sizeStats.originalLabel} />
+          <StatItem label="Minified" value={inputAnalysis.sizeStats.minifiedLabel} />
+          {inputAnalysis.sizeStats.savedPercent !== null && (
+            <StatItem label="Saved" value={`${inputAnalysis.sizeStats.savedPercent}%`} highlight={inputAnalysis.sizeStats.savedPercent > 0} />
+          )}
+          {isOversized && <span className="text-destructive">超过 5MB</span>}
+        </div>
+        <div className="flex items-center gap-1">
+          <IconToggle icon={ListOrdered} label="行号" active={showLineNumbers} onClick={() => setShowLineNumbers((v) => !v)} />
+          <IconToggle icon={WrapText} label="换行" active={wordWrap} onClick={() => setWordWrap((v) => !v)} />
+        </div>
+      </div>
+
+      {/* 次要工具：默认收起，需要时再展开 */}
+      <Collapsible open={toolsOpen} onOpenChange={setToolsOpen}>
+        <CollapsibleTrigger asChild>
+          <button
+            type="button"
+            className="flex w-full items-center justify-between rounded-md border border-border/60 bg-card/40 px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:bg-muted/30 hover:text-foreground"
+          >
+            <span className="flex items-center gap-2">
+              <SlidersHorizontal className="h-4 w-4" />
+              查询工具
+              {(searchQuery || jsonPathQuery) && (
+                <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary">使用中</span>
+              )}
+            </span>
+            <ChevronDown className={cn("h-4 w-4 transition-transform", toolsOpen && "rotate-180")} />
+          </button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="mt-2 space-y-2 rounded-md border border-border/60 bg-card/30 p-3">
+          <ToolRow label="JSONPath">
+            <div className="flex min-w-0 flex-1 items-center overflow-hidden rounded-md border border-input bg-muted/30">
+              <span
+                className="shrink-0 border-r border-border bg-muted/50 px-2.5 py-1.5 font-mono text-xs text-muted-foreground select-none"
+                title="根节点 $ 已内置，对象路径自动补全 $. 前缀"
+              >
+                $
+              </span>
+              <Input
+                value={jsonPathQuery}
+                onChange={(e) => setJsonPathQuery(stripJsonPathPrefix(e.target.value))}
+                placeholder=""
+                className="h-8 border-0 bg-transparent font-mono text-xs shadow-none focus-visible:ring-0"
+                disabled={!isInputJson}
+              />
+            </div>
+            <span className="shrink-0 font-mono text-xs">
+              {inputAnalysis.jsonPathError ? (
+                <span className="text-destructive">{inputAnalysis.jsonPathError}</span>
+              ) : inputAnalysis.jsonPathResult !== null ? (
+                <span className="text-primary">{inputAnalysis.jsonPathResult}</span>
+              ) : jsonPathQuery.trim() ? (
+                <span className="text-muted-foreground">—</span>
+              ) : null}
+            </span>
+          </ToolRow>
+
+          <ToolRow label="搜索">
+            <div className="relative min-w-0 flex-1">
+              <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="name、user.name"
+                className="h-8 pl-8 font-mono text-xs"
+                disabled={!isInputJson}
+              />
+            </div>
+            {searchQuery.trim() && isInputJson && (
+              <span className="shrink-0 text-xs text-muted-foreground">
+                {inputAnalysis.searchMatches.length > 0
+                  ? `${inputAnalysis.searchMatches.length} 处`
+                  : "无匹配"}
+              </span>
+            )}
+          </ToolRow>
+
+          {searchQuery.trim() && inputAnalysis.searchMatches.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 pl-[4.5rem]">
+              {inputAnalysis.searchMatches.map((match) => (
+                <button
+                  key={match.path}
+                  type="button"
+                  onClick={() => {
+                    const line = buildSearchHighlights(input, [match], searchQuery)[0]?.line
+                    if (line) setScrollToLine(line)
+                  }}
+                  className="rounded border border-border bg-muted/40 px-2 py-0.5 font-mono text-[11px] transition-colors hover:border-primary/40"
+                >
+                  <span className="text-primary">{match.path}</span>
+                  <span className="mx-1 text-muted-foreground">=</span>
+                  {formatSearchValue(match.value)}
+                </button>
+              ))}
+            </div>
+          )}
+
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   )
 }
@@ -346,8 +687,14 @@ function EditorPanel({
   value,
   onChange,
   showLineNumbers,
+  wordWrap,
+  syntaxHighlight,
   placeholder,
-  actions,
+  highlights,
+  errorLine,
+  scrollToLine,
+  toolbar,
+  banner,
   children,
 }: {
   title: string
@@ -355,31 +702,116 @@ function EditorPanel({
   value?: string
   onChange?: (v: string) => void
   showLineNumbers?: boolean
+  wordWrap?: boolean
+  syntaxHighlight?: boolean
   placeholder?: string
-  actions: React.ReactNode
+  highlights?: LineHighlight[]
+  errorLine?: number
+  scrollToLine?: number
+  toolbar?: React.ReactNode
+  banner?: React.ReactNode
   children?: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card/50">
-      <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
-        <div className="flex items-center gap-2">
+    <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card/50 shadow-sm">
+      <div className="border-b border-border px-3 py-2">
+        <div className="mb-1.5 flex items-center gap-2">
           <span className="text-sm font-medium text-foreground">{title}</span>
           <Badge type={badge} />
         </div>
-        <div className="flex flex-wrap items-center gap-1">{actions}</div>
+        {toolbar}
       </div>
-      <div className="flex min-h-[min(50vh,480px)] flex-1 flex-col">
+      {banner}
+      <div className="flex min-h-[min(58vh,520px)] flex-1 flex-col">
         {children ?? (
           <JsonLineEditor
             value={value ?? ""}
             onChange={onChange ?? (() => {})}
             showLineNumbers={showLineNumbers}
+            wordWrap={wordWrap}
+            syntaxHighlight={syntaxHighlight}
             placeholder={placeholder}
-            className="border-0 rounded-none h-full min-h-[min(50vh,480px)]"
+            highlights={highlights}
+            errorLine={errorLine}
+            scrollToLine={scrollToLine}
+            className="border-0 rounded-none h-full min-h-[min(58vh,520px)]"
           />
         )}
       </div>
     </div>
+  )
+}
+
+function PanelToolbar({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-center gap-1">{children}</div>
+  )
+}
+
+function ToolbarDivider() {
+  return <span className="mx-0.5 hidden h-4 w-px bg-border sm:inline" />
+}
+
+function ErrorBanner({ error }: { error: { line: number; column: number; message: string } }) {
+  return (
+    <div className="flex items-start gap-2 border-b border-destructive/20 bg-destructive/5 px-3 py-1.5 text-xs">
+      <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-destructive" />
+      <div className="font-mono text-destructive">
+        <span className="text-muted-foreground">L{error.line}:C{error.column}</span>
+        <span className="mx-2 text-border">·</span>
+        <span className="font-medium">{error.message}</span>
+      </div>
+    </div>
+  )
+}
+
+function ToolRow({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="w-16 shrink-0 text-xs font-medium text-muted-foreground">{label}</span>
+      {children}
+    </div>
+  )
+}
+
+function IconToggle({
+  icon: Icon,
+  label,
+  active,
+  onClick,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  active: boolean
+  onClick: () => void
+}) {
+  return (
+    <Button
+      type="button"
+      size="sm"
+      variant={active ? "secondary" : "ghost"}
+      onClick={onClick}
+      title={label}
+      aria-label={label}
+      className="h-7 w-7 p-0"
+    >
+      <Icon className="h-3.5 w-3.5" />
+    </Button>
+  )
+}
+
+function StatItem({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
+  return (
+    <span>
+      <span className="text-muted-foreground">{label}:</span>{" "}
+      <span className={cn("font-medium text-foreground", highlight && "text-primary")}>{value}</span>
+    </span>
   )
 }
 
@@ -390,6 +822,7 @@ function Badge({ type }: { type: ContentType | "tree" }) {
         "rounded px-1.5 py-0.5 text-[10px] font-medium uppercase",
         type === "json" && "bg-primary/10 text-primary",
         type === "xml" && "bg-orange-500/10 text-orange-400",
+        type === "yaml" && "bg-emerald-500/10 text-emerald-500",
         type === "tree" && "bg-secondary text-muted-foreground"
       )}
     >
@@ -400,7 +833,7 @@ function Badge({ type }: { type: ContentType | "tree" }) {
 
 function EmptyTreeFallback({ onBack }: { onBack: () => void }) {
   return (
-    <div className="flex h-[min(50vh,480px)] min-h-[280px] items-center justify-center text-sm text-muted-foreground">
+    <div className="flex h-[min(58vh,520px)] min-h-[280px] items-center justify-center text-sm text-muted-foreground">
       <div className="px-4 text-center">
         <FileText className="mx-auto mb-2 h-8 w-8 opacity-50" />
         <p className="mb-3">暂无有效 JSON 可展示</p>
@@ -439,10 +872,10 @@ function ToolbarButton({
       }}
       title={title ?? label}
       aria-label={label}
-      className="h-8 gap-1 px-2 text-xs"
+      className="h-7 gap-1 px-1.5 text-xs"
     >
       <Icon className="h-3.5 w-3.5 shrink-0" />
-      <span>{label}</span>
+      <span className="hidden md:inline">{label}</span>
     </Button>
   )
 }

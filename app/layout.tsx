@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from '@vercel/analytics/next'
-import { CookieConsent } from "@/components/cookie-consent"
 import { AdSenseScript } from "@/components/adsense-script"
 import { AppToaster } from "@/components/app-toaster"
+import { ThemeProvider } from "@/components/theme-provider"
 import { siteConfig } from "@/lib/tools-data"
 import './globals.css'
 
@@ -38,13 +38,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN" className={`${geist.variable} ${geistMono.variable} bg-background`}>
+    <html lang="zh-CN" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
-        {children}
-        <AppToaster />
-        <AdSenseScript />
-        <CookieConsent />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          {children}
+          <AppToaster />
+          <AdSenseScript />
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+        </ThemeProvider>
       </body>
     </html>
   )

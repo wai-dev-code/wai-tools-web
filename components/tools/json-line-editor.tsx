@@ -1,7 +1,9 @@
 "use client"
 
-import { useRef, useEffect, useMemo } from "react"
+import { useRef, useEffect, useMemo, useCallback } from "react"
 import { cn } from "@/lib/utils"
+import type { LineHighlight } from "@/lib/json-utils"
+import { highlightJsonLine } from "@/components/tools/json-syntax"
 
 interface JsonLineEditorProps {
   value: string
@@ -10,6 +12,11 @@ interface JsonLineEditorProps {
   readOnly?: boolean
   placeholder?: string
   className?: string
+  highlights?: LineHighlight[]
+  errorLine?: number
+  scrollToLine?: number
+  wordWrap?: boolean
+  syntaxHighlight?: boolean
 }
 
 const LINE_HEIGHT = 21
@@ -21,31 +28,64 @@ export function JsonLineEditor({
   readOnly = false,
   placeholder,
   className,
+  highlights = [],
+  errorLine,
+  scrollToLine,
+  wordWrap = false,
+  syntaxHighlight = false,
 }: JsonLineEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const gutterRef = useRef<HTMLDivElement>(null)
+  const highlightRef = useRef<HTMLPreElement>(null)
+
+  const lines = useMemo(() => value.split("\n"), [value])
 
   const lineCount = useMemo(() => {
     if (!value) return 1
-    return value.split("\n").length
-  }, [value])
+    return lines.length
+  }, [value, lines.length])
 
   const lineNumbers = useMemo(
     () => Array.from({ length: lineCount }, (_, i) => i + 1),
     [lineCount]
   )
 
-  useEffect(() => {
+  const highlightsByLine = useMemo(() => {
+    const map = new Map<number, LineHighlight[]>()
+    for (const h of highlights) {
+      const list = map.get(h.line) ?? []
+      list.push(h)
+      map.set(h.line, list)
+    }
+    return map
+  }, [highlights])
+
+  const syncScroll = useCallback(() => {
     const ta = textareaRef.current
     const gutter = gutterRef.current
-    if (!ta || !gutter || !showLineNumbers) return
-
-    const syncScroll = () => {
-      gutter.scrollTop = ta.scrollTop
+    const highlight = highlightRef.current
+    if (!ta) return
+    if (gutter) gutter.scrollTop = ta.scrollTop
+    if (highlight) {
+      highlight.scrollTop = ta.scrollTop
+      highlight.scrollLeft = ta.scrollLeft
     }
+  }, [])
+
+  useEffect(() => {
+    const ta = textareaRef.current
+    if (!ta) return
     ta.addEventListener("scroll", syncScroll)
     return () => ta.removeEventListener("scroll", syncScroll)
-  }, [showLineNumbers])
+  }, [syncScroll])
+
+  useEffect(() => {
+    if (!scrollToLine) return
+    const ta = textareaRef.current
+    if (!ta) return
+    ta.scrollTop = Math.max(0, (scrollToLine - 3) * LINE_HEIGHT)
+    syncScroll()
+  }, [scrollToLine, syncScroll])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab") {
@@ -61,6 +101,49 @@ export function JsonLineEditor({
     }
   }
 
+  const renderHighlightedLine = (lineText: string, lineNumber: number) => {
+    const lineHighlights = highlightsByLine.get(lineNumber)
+    if (!lineHighlights?.length) {
+      if (syntaxHighlight) return highlightJsonLine(lineText)
+      return lineText || "\u00a0"
+    }
+
+    const sorted = [...lineHighlights].sort((a, b) => a.startCol - b.startCol)
+    const parts: React.ReactNode[] = []
+    let cursor = 0
+
+    for (const h of sorted) {
+      const start = Math.max(0, h.startCol - 1)
+      const end = Math.max(start, h.endCol - 1)
+      if (start > cursor) {
+        const chunk = lineText.slice(cursor, start)
+        parts.push(syntaxHighlight ? highlightJsonLine(chunk) : chunk)
+      }
+      parts.push(
+        <mark
+          key={`${lineNumber}-${start}-${h.kind}`}
+          className={cn(
+            "rounded-sm px-0",
+            h.kind === "search" && "bg-yellow-400/35 text-foreground",
+            h.kind === "error" && "bg-destructive/40 text-destructive-foreground underline decoration-destructive"
+          )}
+        >
+          {lineText.slice(start, end) || "\u00a0"}
+        </mark>
+      )
+      cursor = end
+    }
+
+    if (cursor < lineText.length) {
+      const chunk = lineText.slice(cursor)
+      parts.push(syntaxHighlight ? highlightJsonLine(chunk) : chunk)
+    }
+
+    return parts.length ? parts : "\u00a0"
+  }
+
+  const wrapClass = wordWrap ? "whitespace-pre-wrap break-all" : "whitespace-pre"
+
   return (
     <div
       className={cn(
@@ -75,27 +158,55 @@ export function JsonLineEditor({
           aria-hidden
         >
           {lineNumbers.map((n) => (
-            <div key={n} style={{ height: LINE_HEIGHT, lineHeight: `${LINE_HEIGHT}px` }}>
+            <div
+              key={n}
+              className={cn(
+                errorLine === n && "bg-destructive/15 font-semibold text-destructive"
+              )}
+              style={{ height: LINE_HEIGHT, lineHeight: `${LINE_HEIGHT}px` }}
+            >
               {n}
             </div>
           ))}
         </div>
       )}
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onKeyDown={handleKeyDown}
-        readOnly={readOnly}
-        placeholder={placeholder}
-        spellCheck={false}
-        className={cn(
-          "min-h-0 flex-1 resize-none overflow-y-auto bg-transparent px-3 py-3 font-mono text-sm text-foreground outline-none",
-          "placeholder:text-muted-foreground/60",
-          readOnly && "cursor-default"
-        )}
-        style={{ lineHeight: `${LINE_HEIGHT}px`, tabSize: 2 }}
-      />
+
+      <div className="relative min-h-0 min-w-0 flex-1">
+        <pre
+          ref={highlightRef}
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-0 overflow-hidden px-3 py-3 font-mono text-sm",
+            wrapClass
+          )}
+          style={{ lineHeight: `${LINE_HEIGHT}px`, tabSize: 2 }}
+        >
+          {lines.map((line, i) => (
+            <div key={i} style={{ minHeight: LINE_HEIGHT, lineHeight: `${LINE_HEIGHT}px` }}>
+              {renderHighlightedLine(line, i + 1)}
+            </div>
+          ))}
+        </pre>
+
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onScroll={syncScroll}
+          readOnly={readOnly}
+          placeholder={placeholder}
+          spellCheck={false}
+          className={cn(
+            "absolute inset-0 resize-none overflow-auto bg-transparent px-3 py-3 font-mono text-sm outline-none",
+            wrapClass,
+            "text-transparent caret-foreground selection:bg-primary/25",
+            "placeholder:text-muted-foreground/60",
+            readOnly && "cursor-default"
+          )}
+          style={{ lineHeight: `${LINE_HEIGHT}px`, tabSize: 2 }}
+        />
+      </div>
     </div>
   )
 }

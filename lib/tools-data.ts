@@ -22,7 +22,6 @@ export interface ToolDefinition {
   icon: LucideIcon
   category: ToolCategory
   keywords: string[]
-  featured?: boolean
 }
 
 export const categoryLabels: Record<ToolCategory, string> = {
@@ -41,7 +40,6 @@ export const tools: ToolDefinition[] = [
     icon: Braces,
     category: "json",
     keywords: ["json", "格式化", "format", "validate", "压缩", "minify"],
-    featured: true,
   },
   {
     slug: "base64",
@@ -51,7 +49,6 @@ export const tools: ToolDefinition[] = [
     icon: FileCode2,
     category: "encoding",
     keywords: ["base64", "编码", "解码", "encode", "decode"],
-    featured: true,
   },
   {
     slug: "timestamp",
@@ -61,7 +58,6 @@ export const tools: ToolDefinition[] = [
     icon: Clock,
     category: "dev",
     keywords: ["timestamp", "时间戳", "unix", "日期", "epoch"],
-    featured: true,
   },
   {
     slug: "uuid-generator",
@@ -71,7 +67,6 @@ export const tools: ToolDefinition[] = [
     icon: Fingerprint,
     category: "dev",
     keywords: ["uuid", "guid", "唯一标识", "生成器"],
-    featured: true,
   },
   {
     slug: "regex-tester",
@@ -81,7 +76,6 @@ export const tools: ToolDefinition[] = [
     icon: FileSearch,
     category: "dev",
     keywords: ["regex", "正则", "regexp", "匹配", "pattern"],
-    featured: true,
   },
   {
     slug: "jwt-decoder",
@@ -91,16 +85,11 @@ export const tools: ToolDefinition[] = [
     icon: KeyRound,
     category: "api",
     keywords: ["jwt", "token", "解码", "decode", "bearer"],
-    featured: true,
   },
 ]
 
 export function getToolBySlug(slug: string): ToolDefinition | undefined {
   return tools.find((t) => t.slug === slug)
-}
-
-export function getFeaturedTools(): ToolDefinition[] {
-  return tools.filter((t) => t.featured)
 }
 
 export function searchTools(query: string): ToolDefinition[] {

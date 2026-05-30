@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { ToolSidebar } from "@/components/tool-sidebar"
 import { JsonLd } from "@/components/json-ld"
 import { AdSlot } from "@/components/ad-slot"
+import { ToolContentShell } from "@/components/tool-content-shell"
 import {
   categoryLabels,
   getToolBySlug,
@@ -77,7 +78,9 @@ export function ToolLayout({ tool, children, instructions, faq }: ToolLayoutProp
             <p className="text-muted-foreground">{tool.description}</p>
           </div>
 
-          <div className="mb-6 overflow-visible rounded-xl border border-border bg-card/50 p-4 sm:p-6">{children}</div>
+          <ToolContentShell>
+            <div className="mb-6 rounded-xl border border-border bg-card/50 p-4 sm:p-6">{children}</div>
+          </ToolContentShell>
 
           <AdSlot name="toolBottom" />
 

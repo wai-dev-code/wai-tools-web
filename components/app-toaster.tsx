@@ -15,7 +15,7 @@ export function AppToaster() {
       toastOptions={{
         classNames: {
           toast:
-            "border border-border bg-popover text-popover-foreground shadow-lg w-auto max-w-[min(90vw,420px)]",
+            "border border-border bg-popover text-popover-foreground shadow-lg pointer-events-auto",
         },
       }}
     />

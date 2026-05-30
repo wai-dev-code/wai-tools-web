@@ -1,6 +1,11 @@
-/** UTF-8 文本 → 标准 Base64 */
+/** UTF-8 文本 → 标准 Base64（不依赖已废弃的 unescape/escape） */
 export function encodeBase64(text: string): string {
-  return btoa(unescape(encodeURIComponent(text)))
+  const bytes = new TextEncoder().encode(text)
+  let binary = ""
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i])
+  }
+  return btoa(binary)
 }
 
 /** 标准 Base64 → UTF-8 文本 */
@@ -8,7 +13,9 @@ export function decodeBase64(base64: string): string {
   let cleaned = cleanBase64(base64)
   const pad = cleaned.length % 4
   if (pad) cleaned += "=".repeat(4 - pad)
-  return decodeURIComponent(escape(atob(cleaned)))
+  const binary = atob(cleaned)
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0))
+  return new TextDecoder().decode(bytes)
 }
 
 /** URL 安全 Base64 编码 */
@@ -21,7 +28,7 @@ export function decodeBase64Url(base64: string): string {
   let s = cleanBase64(base64).replace(/-/g, "+").replace(/_/g, "/")
   const pad = s.length % 4
   if (pad) s += "=".repeat(4 - pad)
-  return decodeURIComponent(escape(atob(s)))
+  return decodeBase64(s)
 }
 
 /** 去除 Base64 中的空白与换行 */
@@ -64,7 +71,10 @@ export function hexToBase64(hex: string): string {
     throw new Error("无效的 Hex 字符串")
   }
   const bytes = cleaned.match(/.{2}/g)!.map((b) => parseInt(b, 16))
-  const binary = String.fromCharCode(...bytes)
+  let binary = ""
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte)
+  }
   return btoa(binary)
 }
 

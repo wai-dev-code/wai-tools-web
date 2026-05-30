@@ -3,6 +3,8 @@
 import { useState, useMemo } from "react"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { ToolExampleMenu } from "@/components/tool-example-menu"
+import { jwtDecoderExamples, type JwtDecoderExample } from "@/lib/tool-examples"
 
 function decodeBase64Url(str: string): string {
   let base64 = str.replace(/-/g, "+").replace(/_/g, "/")
@@ -24,9 +26,11 @@ function parseJwtPart(part: string): { json: string; error: string | null } {
 }
 
 export function JwtDecoderTool() {
-  const [token, setToken] = useState(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-  )
+  const [token, setToken] = useState("")
+
+  const applyExample = (example: JwtDecoderExample) => {
+    setToken(example.token)
+  }
 
   const decoded = useMemo(() => {
     const parts = token.trim().split(".")
@@ -48,17 +52,18 @@ export function JwtDecoderTool() {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
+      <div className="flex items-center justify-between gap-2">
         <Label htmlFor="jwt">JWT Token</Label>
-        <Textarea
-          id="jwt"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          className="min-h-[100px] font-mono text-sm break-all"
-          placeholder="粘贴 JWT..."
-        />
+        <ToolExampleMenu examples={jwtDecoderExamples} onApply={applyExample} />
       </div>
-      {decoded.error && (
+      <Textarea
+        id="jwt"
+        value={token}
+        onChange={(e) => setToken(e.target.value)}
+        className="min-h-[100px] font-mono text-sm break-all"
+        placeholder="粘贴 JWT..."
+      />
+      {decoded.error && token.trim() && (
         <p className="text-sm text-destructive">{decoded.error}</p>
       )}
       {decoded.header && (
@@ -78,9 +83,6 @@ export function JwtDecoderTool() {
           <Label>Signature（未验证）</Label>
           <p className="rounded-md border border-border bg-secondary/50 p-3 font-mono text-xs break-all text-muted-foreground">
             {decoded.signature}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            本工具仅解码 JWT 内容，不验证签名。请勿在生产环境依赖未经验证的 Token。
           </p>
         </div>
       )}

@@ -1,3 +1,5 @@
+import { isLikelyYaml, yamlToJson } from "@/lib/json-yaml"
+
 function escapeXml(str: string): string {
   return str
     .replace(/&/g, "&amp;")
@@ -148,23 +150,27 @@ export function isLikelyXml(text: string): boolean {
   return t.startsWith("<") && (t.includes("</") || t.endsWith("/>") || t.startsWith("<?xml"))
 }
 
-/** 递归按 key 字母序排序对象字段 */
-export function sortJsonKeys(value: unknown): unknown {
+/** 递归按 key 排序对象字段 */
+export function sortJsonKeys(value: unknown, order: "asc" | "desc" = "asc"): unknown {
   if (Array.isArray(value)) {
-    return value.map(sortJsonKeys)
+    return value.map((item) => sortJsonKeys(item, order))
   }
   if (value !== null && typeof value === "object") {
-    return Object.keys(value as Record<string, unknown>)
-      .sort((a, b) => a.localeCompare(b))
-      .reduce<Record<string, unknown>>((acc, key) => {
-        acc[key] = sortJsonKeys((value as Record<string, unknown>)[key])
-        return acc
-      }, {})
+    const keys = Object.keys(value as Record<string, unknown>).sort((a, b) =>
+      order === "asc" ? a.localeCompare(b) : b.localeCompare(a)
+    )
+    return keys.reduce<Record<string, unknown>>((acc, key) => {
+      acc[key] = sortJsonKeys((value as Record<string, unknown>)[key], order)
+      return acc
+    }, {})
   }
   return value
 }
 
-export function parseInputToJson(text: string, type: "json" | "xml"): unknown {
+export function parseInputToJson(text: string, type: "json" | "xml" | "yaml"): unknown {
+  if (type === "yaml" || isLikelyYaml(text)) {
+    return yamlToJson(text)
+  }
   if (type === "xml" || isLikelyXml(text)) {
     return xmlToJson(text)
   }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { cn } from "@/lib/utils"
 import {
   adsenseConfig,
@@ -8,7 +8,6 @@ import {
   isAdsenseConfigured,
   type AdSlotName,
 } from "@/lib/adsense"
-import { CONSENT_EVENT, hasAdConsent } from "@/lib/consent"
 
 interface AdSlotProps {
   name: AdSlotName
@@ -19,17 +18,9 @@ interface AdSlotProps {
 export function AdSlot({ name, className, label = "广告" }: AdSlotProps) {
   const slotId = getAdSlot(name)
   const pushed = useRef(false)
-  const [consented, setConsented] = useState(false)
 
   useEffect(() => {
-    const sync = () => setConsented(hasAdConsent())
-    sync()
-    window.addEventListener(CONSENT_EVENT, sync)
-    return () => window.removeEventListener(CONSENT_EVENT, sync)
-  }, [])
-
-  useEffect(() => {
-    if (!consented || !isAdsenseConfigured() || !slotId || pushed.current) return
+    if (!isAdsenseConfigured() || !slotId || pushed.current) return
 
     const timer = setTimeout(() => {
       try {
@@ -41,26 +32,11 @@ export function AdSlot({ name, className, label = "广告" }: AdSlotProps) {
     }, 100)
 
     return () => clearTimeout(timer)
-  }, [consented, slotId])
+  }, [slotId])
 
   if (!isAdsenseConfigured() || !slotId) {
-    if (process.env.NODE_ENV === "development") {
-      return (
-        <div
-          className={cn(
-            "flex min-h-[90px] items-center justify-center rounded-lg border border-dashed border-border bg-muted/30 px-4 text-center text-xs text-muted-foreground",
-            className
-          )}
-          aria-hidden
-        >
-          广告位 · {name}（配置 NEXT_PUBLIC_ADSENSE_* 后启用）
-        </div>
-      )
-    }
     return null
   }
-
-  if (!consented) return null
 
   return (
     <aside className={cn("my-6", className)} aria-label={label}>

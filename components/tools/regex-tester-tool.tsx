@@ -5,13 +5,24 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
+import { ToolExampleMenu } from "@/components/tool-example-menu"
+import { regexTesterExamples, type RegexTesterExample } from "@/lib/tool-examples"
 
 export function RegexTesterTool() {
-  const [pattern, setPattern] = useState("\\d+")
+  const [pattern, setPattern] = useState("")
   const [flags, setFlags] = useState({ g: true, i: false, m: false })
-  const [text, setText] = useState("Order 123, price 45.67, id 9999")
+  const [text, setText] = useState("")
+
+  const applyExample = (example: RegexTesterExample) => {
+    setPattern(example.pattern)
+    setFlags(example.flags)
+    setText(example.text)
+  }
 
   const result = useMemo(() => {
+    if (!pattern.trim()) {
+      return { error: null as string | null, matches: [] as RegExpMatchArray[], regex: null }
+    }
     const flagStr = (flags.g ? "g" : "") + (flags.i ? "i" : "") + (flags.m ? "m" : "")
     try {
       const regex = new RegExp(pattern, flagStr)
@@ -24,6 +35,10 @@ export function RegexTesterTool() {
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <ToolExampleMenu examples={regexTesterExamples} onApply={applyExample} />
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="pattern">正则表达式</Label>
@@ -58,27 +73,30 @@ export function RegexTesterTool() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="min-h-[120px] font-mono text-sm"
+          placeholder="输入待匹配的文本..."
         />
       </div>
 
-      {result.error ? (
+      {result.error && (
         <p className="text-sm text-destructive">{result.error}</p>
-      ) : (
-        <div className="rounded-lg border border-border bg-card/50 p-4">
-          <p className="mb-2 text-sm font-medium text-foreground">
-            匹配 {result.matches.length} 处
-          </p>
-          {result.matches.length > 0 ? (
-            <ul className="space-y-1 font-mono text-sm text-muted-foreground">
+      )}
+
+      {!result.error && pattern.trim() && (
+        <div className="space-y-2">
+          <Label>匹配结果 ({result.matches.length})</Label>
+          {result.matches.length === 0 ? (
+            <p className="text-sm text-muted-foreground">无匹配</p>
+          ) : (
+            <ul className="space-y-1 rounded-md border border-border bg-secondary/30 p-3 font-mono text-sm">
               {result.matches.map((m, i) => (
                 <li key={i}>
-                  [{m.index}] &quot;{m[0]}&quot;
-                  {m.length > 1 && ` → 分组: ${m.slice(1).map((g) => `"${g}"`).join(", ")}`}
+                  <span className="text-primary">{m[0]}</span>
+                  {m.index !== undefined && (
+                    <span className="ml-2 text-xs text-muted-foreground">@ {m.index}</span>
+                  )}
                 </li>
               ))}
             </ul>
-          ) : (
-            <p className="text-sm text-muted-foreground">无匹配结果</p>
           )}
         </div>
       )}

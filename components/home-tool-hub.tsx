@@ -6,7 +6,6 @@ import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   categoryLabels,
-  getFeaturedTools,
   searchTools,
   tools,
   type ToolCategory,
@@ -27,8 +26,6 @@ export function HomeToolHub() {
     }
     return result
   }, [query, activeCategory])
-
-  const featured = getFeaturedTools()
 
   return (
     <section className="px-4 pt-24 pb-12 lg:px-6">
@@ -71,26 +68,6 @@ export function HomeToolHub() {
             </button>
           ))}
         </div>
-
-        {!query && activeCategory === "all" && (
-          <div className="mb-8">
-            <p className="mb-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              快捷入口
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {featured.map((tool) => (
-                <Link
-                  key={tool.slug}
-                  href={`/tools/${tool.slug}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition-colors hover:border-primary/50 hover:bg-primary/5"
-                >
-                  <tool.icon className="h-4 w-4 text-primary" />
-                  {tool.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((tool) => (
