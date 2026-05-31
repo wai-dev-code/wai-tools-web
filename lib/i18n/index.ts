@@ -84,14 +84,14 @@ export function createPageMetadata(
   const alternates = buildLanguageAlternates(path)
 
   return {
-    title: `${title} | ${siteConfig.name}`,
+    title,
     description,
     keywords,
     alternates: alternates
       ? { ...alternates, canonical: `${siteConfig.url}${canonicalPath}` }
       : { canonical: `${siteConfig.url}${canonicalPath}` },
     openGraph: {
-      title,
+      title: `${title} | ${siteConfig.name}`,
       description,
       url: `${siteConfig.url}${canonicalPath}`,
       type: "website",

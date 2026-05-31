@@ -54,6 +54,8 @@ export interface Messages {
     notFoundMessage: string
     notFoundHome: string
     notFoundBrowseTools: string
+    adLabel: string
+    adDisclaimer: string
   }
   workspace: {
     sidebarExpand: string

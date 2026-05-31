@@ -3,7 +3,7 @@ import { getToolBySlug, siteConfig } from "@/lib/tools-data"
 
 export function generateToolMetadata(slug: string): Metadata {
   const tool = getToolBySlug(slug)
-  if (!tool) return { title: "工具未找到" }
+  if (!tool) return { title: "Not Found" }
 
   const url = `${siteConfig.url}/tools/${slug}`
   return {

@@ -6,7 +6,10 @@ export function localizeToolError(message: string, locale: Locale): string {
   const e = getMessages(locale).errors
   const map: Record<string, string> = {
     "源数据为空": e.emptySource,
+    "YAML 内容为空": e.emptyContent,
+    "XML 内容为空": e.emptyContent,
     "内容为空": e.emptyContent,
+    "无法解析转义内容，请检查格式（需为带双引号的转义字符串）": e.invalidEscapeString,
     "没有可还原的内容": e.nothingToUnescape,
     "没有可下载的内容": e.nothingToDownload,
     "内容超过 5MB 上限": e.oversized,

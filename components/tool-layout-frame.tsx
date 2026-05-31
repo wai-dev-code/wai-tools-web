@@ -136,7 +136,7 @@ function ToolLayoutBody({
 
           {!immersive && (
             <>
-              <AdSlot name="toolBottom" />
+              <AdSlot name="toolBottom" disclaimer={m.common.adDisclaimer} />
 
               <section className="mb-10 rounded-xl border border-border bg-card/50 p-6">
                 <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.instructions}</h2>
@@ -166,6 +166,7 @@ function ToolLayoutBody({
           <AdSlot
             name="toolBottom"
             compact
+            disclaimer={m.common.adDisclaimer}
             className="shrink-0 border-t border-border bg-background px-3"
           />
         )}

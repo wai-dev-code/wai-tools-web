@@ -84,6 +84,7 @@ export interface StaticPageMessages {
     pathArrayHint: string
     pathExpectObject: string
     invalidJsonPathExpr: string
+    invalidEscapeString: string
   }
 }
 
@@ -315,6 +316,7 @@ export const staticZh: StaticPageMessages = {
     pathArrayHint: "当前是数组，请用 [0].{token} 等形式访问（如 [0].{token}）",
     pathExpectObject: "路径无法解析：期望对象",
     invalidJsonPathExpr: "无效 JSONPath: {expr}",
+    invalidEscapeString: "无法解析转义内容，请检查格式（需为带双引号的转义字符串）",
   },
 }
 
@@ -546,6 +548,7 @@ export const staticEn: StaticPageMessages = {
     pathArrayHint: "Current value is an array; use [0].{token} (e.g. [0].{token})",
     pathExpectObject: "Cannot resolve path: expected object",
     invalidJsonPathExpr: "Invalid JSONPath: {expr}",
+    invalidEscapeString: "Cannot parse escaped content — use a double-quoted escaped string",
   },
 }
 
@@ -774,5 +777,6 @@ export const staticJa: StaticPageMessages = {
     pathArrayHint: "現在は配列です。[0].{token} 形式を使用（例: [0].{token}）",
     pathExpectObject: "パスを解決できません: オブジェクトが必要",
     invalidJsonPathExpr: "無効 JSONPath: {expr}",
+    invalidEscapeString: "エスケープ内容を解析できません — 二重引用符で囲んだ文字列を使用してください",
   },
 }

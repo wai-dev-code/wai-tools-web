@@ -30,7 +30,7 @@ const benefits = [
   },
   {
     title: "完全免费",
-    description: "所有工具永久免费使用，无隐藏费用",
+    description: "所有工具免费使用，无隐藏费用",
     icon: Gift,
   },
   {

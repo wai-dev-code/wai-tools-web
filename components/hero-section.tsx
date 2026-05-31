@@ -75,7 +75,7 @@ export function HeroSection() {
         <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-3">
           {[
             { value: String(visibleToolCount), label: "在线工具" },
-            { value: "100%", label: "浏览器内运行" },
+            { value: "本地", label: "浏览器内处理" },
             { value: "0", label: "需要注册" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">

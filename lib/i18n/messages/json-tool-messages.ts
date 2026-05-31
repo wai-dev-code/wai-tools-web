@@ -77,6 +77,13 @@ export interface JsonToolMessages {
   }
   jsonPathHint: string
   jsonPathPlaceholder: string
+  jsonPathLabel: string
+  statObjects: string
+  statArrays: string
+  statKeys: string
+  statOriginal: string
+  statMinified: string
+  statSaved: string
   examples: Record<string, { label: string; description: string }>
 }
 
@@ -159,6 +166,13 @@ export const jsonToolZh: JsonToolMessages = {
   },
   jsonPathHint: "已内置 $. 前缀，直接输入 user.name 或 [0].name",
   jsonPathPlaceholder: "user.name 或 features[0]",
+  jsonPathLabel: "JSONPath",
+  statObjects: "对象",
+  statArrays: "数组",
+  statKeys: "键",
+  statOriginal: "原始",
+  statMinified: "压缩后",
+  statSaved: "节省",
   examples: {
     basic: { label: "基础 JSON", description: "嵌套对象与数组" },
     "array-root": { label: "数组根节点", description: "顶层为数组，路径如 [0].name" },
@@ -248,10 +262,17 @@ export const jsonToolEn: JsonToolMessages = {
   },
   jsonPathHint: "$. prefix is built-in — type user.name or [0].name",
   jsonPathPlaceholder: "user.name or features[0]",
+  jsonPathLabel: "JSONPath",
+  statObjects: "Objects",
+  statArrays: "Arrays",
+  statKeys: "Keys",
+  statOriginal: "Original",
+  statMinified: "Minified",
+  statSaved: "Saved",
   examples: {
     basic: { label: "Basic JSON", description: "Nested objects and arrays" },
     "array-root": { label: "Array root", description: "Top-level array, paths like [0].name" },
-    invalid: { label: "Invalid JSON", description: "Demo error line highlighting" },
+    invalid: { label: "Invalid JSON", description: "Shows error line highlighting" },
     yaml: { label: "YAML sample", description: "YAML to JSON" },
     xml: { label: "XML sample", description: "XML to JSON" },
     escape: { label: "Escape sample", description: "JSON with quotes and newlines" },
@@ -337,6 +358,13 @@ export const jsonToolJa: JsonToolMessages = {
   },
   jsonPathHint: "$. は組み込み — user.name や [0].name を入力",
   jsonPathPlaceholder: "user.name または features[0]",
+  jsonPathLabel: "JSONPath",
+  statObjects: "オブジェクト",
+  statArrays: "配列",
+  statKeys: "キー",
+  statOriginal: "元サイズ",
+  statMinified: "圧縮後",
+  statSaved: "削減",
   examples: {
     basic: { label: "基本 JSON", description: "ネストしたオブジェクトと配列" },
     "array-root": { label: "配列ルート", description: "トップが配列、[0].name など" },

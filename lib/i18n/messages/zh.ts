@@ -17,7 +17,7 @@ const zh: Messages = {
     blog: "博客",
     about: "关于",
     openTools: "打开工具",
-    footerTagline: "WaiHub — 面向开发者的免费在线工具中心，浏览器内运行，数据不上传。",
+    footerTagline: "WaiHub — 面向开发者的免费在线工具中心，浏览器内运行，数据处理在本地完成。",
     footerTools: "工具",
     footerResources: "资源",
     footerLegal: "法律",
@@ -36,6 +36,8 @@ const zh: Messages = {
     notFoundMessage: "页面不存在",
     notFoundHome: "返回首页",
     notFoundBrowseTools: "浏览工具",
+    adLabel: "广告",
+    adDisclaimer: "广告由第三方提供。您输入的数据不会发送给广告主。",
   },
   workspace: {
     sidebarExpand: "展开侧边栏",
@@ -68,7 +70,7 @@ const zh: Messages = {
     faqTitle: "常见问题",
     faqs: [
       { q: "WaiHub 的工具是否免费？", a: "是的，所有工具完全免费，无需注册，无隐藏费用。" },
-      { q: "我的数据是否安全？", a: "绝对安全。工具在浏览器内运行，您输入的数据不会上传到服务器。" },
+      { q: "我的数据是否安全？", a: "工具在您的浏览器内运行，输入内容通常不会上传至我们的服务器。请勿在不可信网站粘贴生产环境的密钥或 Token。" },
       { q: "支持哪些浏览器？", a: "支持 Chrome、Firefox、Safari、Edge 等现代浏览器的最新版本。" },
       { q: "如何反馈问题或建议新工具？", a: "请通过联系我们页面或发送邮件，我们会尽快回复。" },
     ],

@@ -36,6 +36,8 @@ const en: Messages = {
     notFoundMessage: "Page not found",
     notFoundHome: "Back to home",
     notFoundBrowseTools: "Browse tools",
+    adLabel: "Advertisement",
+    adDisclaimer: "Ads are served by third parties. Data you enter in the tool is not shared with advertisers.",
   },
   workspace: {
     sidebarExpand: "Expand sidebar",
@@ -68,7 +70,7 @@ const en: Messages = {
     faqTitle: "FAQ",
     faqs: [
       { q: "Are WaiHub tools free?", a: "Yes. All tools are free with no signup and no hidden fees." },
-      { q: "Is my data safe?", a: "Yes. Tools run in your browser. Your input is not uploaded to our servers." },
+      { q: "Is my data safe?", a: "Tools run in your browser — input is typically not uploaded to our servers. Do not paste production secrets or tokens into untrusted sites." },
       { q: "Which browsers are supported?", a: "Latest versions of Chrome, Firefox, Safari, and Edge." },
       { q: "How can I send feedback?", a: "Use the contact page or email us — we reply as soon as we can." },
     ],

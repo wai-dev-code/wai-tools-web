@@ -634,16 +634,16 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           {inputAnalysis.nodeStats ? (
             <>
-              <StatItem label="Objects" value={String(inputAnalysis.nodeStats.objects)} />
-              <StatItem label="Arrays" value={String(inputAnalysis.nodeStats.arrays)} />
-              <StatItem label="Keys" value={String(inputAnalysis.nodeStats.keys)} />
+              <StatItem label={ui.statObjects} value={String(inputAnalysis.nodeStats.objects)} />
+              <StatItem label={ui.statArrays} value={String(inputAnalysis.nodeStats.arrays)} />
+              <StatItem label={ui.statKeys} value={String(inputAnalysis.nodeStats.keys)} />
               <span className="hidden text-border sm:inline">|</span>
             </>
           ) : null}
-          <StatItem label="Original" value={inputAnalysis.sizeStats.originalLabel} />
-          <StatItem label="Minified" value={inputAnalysis.sizeStats.minifiedLabel} />
+          <StatItem label={ui.statOriginal} value={inputAnalysis.sizeStats.originalLabel} />
+          <StatItem label={ui.statMinified} value={inputAnalysis.sizeStats.minifiedLabel} />
           {inputAnalysis.sizeStats.savedPercent !== null && (
-            <StatItem label="Saved" value={`${inputAnalysis.sizeStats.savedPercent}%`} highlight={inputAnalysis.sizeStats.savedPercent > 0} />
+            <StatItem label={ui.statSaved} value={`${inputAnalysis.sizeStats.savedPercent}%`} highlight={inputAnalysis.sizeStats.savedPercent > 0} />
           )}
           {isOversized && <span className="text-destructive">{ui.oversized}</span>}
         </div>
@@ -672,7 +672,7 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-2 space-y-2 rounded-md border border-border/60 bg-card/30 p-3">
           <JsonPathRow
-            label="JSONPath"
+            label={ui.jsonPathLabel}
             hint={ui.jsonPathHint}
             placeholder={ui.jsonPathPlaceholder}
             value={jsonPathQuery}
