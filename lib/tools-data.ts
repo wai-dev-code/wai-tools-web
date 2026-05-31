@@ -1,3 +1,4 @@
+import { resolveSiteUrl } from "@/lib/site-url"
 import {
   Braces,
   FileCode2,
@@ -129,13 +130,7 @@ export const siteConfig = {
   title: "WaiHub - Developer Tools Online",
   description:
     "Free JSON formatter, Base64, URL encoder, JWT decoder, UUID generator, and timestamp converter. Runs in your browser — no signup required.",
-  url: (() => {
-    const configured = process.env.NEXT_PUBLIC_SITE_URL ?? "https://waihub.dev"
-    if (process.env.NODE_ENV === "production" && /localhost|127\.0\.0\.1/i.test(configured)) {
-      return "https://waihub.dev"
-    }
-    return configured
-  })(),
+  url: resolveSiteUrl(),
   contactEmail: "w8732787@gmail.com",
   /** 文章、隐私政策、服务条款等内容的统一更新日期（ISO） */
   contentUpdatedAt: "2026-04-20",

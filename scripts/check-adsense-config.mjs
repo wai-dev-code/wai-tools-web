@@ -8,6 +8,7 @@ import { resolve, dirname } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..")
+const PRODUCTION_SITE_URL = "https://waihub.net"
 
 function readEnvLocal() {
   const path = resolve(root, ".env.local")
@@ -81,7 +82,13 @@ if (ok) {
 } else {
   lines.push("ℹ️  发布商 ID + ads.txt 就绪后，AdSense 脚本可加载；广告单元 ID 齐后才会显示广告。")
   lines.push("   生产环境请在 Vercel → Settings → Environment Variables 同步配置。")
-  lines.push("   部署后访问 https://waihub.dev/ads.txt 确认与仓库一致。")
+  lines.push(`   部署后访问 ${PRODUCTION_SITE_URL}/ads.txt 确认与仓库一致。`)
+  const siteUrl = env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "")
+  if (siteUrl && siteUrl !== PRODUCTION_SITE_URL) {
+    lines.push(`⚠️  NEXT_PUBLIC_SITE_URL=${siteUrl}，建议与正式域名 ${PRODUCTION_SITE_URL} 一致`)
+  } else if (siteUrl) {
+    lines.push(`✅ SITE_URL: ${siteUrl}`)
+  }
 }
 
 console.log(lines.join("\n"))
