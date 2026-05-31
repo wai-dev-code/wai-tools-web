@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/i18n/config"
 
-export function formatBlogDate(iso: string, locale: Locale = "zh"): string {
+export function formatBlogDate(iso: string, locale: Locale = "en"): string {
   const [y, m, d] = iso.split("-").map(Number)
   if (!y || !m || !d) return iso
   if (locale === "en") {

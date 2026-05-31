@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     type: 'website',
-    locale: 'zh_CN',
+    locale: 'en_US',
     siteName: siteConfig.name,
   },
   robots: {

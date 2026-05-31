@@ -1,10 +1,10 @@
 import { AboutPageContent } from "@/components/pages/about-page-content"
 import { createPageMetadata, getMessages } from "@/lib/i18n"
 
-const m = getMessages("zh")
+const m = getMessages("en")
 
-export const metadata = createPageMetadata("zh", "about", m.aboutPage.metaTitle, m.aboutPage.metaDescription)
+export const metadata = createPageMetadata("en", "about", m.aboutPage.metaTitle, m.aboutPage.metaDescription)
 
 export default function AboutPage() {
-  return <AboutPageContent locale="zh" />
+  return <AboutPageContent locale="en" />
 }

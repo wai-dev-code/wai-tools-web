@@ -21,7 +21,7 @@ export function getMessages(locale: Locale): Messages {
   return catalogs[locale]
 }
 
-/** 将路径转为带 locale 前缀的 href（zh 无前缀；privacy/terms 始终无前缀） */
+/** 将路径转为带 locale 前缀的 href（en 无前缀；privacy/terms 始终无前缀） */
 export function localizeHref(locale: Locale, path: string): string {
   const normalized = path.replace(/^\//, "")
   if (isEnglishOnlyPath(normalized)) {

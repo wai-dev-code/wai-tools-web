@@ -16,13 +16,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = getBlogPost(slug)
-  const m = getMessages("en").blogPage.posts[slug]
+  const m = getMessages("zh").blogPage.posts[slug]
   if (!post || !m) return { title: "Not found" }
-  return createPageMetadata("en", `blog/${slug}`, `${m.title} | ${siteConfig.name}`, m.description)
+  return createPageMetadata("zh", `blog/${slug}`, `${m.title} | ${siteConfig.name}`, m.description)
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function ZhBlogPostPage({ params }: Props) {
   const { slug } = await params
   if (!getBlogPost(slug)) notFound()
-  return <BlogArticleContent locale="en" slug={slug} />
+  return <BlogArticleContent locale="zh" slug={slug} />
 }

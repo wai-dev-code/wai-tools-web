@@ -102,8 +102,8 @@ export function getVisibleTools(): ToolDefinition[] {
 export function getSiteKeywords(): string[] {
   return [
     ...new Set([
-      "开发者工具",
-      "在线工具",
+      "developer tools",
+      "online tools",
       ...getVisibleTools().flatMap((t) => [t.name, ...t.keywords]),
     ]),
   ]
@@ -132,9 +132,9 @@ export function getToolsByCategory(category: ToolCategory): ToolDefinition[] {
 
 export const siteConfig = {
   name: "WaiHub",
-  title: "WaiHub - 开发者在线工具",
+  title: "WaiHub - Developer Tools Online",
   description:
-    "WaiHub（开发者工具中心）提供 JSON 格式化、Base64 编解码等免费开发者工具，浏览器内运行，无需注册。",
+    "Free JSON formatter and Base64 encoder/decoder. Runs in your browser — no signup required.",
   url: (() => {
     const configured = process.env.NEXT_PUBLIC_SITE_URL ?? "https://waihub.dev"
     if (process.env.NODE_ENV === "production" && /localhost|127\.0\.0\.1/i.test(configured)) {
