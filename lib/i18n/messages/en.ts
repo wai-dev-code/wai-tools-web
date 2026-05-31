@@ -1,6 +1,10 @@
 import type { Messages } from "@/lib/i18n/messages/types"
 import { jsonToolEn } from "@/lib/i18n/messages/json-tool-messages"
 import { base64ToolEn } from "@/lib/i18n/messages/base64-tool-messages"
+import { urlToolEn, urlEncoderPageEn } from "@/lib/i18n/messages/url-tool-messages"
+import { jwtToolEn, jwtDecoderPageEn } from "@/lib/i18n/messages/jwt-tool-messages"
+import { timestampToolEn, timestampPageEn } from "@/lib/i18n/messages/timestamp-tool-messages"
+import { uuidToolEn, uuidGeneratorPageEn } from "@/lib/i18n/messages/uuid-tool-messages"
 import { staticEn } from "@/lib/i18n/messages/static-pages"
 import { legalEn } from "@/lib/i18n/messages/legal-pages"
 import { seoEn } from "@/lib/i18n/messages/seo-pages"
@@ -52,10 +56,10 @@ const en: Messages = {
   home: {
     metaTitle: "WaiHub - Developer Tools Online",
     metaDescription:
-      "Free JSON formatter and Base64 encoder/decoder. Runs in your browser — no signup required.",
+      "Free JSON formatter, Base64, URL encoder, JWT decoder, UUID generator, and timestamp tools. Runs in your browser — no signup required.",
     title: "Developer tools, ready when you are",
-    subtitle: "JSON & Base64 — runs in your browser, no signup",
-    searchPlaceholder: "Search tools, e.g. JSON, Base64...",
+    subtitle: "JSON, encoding, JWT, UUID — runs in your browser, no signup",
+    searchPlaceholder: "Search tools, e.g. JSON, JWT, UUID...",
     categoryAll: "All",
     useNow: "Use now →",
     noResults: "No tools found. Try another keyword.",
@@ -80,6 +84,8 @@ const en: Messages = {
   categories: {
     json: "JSON Tools",
     encoding: "Encoding Tools",
+    dev: "Developer Utilities",
+    api: "API Tools",
   },
   tools: {
     jsonFormatter: {
@@ -91,6 +97,26 @@ const en: Messages = {
       name: "Base64 Tools",
       short: "Full Base64 developer toolkit",
       desc: "Encode/decode, file tools, format conversion, image preview — four modules in one",
+    },
+    urlEncoder: {
+      name: "URL Encoder/Decoder",
+      short: "URL encode, decode & query parse",
+      desc: "Encode/decode URLs and URIs, parse and build query strings",
+    },
+    jwtDecoder: {
+      name: "JWT Decoder",
+      short: "Decode JSON Web Tokens",
+      desc: "Decode JWT header and payload, show exp/iat status in your browser",
+    },
+    timestamp: {
+      name: "Timestamp Converter",
+      short: "Full Unix timestamp toolkit",
+      desc: "Convert Unix timestamps and dates — s/ms/μs/ns, UTC/local",
+    },
+    uuidGenerator: {
+      name: "UUID Generator",
+      short: "UUID v4 generate & export",
+      desc: "Batch UUID v4 with uppercase, no hyphens, braces — copy & download",
     },
   },
   jsonFormatterPage: {
@@ -119,9 +145,17 @@ const en: Messages = {
       { q: "How to preview Base64 images?", a: "Use the File module — paste or upload image Base64 for instant preview." },
     ],
   },
+  urlEncoderPage: urlEncoderPageEn,
+  jwtDecoderPage: jwtDecoderPageEn,
+  timestampPage: timestampPageEn,
+  uuidGeneratorPage: uuidGeneratorPageEn,
   seo: seoEn,
   jsonTool: jsonToolEn,
   base64Tool: base64ToolEn,
+  urlTool: urlToolEn,
+  jwtTool: jwtToolEn,
+  timestampTool: timestampToolEn,
+  uuidTool: uuidToolEn,
   aboutPage: staticEn.about,
   contactPage: staticEn.contact,
   blogPage: staticEn.blog,

@@ -1,10 +1,16 @@
 "use client"
 
 import Link from "next/link"
-import { Braces, FileCode2 } from "lucide-react"
-import { getVisibleTools, type ToolCategory } from "@/lib/tools-data"
+import { Braces, Clock, FileCode2, Fingerprint, KeyRound, Link2 } from "lucide-react"
+import { getVisibleTools } from "@/lib/tools-data"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
-import { getLocalizedToolText, getMessages, localizeHref } from "@/lib/i18n"
+import { getMessages, localizeHref } from "@/lib/i18n"
+import {
+  getToolCategoryLabel,
+  getToolLabel,
+  getToolShort,
+  toolNavCategories,
+} from "@/lib/tool-display"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,27 +23,10 @@ import {
 const toolIcons: Record<string, typeof Braces> = {
   "json-formatter": Braces,
   base64: FileCode2,
-}
-
-function getCategoryLabel(locale: Locale, cat: ToolCategory): string {
-  const m = getMessages(locale).categories
-  if (cat === "json") return m.json
-  if (cat === "encoding") return m.encoding
-  return cat
-}
-
-function getToolLabel(locale: Locale, slug: string, fallback: string): string {
-  if (slug === "json-formatter" || slug === "base64") {
-    return getLocalizedToolText(slug, locale).name
-  }
-  return fallback
-}
-
-function getToolShort(locale: Locale, slug: string, fallback: string): string {
-  if (slug === "json-formatter" || slug === "base64") {
-    return getLocalizedToolText(slug, locale).short
-  }
-  return fallback
+  "url-encoder": Link2,
+  timestamp: Clock,
+  "uuid-generator": Fingerprint,
+  "jwt-decoder": KeyRound,
 }
 
 const triggerClassName =
@@ -49,7 +38,7 @@ const mobileLinkClass =
 /** 桌面端：「工具」悬浮下拉 */
 export function HeaderToolsDropdown({ locale = defaultLocale }: { locale?: Locale }) {
   const m = getMessages(locale)
-  const categories = ["json", "encoding"] as ToolCategory[]
+  const categories = toolNavCategories
 
   return (
     <NavigationMenu viewport={false}>
@@ -73,7 +62,7 @@ export function HeaderToolsDropdown({ locale = defaultLocale }: { locale?: Local
               return (
                 <div key={cat} className="mt-2 first:mt-0">
                   <p className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-                    {getCategoryLabel(locale, cat)}
+                    {getToolCategoryLabel(locale, cat)}
                   </p>
                   <ul className="space-y-0.5">
                     {catTools.map((tool) => {

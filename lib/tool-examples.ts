@@ -37,6 +37,11 @@ export interface UuidGeneratorExample {
   count: number
 }
 
+export interface UrlEncoderExample {
+  input: string
+  mode: import("@/lib/url-utils").UrlEncodeMode
+}
+
 export const jsonFormatterExamples: ToolExampleItem<JsonFormatterExample>[] = [
   {
     id: "basic",
@@ -184,6 +189,15 @@ export const jwtDecoderExamples: ToolExampleItem<JwtDecoderExample>[] = [
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
     },
   },
+  {
+    id: "with-exp",
+    label: "含 exp 声明",
+    description: "过期时间与签发时间",
+    data: {
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyXzEiLCJuYW1lIjoiVGVzdCIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjoxOTAwMDAwMDAwfQ.x",
+    },
+  },
 ]
 
 export const regexTesterExamples: ToolExampleItem<RegexTesterExample>[] = [
@@ -244,5 +258,41 @@ export const uuidGeneratorExamples: ToolExampleItem<UuidGeneratorExample>[] = [
     label: "生成 20 个",
     description: "较多数量",
     data: { count: 20 },
+  },
+]
+
+export const urlEncoderExamples: ToolExampleItem<UrlEncoderExample>[] = [
+  {
+    id: "component-encode",
+    label: "参数编码",
+    description: "encodeURIComponent",
+    data: { input: "Hello 世界?name=Tom&age=20", mode: "component-encode" },
+  },
+  {
+    id: "component-decode",
+    label: "参数解码",
+    description: "decodeURIComponent",
+    data: { input: "Hello%20World%3Fname%3DTom", mode: "component-decode" },
+  },
+  {
+    id: "uri-encode",
+    label: "完整 URL 编码",
+    description: "encodeURI",
+    data: { input: "https://example.com/search?q=你好&lang=zh", mode: "uri-encode" },
+  },
+  {
+    id: "query-parse",
+    label: "Query 解析",
+    description: "转为 JSON",
+    data: { input: "name=John+Doe&role=admin&tags=js&tags=ts", mode: "query-parse" },
+  },
+  {
+    id: "query-build",
+    label: "Query 构建",
+    description: "JSON 转 Query",
+    data: {
+      input: '{\n  "q": "hello world",\n  "page": "1",\n  "lang": "zh"\n}',
+      mode: "query-build",
+    },
   },
 ]

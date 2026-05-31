@@ -136,8 +136,48 @@ export const staticZh: StaticPageMessages = {
     title: "博客",
     subtitle: "开发者技巧、教程与最佳实践",
     readMore: "阅读全文",
-    categories: { 教程: "教程", 技术: "技术" },
+    categories: { 教程: "教程", 技术: "技术", 安全: "安全" },
     posts: {
+      "developer-toolkit-guide": {
+        title: "开发者必备：URL、时间戳、UUID 与 JWT 工具指南",
+        description: "介绍 WaiHub 新增的 URL 编解码、Unix 时间戳转换、UUID 生成与 JWT 解码工具及典型用法。",
+        category: "教程",
+        content: [
+          {
+            paragraphs: [
+              "WaiHub 现已提供 6 款浏览器内运行的开发者工具：JSON 格式化、Base64 编解码、URL 编解码、Unix 时间戳转换、UUID 生成器与 JWT 解码器。本文聚焦后四款，帮助你在日常开发中快速选型。",
+            ],
+          },
+          {
+            heading: "URL 编解码",
+            paragraphs: [
+              "处理 Query 参数、跳转链接或接口返回值时，常需 encodeURIComponent / decodeURIComponent。WaiHub 的 URL 工具支持参数级与完整 URL 编码，以及 Query 字符串与 JSON 互转。",
+              "典型场景：调试 OAuth 回调 URL、解析 name=value&key=value 形式的表单数据、将 JSON 配置转为 Query 字符串。",
+            ],
+          },
+          {
+            heading: "Unix 时间戳转换",
+            paragraphs: [
+              "日志、数据库与 API 常返回 Unix 时间戳（秒或毫秒）。时间戳工具支持秒/毫秒/微秒/纳秒自动识别，UTC 与本地时区对照，以及 ISO 8601 输出。",
+              "排查跨时区问题时，可同时查看 UTC 与本地时间，避免把 10 位秒级与 13 位毫秒级混淆。",
+            ],
+          },
+          {
+            heading: "UUID 生成器",
+            paragraphs: [
+              "需要测试数据主键、会话 ID 或分布式 traceId 时，可批量生成 UUID v4，支持大写、无连字符与花括号格式，并一键复制或下载 .txt。",
+              "顶部单条 UUID 与批量列表独立，方便「拿一个」与「造一批」两种工作流。",
+            ],
+          },
+          {
+            heading: "JWT 解码器",
+            paragraphs: [
+              "OAuth 与 API 鉴权调试时，粘贴 Bearer Token 即可查看 Header、Payload 及 exp/iat 过期状态。注意：解码不等于验证签名，生产 Token 请勿粘贴到不可信网站。",
+              "更多安全建议请参阅本站《JWT 安全最佳实践》一文。",
+            ],
+          },
+        ],
+      },
       "json-formatter-guide": {
         title: "如何高效使用 JSON 格式化工具",
         description: "学习 JSON 格式化的最佳实践，提升 API 调试与配置文件管理效率。",
@@ -166,6 +206,7 @@ export const staticZh: StaticPageMessages = {
             heading: "隐私与安全建议",
             paragraphs: [
               "JSON 中可能包含用户数据、API 密钥或 Token。使用 WaiHub 等浏览器内运行的工具，数据不会上传到服务器，适合处理敏感信息。对于生产环境的密钥，切勿在任何在线工具中粘贴。",
+              "若 JSON 响应中含 JWT 或 Base64 字段，可配合本站 JWT 解码器与 Base64 工具进一步查看，无需离开浏览器。",
             ],
           },
         ],
@@ -199,6 +240,44 @@ export const staticZh: StaticPageMessages = {
             heading: "UTF-8 与中文处理",
             paragraphs: [
               "直接对包含中文的字符串进行 Base64 编码时，需要先按 UTF-8 编码为字节序列。WaiHub 的 Base64 工具已正确处理 UTF-8，可放心编码中文、emoji 等 Unicode 字符。",
+              "若需将 Base64 结果放入 URL 参数，可继续使用 URL 编解码工具做 encodeURIComponent，避免 +、/ 等字符破坏链接。",
+            ],
+          },
+        ],
+      },
+      "jwt-security-best-practices": {
+        title: "JWT 安全最佳实践",
+        description: "确保 JWT 实现安全可靠的关键技巧与常见陷阱。",
+        category: "安全",
+        content: [
+          {
+            paragraphs: [
+              "JSON Web Token (JWT) 是现代 API 鉴权的流行方案。它由 Header、Payload 和 Signature 三部分组成，用点号连接。理解 JWT 的安全模型对构建可靠系统至关重要。",
+            ],
+          },
+          {
+            heading: "永远不要信任未验证的 Payload",
+            paragraphs: [
+              "JWT 的 Payload 仅经过 Base64 编码，未加密。任何人都可以解码查看内容，甚至篡改 Payload 后重新编码（但无法伪造有效签名）。服务端必须验证 Signature，且使用强密钥（HS256）或公私钥（RS256）。",
+              "WaiHub 的 JWT 解码器仅用于开发调试，帮助查看 Token 内容与 exp 是否过期。生产环境必须在服务端完成签名验证。",
+            ],
+          },
+          {
+            heading: "设置合理的过期时间",
+            paragraphs: [
+              "Access Token 应设置较短过期时间（如 15 分钟至 1 小时），配合 Refresh Token 实现无感刷新。避免签发永不过期的 Token。在 Payload 中使用 exp 声明过期时间，服务端严格校验。",
+            ],
+          },
+          {
+            heading: "敏感信息勿放入 Payload",
+            paragraphs: [
+              "JWT Payload 可被任何人解码，切勿存放密码、信用卡号等敏感数据。仅存放用户 ID、角色等必要鉴权信息。",
+            ],
+          },
+          {
+            heading: "使用 HTTPS 传输",
+            paragraphs: [
+              "JWT 通常通过 Authorization: Bearer 头或 Cookie 传输。必须使用 HTTPS 防止中间人截获 Token。若存储在 Cookie 中，应设置 HttpOnly 和 Secure 标志。",
             ],
           },
         ],
@@ -288,8 +367,48 @@ export const staticEn: StaticPageMessages = {
     title: "Blog",
     subtitle: "Tips, tutorials, and best practices",
     readMore: "Read more",
-    categories: { 教程: "Tutorial", 技术: "Technical" },
+    categories: { 教程: "Tutorial", 技术: "Technical", 安全: "Security" },
     posts: {
+      "developer-toolkit-guide": {
+        title: "Developer Toolkit: URL, Timestamps, UUID & JWT",
+        description: "How to use WaiHub's URL encoder, Unix timestamp converter, UUID generator, and JWT decoder.",
+        category: "Tutorial",
+        content: [
+          {
+            paragraphs: [
+              "WaiHub now offers six in-browser developer tools: JSON formatter, Base64 codec, URL encoder/decoder, Unix timestamp converter, UUID generator, and JWT decoder. This guide focuses on the last four and when to reach for each.",
+            ],
+          },
+          {
+            heading: "URL encoding & decoding",
+            paragraphs: [
+              "Query strings, redirect URLs, and API payloads often need encodeURIComponent or decodeURIComponent. WaiHub supports component-level and full-URL encoding, plus Query ↔ JSON conversion.",
+              "Typical uses: debugging OAuth callback URLs, parsing name=value pairs, turning JSON configs into query strings.",
+            ],
+          },
+          {
+            heading: "Unix timestamp conversion",
+            paragraphs: [
+              "Logs, databases, and APIs frequently return Unix timestamps in seconds or milliseconds. The converter auto-detects second/ms/µs/ns lengths and shows UTC vs local time plus ISO 8601 output.",
+              "When debugging timezone issues, compare UTC and local side by side — and watch for 10-digit seconds vs 13-digit milliseconds.",
+            ],
+          },
+          {
+            heading: "UUID generator",
+            paragraphs: [
+              "Generate UUID v4 for test primary keys, session IDs, or trace IDs. Batch mode supports uppercase, braceless, and braced formats with copy or .txt download.",
+              "The single UUID at the top is independent from the batch list — grab one or generate many without cross-contamination.",
+            ],
+          },
+          {
+            heading: "JWT decoder",
+            paragraphs: [
+              "Paste a Bearer token to inspect Header, Payload, and exp/iat expiry status during OAuth or API debugging. Decoding is not signature verification — never paste production tokens into untrusted sites.",
+              "See our JWT Security Best Practices article for production hardening tips.",
+            ],
+          },
+        ],
+      },
       "json-formatter-guide": {
         title: "How to Use a JSON Formatter Effectively",
         description: "Best practices for formatting JSON and debugging APIs faster.",
@@ -318,6 +437,7 @@ export const staticEn: StaticPageMessages = {
             heading: "Privacy tips",
             paragraphs: [
               "JSON may contain tokens, PII, or API keys. WaiHub runs in your browser — nothing is uploaded. Never paste production secrets into any online tool.",
+              "If responses include JWT or Base64 fields, pair the formatter with our JWT decoder and Base64 tools — all in the browser.",
             ],
           },
         ],
@@ -351,6 +471,44 @@ export const staticEn: StaticPageMessages = {
             heading: "UTF-8 and Unicode",
             paragraphs: [
               "Text must be UTF-8 bytes before encoding. WaiHub handles UTF-8 correctly for Chinese, emoji, and all Unicode.",
+              "When embedding Base64 in URL parameters, use the URL encoder for encodeURIComponent so + and / do not break links.",
+            ],
+          },
+        ],
+      },
+      "jwt-security-best-practices": {
+        title: "JWT Security Best Practices",
+        description: "Key techniques and common pitfalls for secure JWT implementations.",
+        category: "Security",
+        content: [
+          {
+            paragraphs: [
+              "JSON Web Tokens (JWT) are widely used for API authentication. A JWT has Header, Payload, and Signature segments joined by dots. Understanding the security model is essential for reliable systems.",
+            ],
+          },
+          {
+            heading: "Never trust an unverified payload",
+            paragraphs: [
+              "Payloads are Base64-encoded, not encrypted. Anyone can decode them — or tamper and re-encode without a valid signature. Servers must verify signatures with strong secrets (HS256) or key pairs (RS256).",
+              "WaiHub's JWT decoder is for development only. Production must verify signatures on the server.",
+            ],
+          },
+          {
+            heading: "Set sensible expiry",
+            paragraphs: [
+              "Keep access tokens short-lived (15 minutes to 1 hour) and use refresh tokens for seamless renewal. Avoid non-expiring tokens; always validate exp on the server.",
+            ],
+          },
+          {
+            heading: "No secrets in the payload",
+            paragraphs: [
+              "Anyone can read JWT payloads. Store only user IDs, roles, and other auth metadata — never passwords or card numbers.",
+            ],
+          },
+          {
+            heading: "Always use HTTPS",
+            paragraphs: [
+              "Tokens travel via Authorization: Bearer headers or cookies. HTTPS prevents interception. For cookie storage, set HttpOnly and Secure flags.",
             ],
           },
         ],
@@ -440,8 +598,48 @@ export const staticJa: StaticPageMessages = {
     title: "ブログ",
     subtitle: "Tips、チュートリアル、ベストプラクティス",
     readMore: "続きを読む",
-    categories: { 教程: "チュートリアル", 技术: "技術" },
+    categories: { 教程: "チュートリアル", 技术: "技術", 安全: "セキュリティ" },
     posts: {
+      "developer-toolkit-guide": {
+        title: "開発者向け：URL・タイムスタンプ・UUID・JWT ツール",
+        description: "URL 符号化、Unix タイムスタンプ、UUID 生成、JWT デコードの使い方。",
+        category: "チュートリアル",
+        content: [
+          {
+            paragraphs: [
+              "WaiHub にはブラウザ内で動く開発者ツールが 6 種類あります：JSON 整形、Base64、URL 符号化、Unix タイムスタンプ、UUID 生成、JWT デコード。本記事では後 4 つに焦点を当てます。",
+            ],
+          },
+          {
+            heading: "URL 符号化・復号",
+            paragraphs: [
+              "Query パラメータやリダイレクト URL のデバッグに encodeURIComponent / decodeURIComponent が必要なことが多いです。WaiHub はコンポーネント単位・URL 全体の符号化と Query ↔ JSON 変換に対応。",
+              "OAuth コールバック URL の確認、name=value 形式の解析、JSON 設定を Query に変換する場面で便利です。",
+            ],
+          },
+          {
+            heading: "Unix タイムスタンプ変換",
+            paragraphs: [
+              "ログや API は秒・ミリ秒の Unix タイムスタンプを返すことが多いです。秒/ミリ秒/マイクロ秒/ナノ秒を自動判別し、UTC とローカル、ISO 8601 を表示します。",
+              "タイムゾーン問題の調査では UTC とローカルを並べて確認し、10 桁（秒）と 13 桁（ミリ秒）の取り違えに注意してください。",
+            ],
+          },
+          {
+            heading: "UUID 生成",
+            paragraphs: [
+              "テスト用主キー、セッション ID、traceId に UUID v4 を一括生成。大文字、ハイフンなし、波括弧形式、コピー・.txt ダウンロードに対応。",
+              "上部の単一 UUID と一括リストは独立しており、「1 つ取得」と「大量生成」を混ぜません。",
+            ],
+          },
+          {
+            heading: "JWT デコード",
+            paragraphs: [
+              "Bearer トークンを貼り付けて Header、Payload、exp/iat の期限を確認。デコードは署名検証ではありません — 本番トークンは信頼できないサイトに貼らないでください。",
+              "本番向けの詳細は「JWT セキュリティのベストプラクティス」を参照してください。",
+            ],
+          },
+        ],
+      },
       "json-formatter-guide": {
         title: "JSON 整形ツールを効果的に使う",
         description: "JSON 整形のベストプラクティスで API デバッグを加速。",
@@ -469,6 +667,7 @@ export const staticJa: StaticPageMessages = {
             heading: "プライバシー",
             paragraphs: [
               "JSON にトークンや個人情報が含まれることがあります。WaiHub はブラウザ内で実行され、アップロードしません。本番シークレットはオンラインツールに貼らないでください。",
+              "レスポンスに JWT や Base64 フィールドがある場合は、JWT デコーダーや Base64 ツールと併用できます。",
             ],
           },
         ],
@@ -498,7 +697,47 @@ export const staticJa: StaticPageMessages = {
           },
           {
             heading: "UTF-8",
-            paragraphs: ["テキストは UTF-8 バイトにしてから符号化。WaiHub は Unicode を正しく処理します。"],
+            paragraphs: [
+              "テキストは UTF-8 バイトにしてから符号化。WaiHub は Unicode を正しく処理します。",
+              "Base64 結果を URL パラメータに入れる場合は URL 符号化ツールで encodeURIComponent し、+ や / がリンクを壊さないようにしてください。",
+            ],
+          },
+        ],
+      },
+      "jwt-security-best-practices": {
+        title: "JWT セキュリティのベストプラクティス",
+        description: "安全な JWT 実装の要点とよくある落とし穴。",
+        category: "セキュリティ",
+        content: [
+          {
+            paragraphs: [
+              "JSON Web Token (JWT) は API 認証で広く使われます。Header、Payload、Signature の 3 部分で構成され、ドットで連結されます。セキュリティモデルを理解することが重要です。",
+            ],
+          },
+          {
+            heading: "未検証の Payload を信頼しない",
+            paragraphs: [
+              "Payload は Base64 符号化のみで暗号化されていません。誰でもデコードでき、改ざんして再符号化も可能（有効な署名は作れません）。サーバーは必ず署名を検証し、強力な秘密鍵（HS256）または鍵ペア（RS256）を使います。",
+              "WaiHub の JWT デコーダーは開発デバッグ用です。本番ではサーバー側で署名検証が必須です。",
+            ],
+          },
+          {
+            heading: "適切な有効期限",
+            paragraphs: [
+              "アクセストークンは短寿命（15 分〜1 時間）にし、リフレッシュトークンで更新。無期限トークンは避け、exp をサーバーで厳密に検証してください。",
+            ],
+          },
+          {
+            heading: "Payload に機密情報を入れない",
+            paragraphs: [
+              "JWT Payload は誰でも読めます。パスワードやカード番号は入れず、ユーザー ID やロールなど認証に必要な情報のみに留めてください。",
+            ],
+          },
+          {
+            heading: "HTTPS を使用",
+            paragraphs: [
+              "トークンは Authorization: Bearer ヘッダーや Cookie で送信されます。HTTPS で傍受を防ぎ、Cookie には HttpOnly と Secure を設定してください。",
+            ],
           },
         ],
       },

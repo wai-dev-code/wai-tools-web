@@ -4,42 +4,22 @@ import { useState, useMemo } from "react"
 import Link from "next/link"
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { searchTools, type ToolCategory } from "@/lib/tools-data"
+import { searchTools } from "@/lib/tool-search"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
-import { getLocalizedToolText, getMessages, localizeHref } from "@/lib/i18n"
+import { getMessages, localizeHref } from "@/lib/i18n"
+import { getToolCategoryLabel, getToolLabel, getToolShort } from "@/lib/tool-display"
 import { cn } from "@/lib/utils"
-
-function getCategoryLabel(locale: Locale, cat: ToolCategory): string {
-  const m = getMessages(locale).categories
-  if (cat === "json") return m.json
-  if (cat === "encoding") return m.encoding
-  return cat
-}
-
-function getToolLabel(locale: Locale, slug: string, fallback: string): string {
-  if (slug === "json-formatter" || slug === "base64") {
-    return getLocalizedToolText(slug, locale).name
-  }
-  return fallback
-}
-
-function getToolShort(locale: Locale, slug: string, fallback: string): string {
-  if (slug === "json-formatter" || slug === "base64") {
-    return getLocalizedToolText(slug, locale).short
-  }
-  return fallback
-}
 
 export function ToolsList({ locale = defaultLocale }: { locale?: Locale }) {
   const m = getMessages(locale)
   const [query, setQuery] = useState("")
 
-  const filtered = useMemo(() => searchTools(query), [query])
+  const filtered = useMemo(() => searchTools(query, locale), [query, locale])
 
   const grouped = useMemo(() => {
     const map = new Map<string, typeof filtered>()
     for (const tool of filtered) {
-      const label = getCategoryLabel(locale, tool.category)
+      const label = getToolCategoryLabel(locale, tool.category)
       if (!map.has(label)) map.set(label, [])
       map.get(label)!.push(tool)
     }

@@ -1,6 +1,10 @@
 import type { Messages } from "@/lib/i18n/messages/types"
 import { jsonToolJa } from "@/lib/i18n/messages/json-tool-messages"
 import { base64ToolJa } from "@/lib/i18n/messages/base64-tool-messages"
+import { urlToolJa, urlEncoderPageJa } from "@/lib/i18n/messages/url-tool-messages"
+import { jwtToolJa, jwtDecoderPageJa } from "@/lib/i18n/messages/jwt-tool-messages"
+import { timestampToolJa, timestampPageJa } from "@/lib/i18n/messages/timestamp-tool-messages"
+import { uuidToolJa, uuidGeneratorPageJa } from "@/lib/i18n/messages/uuid-tool-messages"
 import { staticJa } from "@/lib/i18n/messages/static-pages"
 import { legalJa } from "@/lib/i18n/messages/legal-pages"
 import { seoJa } from "@/lib/i18n/messages/seo-pages"
@@ -52,10 +56,10 @@ const ja: Messages = {
   home: {
     metaTitle: "WaiHub - 開発者向けオンラインツール",
     metaDescription:
-      "JSON フォーマッターと Base64 エンコード/デコード。ブラウザ内で動作、登録不要。",
+      "JSON フォーマッター、Base64、URL エンコード、JWT デコード、UUID 生成、タイムスタンプ変換など。ブラウザ内で動作、登録不要。",
     title: "開発者ツール、すぐ使える",
-    subtitle: "JSON・Base64 — ブラウザ内で実行、登録不要",
-    searchPlaceholder: "ツールを検索（JSON、Base64 など）",
+    subtitle: "JSON・エンコード・JWT・UUID — ブラウザ内で実行",
+    searchPlaceholder: "ツールを検索（JSON、JWT、UUID など）",
     categoryAll: "すべて",
     useNow: "今すぐ使う →",
     noResults: "該当するツールがありません",
@@ -80,6 +84,8 @@ const ja: Messages = {
   categories: {
     json: "JSON ツール",
     encoding: "エンコードツール",
+    dev: "開発ユーティリティ",
+    api: "API ツール",
   },
   tools: {
     jsonFormatter: {
@@ -91,6 +97,26 @@ const ja: Messages = {
       name: "Base64 ツール",
       short: "Base64 開発者向けツールキット",
       desc: "エンコード/デコード、ファイル、形式変換、画像プレビュー — 4 モジュール",
+    },
+    urlEncoder: {
+      name: "URL エンコード/デコード",
+      short: "URL 変換と Query 解析",
+      desc: "URL/URI のエンコード・デコード、Query 文字列の解析と生成",
+    },
+    jwtDecoder: {
+      name: "JWT デコーダー",
+      short: "JSON Web Token を解析",
+      desc: "JWT Header/Payload を解析し、exp/iat 状態をブラウザ内で表示",
+    },
+    timestamp: {
+      name: "タイムスタンプ変換",
+      short: "Unix タイムスタンプ全機能",
+      desc: "Unix タイムスタンプと日時の相互変換 — 秒/ミリ秒/マイクロ秒/ナノ秒",
+    },
+    uuidGenerator: {
+      name: "UUID ジェネレーター",
+      short: "UUID v4 生成とエクスポート",
+      desc: "UUID v4 一括生成 — 大文字、ハイフンなし、波括弧、コピーとダウンロード",
     },
   },
   jsonFormatterPage: {
@@ -119,9 +145,17 @@ const ja: Messages = {
       { q: "画像のプレビュー方法は？", a: "「ファイル」モジュールで Base64 画像を貼り付けまたはアップロード。" },
     ],
   },
+  urlEncoderPage: urlEncoderPageJa,
+  jwtDecoderPage: jwtDecoderPageJa,
+  timestampPage: timestampPageJa,
+  uuidGeneratorPage: uuidGeneratorPageJa,
   seo: seoJa,
   jsonTool: jsonToolJa,
   base64Tool: base64ToolJa,
+  urlTool: urlToolJa,
+  jwtTool: jwtToolJa,
+  timestampTool: timestampToolJa,
+  uuidTool: uuidToolJa,
   aboutPage: staticJa.about,
   contactPage: staticJa.contact,
   blogPage: staticJa.blog,

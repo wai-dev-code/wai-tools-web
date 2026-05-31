@@ -14,6 +14,7 @@ import { getSeoPageKey, seoLocalizedSlugs } from "@/lib/i18n/messages/seo-pages"
 import zh from "@/lib/i18n/messages/zh"
 import { getBlogPost } from "@/lib/blog-data"
 import { siteConfig } from "@/lib/tools-data"
+import { type LocalizedToolSlug } from "@/lib/i18n/localized-tool-slug"
 
 const catalogs: Record<Locale, Messages> = { zh, en, ja }
 
@@ -99,9 +100,35 @@ export function createPageMetadata(
   }
 }
 
-export function getLocalizedToolText(slug: "json-formatter" | "base64", locale: Locale) {
-  const m = getMessages(locale).tools
-  return slug === "json-formatter" ? m.jsonFormatter : m.base64
+const TOOL_TEXT_KEY: Record<LocalizedToolSlug, keyof Messages["tools"]> = {
+  "json-formatter": "jsonFormatter",
+  base64: "base64",
+  "url-encoder": "urlEncoder",
+  "jwt-decoder": "jwtDecoder",
+  timestamp: "timestamp",
+  "uuid-generator": "uuidGenerator",
+}
+
+const TOOL_PAGE_KEY: Record<
+  LocalizedToolSlug,
+  | "jsonFormatterPage"
+  | "base64Page"
+  | "urlEncoderPage"
+  | "jwtDecoderPage"
+  | "timestampPage"
+  | "uuidGeneratorPage"
+> = {
+  "json-formatter": "jsonFormatterPage",
+  base64: "base64Page",
+  "url-encoder": "urlEncoderPage",
+  "jwt-decoder": "jwtDecoderPage",
+  timestamp: "timestampPage",
+  "uuid-generator": "uuidGeneratorPage",
+}
+
+export function getLocalizedToolText(slug: LocalizedToolSlug, locale: Locale) {
+  const m = getMessages(locale)
+  return m.tools[TOOL_TEXT_KEY[slug]]
 }
 
 export function getAllLocalizedUrls(path: string): string[] {
@@ -120,10 +147,10 @@ export function stripLocalePrefix(pathname: string): string {
 
 export function generateLocalizedToolMetadata(
   locale: Locale,
-  slug: "json-formatter" | "base64"
+  slug: LocalizedToolSlug
 ): Metadata {
   const m = getMessages(locale)
-  const page = slug === "json-formatter" ? m.jsonFormatterPage : m.base64Page
+  const page = m[TOOL_PAGE_KEY[slug]]
   return createPageMetadata(locale, `tools/${slug}`, page.metaTitle, page.metaDescription)
 }
 

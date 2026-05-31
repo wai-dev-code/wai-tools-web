@@ -3,6 +3,7 @@ import { Calendar, ArrowRight } from "lucide-react"
 import type { Locale } from "@/lib/i18n/config"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { AdSlot } from "@/components/ad-slot"
 import { formatBlogDate } from "@/lib/blog-i18n"
 import { getMessages, localizeHref } from "@/lib/i18n"
 import { getVisibleBlogPosts } from "@/lib/blog-data"
@@ -53,6 +54,10 @@ export function BlogPageContent({ locale }: { locale: Locale }) {
               </article>
             )
           })}
+        </div>
+
+        <div className="mt-10">
+          <AdSlot name="homeMid" className="mx-auto max-w-2xl" />
         </div>
       </main>
       <Footer locale={locale} />

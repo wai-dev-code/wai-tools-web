@@ -1,6 +1,10 @@
 import type { Messages } from "@/lib/i18n/messages/types"
 import { jsonToolZh } from "@/lib/i18n/messages/json-tool-messages"
 import { base64ToolZh } from "@/lib/i18n/messages/base64-tool-messages"
+import { urlToolZh, urlEncoderPageZh } from "@/lib/i18n/messages/url-tool-messages"
+import { jwtToolZh, jwtDecoderPageZh } from "@/lib/i18n/messages/jwt-tool-messages"
+import { timestampToolZh, timestampPageZh } from "@/lib/i18n/messages/timestamp-tool-messages"
+import { uuidToolZh, uuidGeneratorPageZh } from "@/lib/i18n/messages/uuid-tool-messages"
 import { staticZh } from "@/lib/i18n/messages/static-pages"
 import { legalZh } from "@/lib/i18n/messages/legal-pages"
 import { seoZh } from "@/lib/i18n/messages/seo-pages"
@@ -52,10 +56,10 @@ const zh: Messages = {
   home: {
     metaTitle: "WaiHub - 开发者在线工具",
     metaDescription:
-      "WaiHub 提供 JSON 格式化、Base64 编解码等免费开发者工具，浏览器内运行，无需注册。",
+      "WaiHub 提供 JSON 格式化、Base64、URL 编解码、JWT 解码、UUID 生成、时间戳转换等免费开发者工具，浏览器内运行，无需注册。",
     title: "开发者工具，即开即用",
-    subtitle: "JSON、Base64 — 浏览器内运行，数据不上传",
-    searchPlaceholder: "搜索工具，如 JSON、Base64...",
+    subtitle: "JSON、编码、JWT、UUID — 浏览器内运行，数据不上传",
+    searchPlaceholder: "搜索工具，如 JSON、JWT、UUID...",
     categoryAll: "全部",
     useNow: "立即使用 →",
     noResults: "未找到匹配的工具，试试其他关键词",
@@ -80,6 +84,8 @@ const zh: Messages = {
   categories: {
     json: "JSON 工具",
     encoding: "编码工具",
+    dev: "开发实用",
+    api: "API 工具",
   },
   tools: {
     jsonFormatter: {
@@ -91,6 +97,26 @@ const zh: Messages = {
       name: "Base64 编解码",
       short: "Base64 全功能开发者工具",
       desc: "Base64 编解码、文件转换、Hex/Data URI 互转、图片预览与校验，四模块开发者工具",
+    },
+    urlEncoder: {
+      name: "URL 编解码",
+      short: "URL 编码、解码与 Query 解析",
+      desc: "URL / URI 编码解码，支持 encodeURIComponent、Query 字符串解析与构建",
+    },
+    jwtDecoder: {
+      name: "JWT 解码器",
+      short: "解析 JSON Web Token",
+      desc: "解析 JWT Header 与 Payload，显示 exp/iat 过期状态，浏览器内解码",
+    },
+    timestamp: {
+      name: "时间戳转换",
+      short: "Unix 时间戳全功能转换",
+      desc: "Unix 时间戳与可读日期互转，支持秒/毫秒/微秒/纳秒、UTC/本地时区",
+    },
+    uuidGenerator: {
+      name: "UUID 生成器",
+      short: "UUID v4 生成与批量导出",
+      desc: "批量生成 UUID v4，支持大写、无连字符、花括号格式，复制与下载",
     },
   },
   jsonFormatterPage: {
@@ -119,9 +145,17 @@ const zh: Messages = {
       { q: "如何预览 Base64 图片？", a: "在「文件」模块上传图片或粘贴图片 Base64，工具会自动识别并显示预览。" },
     ],
   },
+  urlEncoderPage: urlEncoderPageZh,
+  jwtDecoderPage: jwtDecoderPageZh,
+  timestampPage: timestampPageZh,
+  uuidGeneratorPage: uuidGeneratorPageZh,
   seo: seoZh,
   jsonTool: jsonToolZh,
   base64Tool: base64ToolZh,
+  urlTool: urlToolZh,
+  jwtTool: jwtToolZh,
+  timestampTool: timestampToolZh,
+  uuidTool: uuidToolZh,
   aboutPage: staticZh.about,
   contactPage: staticZh.contact,
   blogPage: staticZh.blog,

@@ -5,6 +5,7 @@ import {
   Fingerprint,
   FileSearch,
   KeyRound,
+  Link2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -53,24 +54,31 @@ export const tools: ToolDefinition[] = [
     keywords: ["base64", "编码", "解码", "encode", "decode", "file", "hex", "data uri"],
   },
   {
+    slug: "url-encoder",
+    name: "URL 编解码",
+    description: "URL / URI 编码解码，支持 encodeURIComponent、Query 字符串解析与构建",
+    shortDescription: "URL 编码、解码与 Query 解析",
+    icon: Link2,
+    category: "encoding",
+    keywords: ["url", "encode", "decode", "uri", "query", "percent", "编码", "解码", "query string", "percent encoding"],
+  },
+  {
     slug: "timestamp",
     name: "时间戳转换",
-    description: "Unix 时间戳与可读日期时间格式互相转换，支持秒与毫秒",
-    shortDescription: "Unix 时间戳与日期互转",
+    description: "Unix 时间戳与可读日期互转，支持秒/毫秒/微秒/纳秒、UTC/本地时区、年月起止与秒数拆解",
+    shortDescription: "Unix 时间戳全功能转换",
     icon: Clock,
     category: "dev",
-    keywords: ["timestamp", "时间戳", "unix", "日期", "epoch"],
-    hidden: true,
+    keywords: ["timestamp", "时间戳", "时间", "unix", "日期", "date", "epoch", "iso8601", "convert", "转换"],
   },
   {
     slug: "uuid-generator",
     name: "UUID 生成器",
-    description: "批量生成 UUID v4 唯一标识符，一键复制",
-    shortDescription: "生成 UUID v4 标识符",
+    description: "批量生成 UUID v4，支持大写、无连字符、花括号格式，复制与下载",
+    shortDescription: "UUID v4 生成与批量导出",
     icon: Fingerprint,
     category: "dev",
-    keywords: ["uuid", "guid", "唯一标识", "生成器"],
-    hidden: true,
+    keywords: ["uuid", "guid", "唯一标识", "生成器", "v4"],
   },
   {
     slug: "regex-tester",
@@ -85,12 +93,11 @@ export const tools: ToolDefinition[] = [
   {
     slug: "jwt-decoder",
     name: "JWT 解码器",
-    description: "解析 JWT Header 与 Payload，浏览器内解码不发送网络请求",
+    description: "解析 JWT Header 与 Payload，显示 exp/iat 过期状态，浏览器内解码",
     shortDescription: "解析 JSON Web Token",
     icon: KeyRound,
     category: "api",
-    keywords: ["jwt", "token", "解码", "decode", "bearer"],
-    hidden: true,
+    keywords: ["jwt", "token", "json web token", "web token", "解码", "decode", "bearer", "oauth"],
   },
 ]
 
@@ -113,19 +120,6 @@ export function getToolBySlug(slug: string): ToolDefinition | undefined {
   return tools.find((t) => t.slug === slug)
 }
 
-export function searchTools(query: string): ToolDefinition[] {
-  const visible = getVisibleTools()
-  const q = query.trim().toLowerCase()
-  if (!q) return visible
-  return visible.filter(
-    (t) =>
-      t.name.toLowerCase().includes(q) ||
-      t.description.toLowerCase().includes(q) ||
-      t.keywords.some((k) => k.toLowerCase().includes(q)) ||
-      categoryLabels[t.category].toLowerCase().includes(q)
-  )
-}
-
 export function getToolsByCategory(category: ToolCategory): ToolDefinition[] {
   return getVisibleTools().filter((t) => t.category === category)
 }
@@ -134,7 +128,7 @@ export const siteConfig = {
   name: "WaiHub",
   title: "WaiHub - Developer Tools Online",
   description:
-    "Free JSON formatter and Base64 encoder/decoder. Runs in your browser — no signup required.",
+    "Free JSON formatter, Base64, URL encoder, JWT decoder, UUID generator, and timestamp converter. Runs in your browser — no signup required.",
   url: (() => {
     const configured = process.env.NEXT_PUBLIC_SITE_URL ?? "https://waihub.dev"
     if (process.env.NODE_ENV === "production" && /localhost|127\.0\.0\.1/i.test(configured)) {

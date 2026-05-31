@@ -1,6 +1,10 @@
 import type { Locale } from "@/lib/i18n/config"
 import type { Base64ToolMessages } from "@/lib/i18n/messages/base64-tool-messages"
 import type { JsonToolMessages } from "@/lib/i18n/messages/json-tool-messages"
+import type { JwtToolMessages, JwtDecoderPageMessages } from "@/lib/i18n/messages/jwt-tool-messages"
+import type { TimestampToolMessages, TimestampPageMessages } from "@/lib/i18n/messages/timestamp-tool-messages"
+import type { UrlToolMessages, UrlEncoderPageMessages } from "@/lib/i18n/messages/url-tool-messages"
+import type { UuidToolMessages, UuidGeneratorPageMessages } from "@/lib/i18n/messages/uuid-tool-messages"
 import type { LegalPagesMessages } from "@/lib/i18n/messages/legal-pages"
 import type { SeoPagesMessages } from "@/lib/i18n/messages/seo-pages"
 import type { StaticPageMessages } from "@/lib/i18n/messages/static-pages"
@@ -92,10 +96,16 @@ export interface Messages {
   categories: {
     json: string
     encoding: string
+    dev: string
+    api: string
   }
   tools: {
     jsonFormatter: ToolText
     base64: ToolText
+    urlEncoder: ToolText
+    jwtDecoder: ToolText
+    timestamp: ToolText
+    uuidGenerator: ToolText
   }
   jsonFormatterPage: {
     metaTitle: string
@@ -109,9 +119,17 @@ export interface Messages {
     instructions: string[]
     faq: FaqItem[]
   }
+  urlEncoderPage: UrlEncoderPageMessages
+  jwtDecoderPage: JwtDecoderPageMessages
+  timestampPage: TimestampPageMessages
+  uuidGeneratorPage: UuidGeneratorPageMessages
   seo: SeoPagesMessages
   jsonTool: JsonToolMessages
   base64Tool: Base64ToolMessages
+  urlTool: UrlToolMessages
+  jwtTool: JwtToolMessages
+  timestampTool: TimestampToolMessages
+  uuidTool: UuidToolMessages
   aboutPage: StaticPageMessages["about"]
   contactPage: StaticPageMessages["contact"]
   blogPage: StaticPageMessages["blog"]

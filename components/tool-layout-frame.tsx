@@ -22,6 +22,7 @@ import {
   getMessages,
   localizeHref,
 } from "@/lib/i18n"
+import { isLocalizedToolSlug } from "@/lib/i18n/localized-tool-slug"
 import { cn } from "@/lib/utils"
 
 interface ToolLayoutFrameProps {
@@ -33,7 +34,7 @@ interface ToolLayoutFrameProps {
 }
 
 function getLocalizedToolInfo(tool: ToolDefinition, locale: Locale) {
-  if (tool.slug === "json-formatter" || tool.slug === "base64") {
+  if (isLocalizedToolSlug(tool.slug)) {
     const text = getLocalizedToolText(tool.slug, locale)
     return { name: text.name, description: text.desc }
   }
@@ -189,14 +190,12 @@ function RelatedTools({ currentSlug, locale }: { currentSlug: string; locale: Lo
       <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.relatedTools}</h2>
       <div className="grid gap-3 sm:grid-cols-3">
         {related.map((t) => {
-          const label =
-            t.slug === "json-formatter" || t.slug === "base64"
-              ? getLocalizedToolText(t.slug, locale).name
-              : t.name
-          const short =
-            t.slug === "json-formatter" || t.slug === "base64"
-              ? getLocalizedToolText(t.slug, locale).short
-              : t.shortDescription
+          const label = isLocalizedToolSlug(t.slug)
+            ? getLocalizedToolText(t.slug, locale).name
+            : t.name
+          const short = isLocalizedToolSlug(t.slug)
+            ? getLocalizedToolText(t.slug, locale).short
+            : t.shortDescription
           return (
             <Link
               key={t.slug}

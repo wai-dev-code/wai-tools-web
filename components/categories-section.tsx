@@ -23,17 +23,17 @@ const categoryMeta: Record<
   encoding: {
     icon: Binary,
     color: "from-green-500/20 to-green-600/20",
-    description: "Base64 编解码、文件与格式转换",
+    description: "Base64、URL 编解码与 Query 解析",
   },
   dev: {
     icon: Braces,
     color: "from-orange-500/20 to-orange-600/20",
-    description: "开发实用工具",
+    description: "时间戳转换、UUID 生成等实用工具",
   },
   api: {
     icon: Braces,
     color: "from-purple-500/20 to-purple-600/20",
-    description: "API 相关工具",
+    description: "JWT 解码与 API 调试工具",
   },
 }
 

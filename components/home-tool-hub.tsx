@@ -4,9 +4,11 @@ import { useState, useMemo } from "react"
 import Link from "next/link"
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { getVisibleTools, searchTools, type ToolCategory } from "@/lib/tools-data"
+import { getVisibleTools, type ToolCategory } from "@/lib/tools-data"
+import { searchTools } from "@/lib/tool-search"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
-import { formatMessage, getLocalizedToolText, getMessages, localizeHref } from "@/lib/i18n"
+import { formatMessage, getMessages, localizeHref } from "@/lib/i18n"
+import { getToolCategoryLabel, getToolLabel, getToolShort } from "@/lib/tool-display"
 import { cn } from "@/lib/utils"
 import { AdSlot } from "@/components/ad-slot"
 
@@ -16,39 +18,18 @@ const visibleCategories = [
   ...Array.from(new Set(visibleTools.map((t) => t.category))),
 ] as const
 
-function getCategoryLabel(locale: Locale, cat: ToolCategory): string {
-  const m = getMessages(locale).categories
-  if (cat === "json") return m.json
-  if (cat === "encoding") return m.encoding
-  return cat
-}
-
-function getToolLabel(locale: Locale, slug: string, fallback: string): string {
-  if (slug === "json-formatter" || slug === "base64") {
-    return getLocalizedToolText(slug, locale).name
-  }
-  return fallback
-}
-
-function getToolShort(locale: Locale, slug: string, fallback: string): string {
-  if (slug === "json-formatter" || slug === "base64") {
-    return getLocalizedToolText(slug, locale).short
-  }
-  return fallback
-}
-
 export function HomeToolHub({ locale = defaultLocale }: { locale?: Locale }) {
   const m = getMessages(locale)
   const [query, setQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState<(typeof visibleCategories)[number]>("all")
 
   const filtered = useMemo(() => {
-    let result = searchTools(query)
+    let result = searchTools(query, locale)
     if (activeCategory !== "all") {
       result = result.filter((t) => t.category === activeCategory)
     }
     return result
-  }, [query, activeCategory])
+  }, [query, activeCategory, locale])
 
   return (
     <section className="px-4 pt-24 pb-12 lg:px-6">
@@ -85,7 +66,7 @@ export function HomeToolHub({ locale = defaultLocale }: { locale?: Locale }) {
                   : "bg-secondary text-muted-foreground hover:text-foreground"
               )}
             >
-              {cat === "all" ? m.home.categoryAll : getCategoryLabel(locale, cat as ToolCategory)}
+              {cat === "all" ? m.home.categoryAll : getToolCategoryLabel(locale, cat as ToolCategory)}
             </button>
           ))}
         </div>

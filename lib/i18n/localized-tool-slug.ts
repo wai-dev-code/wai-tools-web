@@ -1,0 +1,14 @@
+export const localizedToolSlugs = [
+  "json-formatter",
+  "base64",
+  "url-encoder",
+  "jwt-decoder",
+  "timestamp",
+  "uuid-generator",
+] as const
+
+export type LocalizedToolSlug = (typeof localizedToolSlugs)[number]
+
+export function isLocalizedToolSlug(slug: string): slug is LocalizedToolSlug {
+  return localizedToolSlugs.includes(slug as LocalizedToolSlug)
+}

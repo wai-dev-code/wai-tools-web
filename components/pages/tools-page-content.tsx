@@ -1,6 +1,7 @@
 import type { Locale } from "@/lib/i18n/config"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { AdSlot } from "@/components/ad-slot"
 import { ToolsList } from "@/components/tools-list"
 import { formatMessage, getMessages } from "@/lib/i18n"
 import { getVisibleTools } from "@/lib/tools-data"
@@ -19,6 +20,9 @@ export function ToolsPageContent({ locale }: { locale: Locale }) {
             {formatMessage(m.toolsPage.subtitle, { n: visibleCount })}
           </p>
           <ToolsList locale={locale} />
+          <div className="mt-10">
+            <AdSlot name="homeMid" className="mx-auto max-w-2xl" />
+          </div>
         </main>
       </div>
       <Footer locale={locale} />
