@@ -24,7 +24,6 @@ import {
   WrapText,
   ChevronDown,
   SlidersHorizontal,
-  Quote,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,6 +32,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { toolNotify } from "@/lib/tool-notify"
 import { JsonLineEditor } from "@/components/tools/json-line-editor"
 import { JsonTreeView } from "@/components/tools/json-tree-view"
@@ -70,6 +75,8 @@ import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { formatMessage, getMessages } from "@/lib/i18n"
 import { localizeToolError } from "@/lib/i18n/localize-error"
 import { ToolExampleMenu } from "@/components/tool-example-menu"
+import { FullscreenEditorPanel } from "@/components/fullscreen-editor-panel"
+import { usePanelFullscreenOptional } from "@/components/panel-fullscreen-context"
 import type { JsonFormatterExample } from "@/lib/tool-examples"
 import { cn } from "@/lib/utils"
 
@@ -92,7 +99,11 @@ interface JsonFormatterToolProps {
 }
 
 export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatterToolProps) {
-  const ui = getMessages(locale).jsonTool
+  const m = getMessages(locale)
+  const ui = m.jsonTool
+  const ws = m.workspace
+  const panelFs = usePanelFullscreenOptional()
+  const immersive = panelFs?.isPanelFullscreen ?? false
   const examples = useMemo(() => getJsonFormatterExamples(locale), [locale])
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
@@ -490,7 +501,7 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
   }
 
   return (
-    <div className="space-y-2">
+    <div className={cn(immersive ? "flex h-full min-h-0 flex-1 flex-col" : "space-y-2")}>
       <input
         ref={fileInputRef}
         type="file"
@@ -499,11 +510,19 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
         onChange={handleUpload}
       />
 
-      {/* 编辑区优先：双栏占据主视觉 */}
-      <div className="grid gap-2 lg:grid-cols-2 lg:gap-3">
+      {/* 编辑区优先：双栏等高对齐 */}
+      <div
+        className={cn(
+          "grid gap-2 lg:items-stretch lg:gap-3",
+          immersive ? "grid min-h-0 flex-1 grid-cols-2" : "lg:grid-cols-2"
+        )}
+      >
         <EditorPanel
+          panelId="json-source"
           title={ui.source}
-          badge={inputType}
+          badge={<Badge type={inputType} />}
+          enterLabel={ws.panelFullscreen}
+          exitLabel={ws.panelExitFullscreen}
           value={input}
           onChange={handleInputChange}
           highlights={isInputJson ? inputHighlights : undefined}
@@ -517,59 +536,71 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
             ) : null
           }
           toolbar={
-            <PanelToolbar>
-              <ToolExampleMenu examples={examples} onApply={applyExample} label={ui.example} />
-              <ToolbarDivider />
-              <ToolbarButton icon={AlignLeft} label={ui.format} onClick={handleFormat} active={focus === "format"} />
-              <ToolbarButton icon={Minimize2} label={ui.minify} onClick={handleCompress} active={focus === "minify"} />
-              <ToolbarButton icon={CheckCircle2} label={ui.validate} onClick={handleValidate} variant="outline" active={focus === "validate"} />
-              <ToolbarButton
-                icon={sortOrder === "asc" ? SortAsc : SortDesc}
-                label={sortOrder === "asc" ? ui.sortAsc : ui.sortDesc}
-                onClick={() => {
-                  const next: SortOrder = sortOrder === "asc" ? "desc" : "asc"
-                  setSortOrder(next)
-                  runAction(() => {
-                    const parsed = parseFromInput()
-                    setOutput(formatJson(sortJsonKeys(parsed, next), 2))
-                    setOutputType("json")
-                    setViewMode("text")
-                  }, next === "asc" ? ui.notify.sortedAsc : ui.notify.sortedDesc)
-                }}
-                variant="outline"
-                title={ui.sortTitle}
-                active={focus === "sort"}
-              />
-              <ToolbarDivider />
-              <ToolbarButton icon={Quote} label={ui.escape} onClick={handleEscape} variant="outline" title={ui.escapeTitle} />
-              <ToolbarButton icon={Quote} label={ui.unescape} onClick={handleUnescape} variant="outline" title={ui.unescapeTitle} />
-              <ToolbarDivider />
-              <ToolbarButton icon={ConvertIcon} label={convertLabel} onClick={handleConvert} variant="outline" active={focus === "to-xml"} />
-              <ToolbarButton icon={FileCode} label={yamlLabel} onClick={handleYamlConvert} variant="outline" />
-              <ToolbarButton icon={Upload} label={ui.upload} onClick={() => fileInputRef.current?.click()} variant="outline" />
-              <MiniButton icon={Copy} label={ui.copy} onClick={handleCopyInput} />
-              <MiniButton icon={Trash2} label={ui.clear} onClick={handleClearInput} />
-            </PanelToolbar>
+            <>
+              <div className="toolbar-row flex min-h-7 flex-nowrap items-center gap-1 overflow-x-auto pb-0.5 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible [&::-webkit-scrollbar]:hidden">
+                <ToolbarGroup>
+                  <ToolbarButton icon={AlignLeft} label={ui.format} onClick={handleFormat} active={focus === "format"} />
+                  <ToolbarButton icon={Minimize2} label={ui.minify} onClick={handleCompress} active={focus === "minify"} />
+                  <ToolbarButton icon={CheckCircle2} label={ui.validate} onClick={handleValidate} variant="outline" active={focus === "validate"} />
+                </ToolbarGroup>
+                <ToolbarDivider />
+                <ToolbarButton
+                  icon={sortOrder === "asc" ? SortAsc : SortDesc}
+                  label={sortOrder === "asc" ? ui.sortAsc : ui.sortDesc}
+                  onClick={() => {
+                    const order = sortOrder
+                    runAction(() => {
+                      const parsed = parseFromInput()
+                      setOutput(formatJson(sortJsonKeys(parsed, order), 2))
+                      setOutputType("json")
+                      setViewMode("text")
+                    }, order === "asc" ? ui.notify.sortedAsc : ui.notify.sortedDesc)
+                    setSortOrder(order === "asc" ? "desc" : "asc")
+                  }}
+                  variant="outline"
+                  title={ui.sortTitle}
+                  active={focus === "sort"}
+                />
+                <ToolbarDivider />
+                <ToolbarDropdown label={ui.convertMenu} icon={ConvertIcon}>
+                  <DropdownMenuItem onClick={handleEscape}>{ui.escape}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleUnescape}>{ui.unescape}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleConvert}>{convertLabel}</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleYamlConvert}>{yamlLabel}</DropdownMenuItem>
+                </ToolbarDropdown>
+                <ToolExampleMenu examples={examples} onApply={applyExample} label={ui.example} />
+              </div>
+              <div className="toolbar-row flex min-h-7 flex-nowrap items-center gap-1 overflow-x-auto pb-0.5 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible [&::-webkit-scrollbar]:hidden">
+                <MiniButton icon={Upload} label={ui.upload} onClick={() => fileInputRef.current?.click()} />
+                <MiniButton icon={Copy} label={ui.copy} onClick={handleCopyInput} />
+                <MiniButton icon={Trash2} label={ui.clear} onClick={handleClearInput} />
+              </div>
+            </>
           }
         />
 
         <EditorPanel
+          panelId="json-result"
           title={ui.result}
-          badge={viewMode === "tree" ? "tree" : outputType}
-          treeBadgeLabel={ui.treeBadge}
+          badge={<Badge type={viewMode === "tree" ? "tree" : outputType} treeLabel={ui.treeBadge} />}
+          enterLabel={ws.panelFullscreen}
+          exitLabel={ws.panelExitFullscreen}
           {...editorCommonProps}
           syntaxHighlight={syntaxHighlight}
           toolbar={
-            <PanelToolbar>
-              <MiniButton icon={Copy} label={ui.copy} onClick={handleCopyOutput} />
-              <MiniButton icon={Download} label={ui.save} onClick={handleSaveOutput} />
-              <MiniButton icon={ArrowDownToLine} label={ui.syncToInput} onClick={handleApplyOutputToInput} title={ui.syncToInputTitle} />
-              <MiniButton icon={Trash2} label={ui.clear} onClick={handleClearOutput} />
-              <ToolbarDivider />
-              <ToolbarButton icon={FolderTree} label={ui.tree} onClick={toggleTreeView} active={viewMode === "tree"} variant="outline" />
-              <ToolbarButton icon={ChevronsDownUp} label={ui.collapse} onClick={() => openTreeView("collapsed")} variant="outline" />
-              <ToolbarButton icon={ChevronsUpDown} label={ui.expand} onClick={() => openTreeView("expanded")} variant="outline" />
-            </PanelToolbar>
+            <>
+              <div className="toolbar-row flex min-h-7 flex-nowrap items-center gap-1 overflow-x-auto pb-0.5 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible [&::-webkit-scrollbar]:hidden">
+                <ToolbarButton icon={FolderTree} label={ui.tree} onClick={toggleTreeView} active={viewMode === "tree"} variant="outline" />
+                <ToolbarButton icon={ChevronsDownUp} label={ui.collapse} onClick={() => openTreeView("collapsed")} variant="outline" />
+                <ToolbarButton icon={ChevronsUpDown} label={ui.expand} onClick={() => openTreeView("expanded")} variant="outline" />
+              </div>
+              <div className="toolbar-row flex min-h-7 flex-nowrap items-center gap-1 overflow-x-auto pb-0.5 [scrollbar-width:none] lg:flex-wrap lg:overflow-visible [&::-webkit-scrollbar]:hidden">
+                <MiniButton icon={Copy} label={ui.copy} onClick={handleCopyOutput} />
+                <MiniButton icon={Download} label={ui.save} onClick={handleSaveOutput} />
+                <MiniButton icon={ArrowDownToLine} label={ui.syncToInput} onClick={handleApplyOutputToInput} title={ui.syncToInputTitle} />
+                <MiniButton icon={Trash2} label={ui.clear} onClick={handleClearOutput} />
+              </div>
+            </>
           }
         >
           {viewMode === "tree" ? (
@@ -589,13 +620,15 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
               value={output}
               onChange={handleOutputChange}
               placeholder={ui.resultPlaceholder}
-              className="border-0 rounded-none h-full min-h-[min(58vh,520px)]"
+              className="h-full min-h-0 rounded-none border-0"
               {...editorCommonProps}
             />
           )}
         </EditorPanel>
       </div>
 
+      {!immersive && (
+      <>
       {/* 紧凑状态条：实时反馈，不抢编辑区空间 */}
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 rounded-md border border-border/60 bg-muted/20 px-3 py-1.5 text-xs text-muted-foreground">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -638,32 +671,17 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
           </button>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-2 space-y-2 rounded-md border border-border/60 bg-card/30 p-3">
-          <ToolRow label="JSONPath">
-            <div className="flex min-w-0 flex-1 items-center overflow-hidden rounded-md border border-input bg-muted/30">
-              <span
-                className="shrink-0 border-r border-border bg-muted/50 px-2.5 py-1.5 font-mono text-xs text-muted-foreground select-none"
-                title={ui.jsonPathHint}
-              >
-                $
-              </span>
-              <Input
-                value={jsonPathQuery}
-                onChange={(e) => setJsonPathQuery(stripJsonPathPrefix(e.target.value))}
-                placeholder=""
-                className="h-8 border-0 bg-transparent font-mono text-xs shadow-none focus-visible:ring-0"
-                disabled={!isInputJson}
-              />
-            </div>
-            <span className="shrink-0 font-mono text-xs">
-              {inputAnalysis.jsonPathError ? (
-                <span className="text-destructive">{inputAnalysis.jsonPathError}</span>
-              ) : inputAnalysis.jsonPathResult !== null ? (
-                <span className="text-primary">{inputAnalysis.jsonPathResult}</span>
-              ) : jsonPathQuery.trim() ? (
-                <span className="text-muted-foreground">—</span>
-              ) : null}
-            </span>
-          </ToolRow>
+          <JsonPathRow
+            label="JSONPath"
+            hint={ui.jsonPathHint}
+            placeholder={ui.jsonPathPlaceholder}
+            value={jsonPathQuery}
+            onChange={setJsonPathQuery}
+            disabled={!isInputJson}
+            error={inputAnalysis.jsonPathError}
+            result={inputAnalysis.jsonPathResult}
+            hasQuery={Boolean(jsonPathQuery.trim())}
+          />
 
           <ToolRow label={ui.search}>
             <div className="relative min-w-0 flex-1">
@@ -708,14 +726,16 @@ export function JsonFormatterTool({ focus, locale = defaultLocale }: JsonFormatt
 
         </CollapsibleContent>
       </Collapsible>
+      </>
+      )}
     </div>
   )
 }
 
 function EditorPanel({
+  panelId,
   title,
   badge,
-  treeBadgeLabel,
   value,
   onChange,
   showLineNumbers,
@@ -728,10 +748,12 @@ function EditorPanel({
   toolbar,
   banner,
   children,
+  enterLabel,
+  exitLabel,
 }: {
+  panelId: string
   title: string
-  badge: ContentType | "tree"
-  treeBadgeLabel?: string
+  badge?: React.ReactNode
   value?: string
   onChange?: (v: string) => void
   showLineNumbers?: boolean
@@ -744,45 +766,66 @@ function EditorPanel({
   toolbar?: React.ReactNode
   banner?: React.ReactNode
   children?: React.ReactNode
+  enterLabel?: string
+  exitLabel?: string
 }) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card/50 shadow-sm">
-      <div className="border-b border-border px-3 py-2">
-        <div className="mb-1.5 flex items-center gap-2">
-          <span className="text-sm font-medium text-foreground">{title}</span>
-          <Badge type={badge} treeLabel={treeBadgeLabel} />
-        </div>
-        {toolbar}
-      </div>
-      {banner}
-      <div className="flex min-h-[min(58vh,520px)] flex-1 flex-col">
-        {children ?? (
-          <JsonLineEditor
-            value={value ?? ""}
-            onChange={onChange ?? (() => {})}
-            showLineNumbers={showLineNumbers}
-            wordWrap={wordWrap}
-            syntaxHighlight={syntaxHighlight}
-            placeholder={placeholder}
-            highlights={highlights}
-            errorLine={errorLine}
-            scrollToLine={scrollToLine}
-            className="border-0 rounded-none h-full min-h-[min(58vh,520px)]"
-          />
-        )}
-      </div>
-    </div>
-  )
-}
-
-function PanelToolbar({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex flex-wrap items-center gap-1">{children}</div>
+    <FullscreenEditorPanel
+      panelId={panelId}
+      title={title}
+      badge={badge}
+      toolbar={toolbar}
+      banner={banner}
+      enterLabel={enterLabel}
+      exitLabel={exitLabel}
+    >
+      {children ?? (
+        <JsonLineEditor
+          value={value ?? ""}
+          onChange={onChange ?? (() => {})}
+          showLineNumbers={showLineNumbers}
+          wordWrap={wordWrap}
+          syntaxHighlight={syntaxHighlight}
+          placeholder={placeholder}
+          highlights={highlights}
+          errorLine={errorLine}
+          scrollToLine={scrollToLine}
+          className="h-full min-h-[var(--tool-editor-min-h)] rounded-none border-0"
+        />
+      )}
+    </FullscreenEditorPanel>
   )
 }
 
 function ToolbarDivider() {
-  return <span className="mx-0.5 hidden h-4 w-px bg-border sm:inline" />
+  return <span className="mx-1 h-4 w-px shrink-0 bg-border" aria-hidden />
+}
+
+function ToolbarGroup({ children }: { children: React.ReactNode }) {
+  return <div className="flex items-center gap-0.5">{children}</div>
+}
+
+function ToolbarDropdown({
+  label,
+  icon: Icon,
+  children,
+}: {
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  children: React.ReactNode
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button type="button" variant="outline" size="sm" className="h-7 shrink-0 gap-1 px-2 text-xs">
+          <Icon className="h-3.5 w-3.5 shrink-0" />
+          <span className="inline">{label}</span>
+          <ChevronDown className="h-3 w-3 shrink-0 opacity-60" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">{children}</DropdownMenuContent>
+    </DropdownMenu>
+  )
 }
 
 function ErrorBanner({ error }: { error: { line: number; column: number; message: string } }) {
@@ -794,6 +837,68 @@ function ErrorBanner({ error }: { error: { line: number; column: number; message
         <span className="mx-2 text-border">·</span>
         <span className="font-medium">{error.message}</span>
       </div>
+    </div>
+  )
+}
+
+function JsonPathRow({
+  label,
+  hint,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+  error,
+  result,
+  hasQuery,
+}: {
+  label: string
+  hint: string
+  placeholder: string
+  value: string
+  onChange: (value: string) => void
+  disabled: boolean
+  error: string | null
+  result: string | null
+  hasQuery: boolean
+}) {
+  const output =
+    error != null ? (
+      <span className="text-destructive">{error}</span>
+    ) : result !== null ? (
+      <span className="text-primary">{result}</span>
+    ) : hasQuery ? (
+      <span className="text-muted-foreground">—</span>
+    ) : null
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="w-16 shrink-0 text-xs font-medium text-muted-foreground">{label}</span>
+        <div className="flex min-w-0 flex-1 items-center overflow-hidden rounded-md border border-input bg-muted/30">
+          <span
+            className="shrink-0 border-r border-border bg-muted/50 px-2.5 py-1.5 font-mono text-xs text-muted-foreground select-none"
+            title={hint}
+          >
+            $.
+          </span>
+          <Input
+            value={value}
+            onChange={(e) => onChange(stripJsonPathPrefix(e.target.value))}
+            placeholder={placeholder}
+            title={hint}
+            className="h-8 min-w-0 flex-1 border-0 bg-transparent font-mono text-xs shadow-none placeholder:text-muted-foreground/60 focus-visible:ring-0"
+            disabled={disabled}
+          />
+        </div>
+        {output && <span className="hidden shrink-0 font-mono text-xs md:inline">{output}</span>}
+      </div>
+      {output && (
+        <div className="flex gap-2 md:hidden">
+          <span className="w-16 shrink-0" aria-hidden />
+          <span className="min-w-0 flex-1 break-all font-mono text-xs">{output}</span>
+        </div>
+      )}
     </div>
   )
 }
@@ -874,7 +979,7 @@ function EmptyTreeFallback({
   backLabel: string
 }) {
   return (
-    <div className="flex h-[min(58vh,520px)] min-h-[280px] items-center justify-center text-sm text-muted-foreground">
+    <div className="flex h-[var(--tool-editor-min-h)] min-h-[var(--tool-panel-min-h)] items-center justify-center text-sm text-muted-foreground">
       <div className="px-4 text-center">
         <FileText className="mx-auto mb-2 h-8 w-8 opacity-50" />
         <p className="mb-3">{emptyText}</p>
@@ -913,10 +1018,10 @@ function ToolbarButton({
       }}
       title={title ?? label}
       aria-label={label}
-      className="h-7 gap-1 px-1.5 text-xs"
+      className="h-7 shrink-0 gap-1 px-2 text-xs"
     >
       <Icon className="h-3.5 w-3.5 shrink-0" />
-      <span className="hidden md:inline">{label}</span>
+      <span className="inline">{label}</span>
     </Button>
   )
 }
@@ -939,10 +1044,11 @@ function MiniButton({
       variant="ghost"
       onClick={onClick}
       title={title ?? label}
-      className="h-7 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
+      aria-label={label}
+      className="h-7 shrink-0 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
     >
       <Icon className="h-3.5 w-3.5" />
-      <span className="hidden sm:inline">{label}</span>
+      <span className="inline">{label}</span>
     </Button>
   )
 }

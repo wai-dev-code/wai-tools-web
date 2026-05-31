@@ -36,9 +36,6 @@ export function BlogSection() {
                     <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
                       {article.category}
                     </span>
-                    <span className="text-xs text-muted-foreground">
-                      {article.readTime}
-                    </span>
                   </div>
                   <h3 className="mb-2 text-lg font-semibold text-card-foreground transition-colors group-hover:text-primary">
                     {article.title}

@@ -9,12 +9,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { ToolExampleItem } from "@/lib/tool-examples"
+import { cn } from "@/lib/utils"
 
 interface ToolExampleMenuProps<T> {
   examples: ToolExampleItem<T>[]
   onApply: (data: T) => void
   className?: string
   label?: string
+  iconOnly?: boolean
 }
 
 export function ToolExampleMenu<T>({
@@ -22,6 +24,7 @@ export function ToolExampleMenu<T>({
   onApply,
   className,
   label = "Example",
+  iconOnly = false,
 }: ToolExampleMenuProps<T>) {
   if (examples.length === 0) return null
 
@@ -32,10 +35,12 @@ export function ToolExampleMenu<T>({
           type="button"
           variant="outline"
           size="sm"
-          className={className ?? "h-7 gap-1 px-2 text-xs"}
+          className={cn(className ?? "h-7 gap-1 px-2 text-xs", iconOnly && "w-7 px-0")}
+          title={label}
+          aria-label={label}
         >
           <BookOpen className="h-3.5 w-3.5" />
-          {label}
+          {!iconOnly && label}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="max-w-xs">

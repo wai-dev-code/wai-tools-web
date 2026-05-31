@@ -14,6 +14,7 @@ export interface JsonToolMessages {
   toJson: string
   toXml: string
   toYaml: string
+  convertMenu: string
   upload: string
   copy: string
   clear: string
@@ -75,6 +76,7 @@ export interface JsonToolMessages {
     outputYamlValid: string
   }
   jsonPathHint: string
+  jsonPathPlaceholder: string
   examples: Record<string, { label: string; description: string }>
 }
 
@@ -94,6 +96,7 @@ export const jsonToolZh: JsonToolMessages = {
   toJson: "转 JSON",
   toXml: "转 XML",
   toYaml: "转 YAML",
+  convertMenu: "转换",
   upload: "上传",
   copy: "复制",
   clear: "清空",
@@ -154,7 +157,8 @@ export const jsonToolZh: JsonToolMessages = {
     outputXmlValid: "输出 XML 有效",
     outputYamlValid: "输出 YAML 有效",
   },
-  jsonPathHint: "根节点 $ 已内置，对象路径自动补全 $. 前缀",
+  jsonPathHint: "已内置 $. 前缀，直接输入 user.name 或 [0].name",
+  jsonPathPlaceholder: "user.name 或 features[0]",
   examples: {
     basic: { label: "基础 JSON", description: "嵌套对象与数组" },
     "array-root": { label: "数组根节点", description: "顶层为数组，路径如 [0].name" },
@@ -181,6 +185,7 @@ export const jsonToolEn: JsonToolMessages = {
   toJson: "To JSON",
   toXml: "To XML",
   toYaml: "To YAML",
+  convertMenu: "Convert",
   upload: "Upload",
   copy: "Copy",
   clear: "Clear",
@@ -241,7 +246,8 @@ export const jsonToolEn: JsonToolMessages = {
     outputXmlValid: "Output XML is valid",
     outputYamlValid: "Output YAML is valid",
   },
-  jsonPathHint: "Root $ is built-in; object paths auto-prefix with $.",
+  jsonPathHint: "$. prefix is built-in — type user.name or [0].name",
+  jsonPathPlaceholder: "user.name or features[0]",
   examples: {
     basic: { label: "Basic JSON", description: "Nested objects and arrays" },
     "array-root": { label: "Array root", description: "Top-level array, paths like [0].name" },
@@ -268,6 +274,7 @@ export const jsonToolJa: JsonToolMessages = {
   toJson: "JSON へ",
   toXml: "XML へ",
   toYaml: "YAML へ",
+  convertMenu: "変換",
   upload: "アップロード",
   copy: "コピー",
   clear: "クリア",
@@ -328,7 +335,8 @@ export const jsonToolJa: JsonToolMessages = {
     outputXmlValid: "出力 XML は有効です",
     outputYamlValid: "出力 YAML は有効です",
   },
-  jsonPathHint: "ルート $ は組み込み。オブジェクトパスは自動で $. を付与。",
+  jsonPathHint: "$. は組み込み — user.name や [0].name を入力",
+  jsonPathPlaceholder: "user.name または features[0]",
   examples: {
     basic: { label: "基本 JSON", description: "ネストしたオブジェクトと配列" },
     "array-root": { label: "配列ルート", description: "トップが配列、[0].name など" },

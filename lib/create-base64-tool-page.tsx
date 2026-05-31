@@ -25,7 +25,7 @@ export function createBase64ToolPage(slug: string) {
   function Page() {
     return (
       <ToolLayout
-        tool={tool}
+        toolSlug={tool.slug}
         instructions={
           <>
             <p>{pageConfig.description}</p>

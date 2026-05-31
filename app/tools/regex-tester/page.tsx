@@ -11,7 +11,7 @@ export default function RegexTesterPage() {
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       instructions={
         <>
           <p>输入正则表达式和测试文本，实时查看匹配结果。可勾选 g（全局）、i（忽略大小写）、m（多行）等 flags。</p>

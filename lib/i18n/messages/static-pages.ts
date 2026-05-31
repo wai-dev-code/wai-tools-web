@@ -46,7 +46,6 @@ export interface StaticPageMessages {
         title: string
         description: string
         category: string
-        readTime: string
         content: { heading?: string; paragraphs: string[] }[]
       }
     >
@@ -143,7 +142,6 @@ export const staticZh: StaticPageMessages = {
         title: "如何高效使用 JSON 格式化工具",
         description: "学习 JSON 格式化的最佳实践，提升 API 调试与配置文件管理效率。",
         category: "教程",
-        readTime: "5 分钟",
         content: [
           {
             paragraphs: [
@@ -176,7 +174,6 @@ export const staticZh: StaticPageMessages = {
         title: "Base64 编码原理与应用场景",
         description: "深入了解 Base64 编码的工作原理、适用场景及常见误区。",
         category: "技术",
-        readTime: "8 分钟",
         content: [
           {
             paragraphs: [
@@ -297,7 +294,6 @@ export const staticEn: StaticPageMessages = {
         title: "How to Use a JSON Formatter Effectively",
         description: "Best practices for formatting JSON and debugging APIs faster.",
         category: "Tutorial",
-        readTime: "5 min read",
         content: [
           {
             paragraphs: [
@@ -330,7 +326,6 @@ export const staticEn: StaticPageMessages = {
         title: "Base64 Encoding Explained",
         description: "How Base64 works, where it's used, and common misconceptions.",
         category: "Technical",
-        readTime: "8 min read",
         content: [
           {
             paragraphs: [
@@ -451,7 +446,6 @@ export const staticJa: StaticPageMessages = {
         title: "JSON 整形ツールを効果的に使う",
         description: "JSON 整形のベストプラクティスで API デバッグを加速。",
         category: "チュートリアル",
-        readTime: "5 分",
         content: [
           {
             paragraphs: [
@@ -483,7 +477,6 @@ export const staticJa: StaticPageMessages = {
         title: "Base64 符号化の原理と用途",
         description: "Base64 の仕組み、用途、よくある誤解。",
         category: "技術",
-        readTime: "8 分",
         content: [
           {
             paragraphs: [

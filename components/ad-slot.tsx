@@ -13,9 +13,11 @@ interface AdSlotProps {
   name: AdSlotName
   className?: string
   label?: string
+  /** 全屏页脚等紧凑场景：减小外边距 */
+  compact?: boolean
 }
 
-export function AdSlot({ name, className, label = "广告" }: AdSlotProps) {
+export function AdSlot({ name, className, label = "广告", compact = false }: AdSlotProps) {
   const slotId = getAdSlot(name)
   const pushed = useRef(false)
 
@@ -39,7 +41,10 @@ export function AdSlot({ name, className, label = "广告" }: AdSlotProps) {
   }
 
   return (
-    <aside className={cn("my-6", className)} aria-label={label}>
+    <aside
+      className={cn(compact ? "my-0 py-2" : "my-6", className)}
+      aria-label={label}
+    >
       <p className="mb-1 text-center text-[10px] uppercase tracking-wider text-muted-foreground/60">
         {label}
       </p>

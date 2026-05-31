@@ -33,6 +33,22 @@ const ja: Messages = {
     notFoundHome: "ホームへ",
     notFoundBrowseTools: "ツール一覧",
   },
+  workspace: {
+    sidebarExpand: "サイドバーを展開",
+    sidebarCollapse: "サイドバーを折りたたむ",
+    scaleCompact: "コンパクト",
+    scaleComfortable: "標準",
+    scaleLarge: "大",
+    focusMode: "集中モード",
+    exitFocus: "集中モードを終了",
+    panelFullscreen: "パネルを全画面",
+    panelExitFullscreen: "全画面を終了",
+    reset: "レイアウトをリセット",
+    zoomIn: "作業領域を拡大",
+    zoomOut: "作業領域を縮小",
+    workspaceSize: "作業領域サイズ",
+    workspaceHint: "エディタの高さを調整",
+  },
   home: {
     metaTitle: "WaiHub - 開発者向けオンラインツール",
     metaDescription:

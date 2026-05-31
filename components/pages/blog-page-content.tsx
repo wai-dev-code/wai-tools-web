@@ -32,7 +32,6 @@ export function BlogPageContent({ locale }: { locale: Locale }) {
                   <span className="rounded-full bg-primary/10 px-2.5 py-0.5 font-medium text-primary">
                     {localized.category}
                   </span>
-                  <span>{localized.readTime}</span>
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3.5 w-3.5" />
                     {formatBlogDate(post.date, locale)}

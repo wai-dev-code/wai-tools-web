@@ -33,6 +33,22 @@ const zh: Messages = {
     notFoundHome: "返回首页",
     notFoundBrowseTools: "浏览工具",
   },
+  workspace: {
+    sidebarExpand: "展开侧边栏",
+    sidebarCollapse: "收起侧边栏",
+    scaleCompact: "紧凑",
+    scaleComfortable: "舒适",
+    scaleLarge: "大号",
+    focusMode: "专注模式",
+    exitFocus: "退出专注",
+    panelFullscreen: "全屏此面板",
+    panelExitFullscreen: "退出全屏",
+    reset: "重置布局",
+    zoomIn: "放大工作区",
+    zoomOut: "缩小工作区",
+    workspaceSize: "工作区大小",
+    workspaceHint: "调整当前工具的编辑区高度",
+  },
   home: {
     metaTitle: "WaiHub - 开发者在线工具",
     metaDescription:

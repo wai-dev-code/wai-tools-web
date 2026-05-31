@@ -379,43 +379,50 @@ function parseJsonPathTokens(expression: string): (string | number)[] {
     throw new Error("JSONPath 格式无效")
   }
   rest = rest.slice(1)
-  // 允许 $.[0] 写法
   if (rest.startsWith(".")) rest = rest.slice(1)
 
   const tokens: (string | number)[] = []
   while (rest.length > 0) {
     if (rest.startsWith(".")) {
       rest = rest.slice(1)
-      const match = rest.match(/^([a-zA-Z_][\w-]*)/)
-      if (!match) throw new Error(`无效 JSONPath: ${expression}`)
-      tokens.push(match[1])
-      rest = rest.slice(match[1].length)
-    } else if (rest.startsWith("[")) {
+    }
+    if (!rest) break
+
+    if (rest.startsWith("[")) {
       const match = rest.match(/^\[(\d+)\]/)
       if (!match) throw new Error(`无效 JSONPath: ${expression}`)
       tokens.push(Number(match[1]))
       rest = rest.slice(match[0].length)
     } else {
-      throw new Error(`无效 JSONPath: ${expression}`)
+      const match = rest.match(/^([a-zA-Z_][\w-]*)/)
+      if (!match) throw new Error(`无效 JSONPath: ${expression}`)
+      tokens.push(match[1])
+      rest = rest.slice(match[1].length)
     }
   }
   return tokens
 }
 
-/** 用户输入可省略 $，如 user.name、[0].name */
+/** 用户输入可省略 $ 与开头的 .，如 user.name、[0].name */
 export function normalizeJsonPathInput(input: string): string {
-  const q = input.trim()
+  const q = input.trim().replace(/^\./, "")
   if (!q) return "$"
-  if (q.startsWith("$")) return q
+  if (q.startsWith("$")) {
+    const rest = q.slice(1).replace(/^\./, "")
+    if (!rest) return "$"
+    if (rest.startsWith("[")) return `$${rest}`
+    return `$.${rest}`
+  }
   if (q.startsWith("[")) return `$${q}`
   return `$.${q}`
 }
 
 /** 粘贴带 $ 前缀的路径时，只保留用户需编辑的部分 */
 export function stripJsonPathPrefix(input: string): string {
-  const q = input.trim()
+  let q = input.trim()
   if (q.startsWith("$.")) return q.slice(2)
   if (q.startsWith("$")) return q.slice(1).replace(/^\./, "")
+  if (q.startsWith(".")) return q.slice(1)
   return q
 }
 

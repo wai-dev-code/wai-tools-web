@@ -6,7 +6,6 @@ export interface BlogPost {
   description: string
   date: string
   category: string
-  readTime: string
   content: { heading?: string; paragraphs: string[] }[]
   hidden?: boolean
 }
@@ -18,7 +17,6 @@ export const blogPosts: BlogPost[] = [
     description: "学习 JSON 格式化的最佳实践，提升 API 调试与配置文件管理效率。",
     date: siteConfig.contentUpdatedAt,
     category: "教程",
-    readTime: "5 分钟",
     content: [
       {
         paragraphs: [
@@ -53,7 +51,6 @@ export const blogPosts: BlogPost[] = [
     description: "深入了解 Base64 编码的工作原理、适用场景及常见误区。",
     date: siteConfig.contentUpdatedAt,
     category: "技术",
-    readTime: "8 分钟",
     content: [
       {
         paragraphs: [
@@ -89,7 +86,6 @@ export const blogPosts: BlogPost[] = [
     description: "确保 JWT 实现安全可靠的关键技巧与常见陷阱。",
     date: siteConfig.contentUpdatedAt,
     category: "安全",
-    readTime: "10 分钟",
     hidden: true,
     content: [
       {

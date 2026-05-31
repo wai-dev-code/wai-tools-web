@@ -33,7 +33,6 @@ export function BlogArticleContent({ locale, slug }: { locale: Locale; slug: str
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 font-medium text-primary">
               {localized.category}
             </span>
-            <span>{localized.readTime}</span>
             <span>{formatBlogDate(post.date, locale)}</span>
           </div>
           <h1 className="mb-6 text-3xl font-bold text-foreground">{localized.title}</h1>

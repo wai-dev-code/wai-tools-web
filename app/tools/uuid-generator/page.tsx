@@ -11,7 +11,7 @@ export default function UuidGeneratorPage() {
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       instructions={
         <>
           <p>设置生成数量（1-100），点击「生成 UUID v4」即可批量创建随机唯一标识符。</p>

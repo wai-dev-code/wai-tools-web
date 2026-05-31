@@ -26,7 +26,7 @@ export function createJsonToolPage(slug: string) {
   function Page() {
     return (
       <ToolLayout
-        tool={tool}
+        toolSlug={tool.slug}
         instructions={
           <>
             <p>{pageConfig.description}</p>

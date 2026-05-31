@@ -11,7 +11,7 @@ export default function TimestampPage() {
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       instructions={
         <>
           <p>选择时间戳单位（秒或毫秒），输入 Unix 时间戳可转换为可读日期；输入日期可转换为时间戳。</p>

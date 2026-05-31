@@ -13,7 +13,7 @@ export function JsonFormatterPageContent({ locale }: { locale: Locale }) {
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       locale={locale}
       instructions={
         <>

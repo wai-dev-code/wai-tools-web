@@ -153,7 +153,7 @@ export function JsonLineEditor({
   return (
     <div
       className={cn(
-        "flex h-[min(60vh,520px)] min-h-[280px] overflow-hidden rounded-lg border border-border bg-secondary/20",
+        "flex h-[var(--tool-editor-min-h)] min-h-[var(--tool-panel-min-h)] overflow-hidden rounded-lg border border-border bg-secondary/20",
         className
       )}
     >

@@ -33,6 +33,22 @@ const en: Messages = {
     notFoundHome: "Back to home",
     notFoundBrowseTools: "Browse tools",
   },
+  workspace: {
+    sidebarExpand: "Expand sidebar",
+    sidebarCollapse: "Collapse sidebar",
+    scaleCompact: "Compact",
+    scaleComfortable: "Comfortable",
+    scaleLarge: "Large",
+    focusMode: "Focus mode",
+    exitFocus: "Exit focus",
+    panelFullscreen: "Fullscreen panel",
+    panelExitFullscreen: "Exit fullscreen",
+    reset: "Reset layout",
+    zoomIn: "Enlarge workspace",
+    zoomOut: "Shrink workspace",
+    workspaceSize: "Workspace size",
+    workspaceHint: "Adjust editor height for this tool",
+  },
   home: {
     metaTitle: "WaiHub - Developer Tools Online",
     metaDescription:

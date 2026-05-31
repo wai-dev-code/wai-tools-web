@@ -13,7 +13,7 @@ export function Base64PageContent({ locale }: { locale: Locale }) {
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       locale={locale}
       instructions={
         <>

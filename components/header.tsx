@@ -3,21 +3,15 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LocaleSwitcher } from "@/components/locale-switcher"
+import { HeaderToolsDropdown, HeaderMobileNav } from "@/components/header-tools-nav"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { getMessages, localizeHref } from "@/lib/i18n"
 
 export function Header({ locale = defaultLocale }: { locale?: Locale }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const m = getMessages(locale)
-
-  const navLinks = [
-    { name: m.common.tools, href: localizeHref(locale, "tools") },
-    { name: m.common.blog, href: localizeHref(locale, "blog") },
-    { name: m.common.about, href: localizeHref(locale, "about") },
-  ]
+  const closeMobile = () => setMobileMenuOpen(false)
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
@@ -30,18 +24,19 @@ export function Header({ locale = defaultLocale }: { locale?: Locale }) {
         </Link>
 
         <div className="hidden md:flex md:items-center md:gap-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.name}
-            </Link>
-          ))}
-          <Button size="sm" asChild>
-            <Link href={localizeHref(locale, "tools")}>{m.common.openTools}</Link>
-          </Button>
+          <HeaderToolsDropdown locale={locale} />
+          <Link
+            href={localizeHref(locale, "blog")}
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {getMessages(locale).common.blog}
+          </Link>
+          <Link
+            href={localizeHref(locale, "about")}
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {getMessages(locale).common.about}
+          </Link>
           <LocaleSwitcher locale={locale} />
           <ThemeToggle />
         </div>
@@ -60,22 +55,8 @@ export function Header({ locale = defaultLocale }: { locale?: Locale }) {
       </nav>
 
       {mobileMenuOpen && (
-        <div className="border-t border-border bg-background px-4 py-4 md:hidden">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="block py-2 text-base text-muted-foreground"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <Button size="sm" className="mt-3 w-full" asChild>
-            <Link href={localizeHref(locale, "tools")} onClick={() => setMobileMenuOpen(false)}>
-              {m.common.openTools}
-            </Link>
-          </Button>
+        <div className="border-t border-border bg-background px-4 py-3 md:hidden">
+          <HeaderMobileNav locale={locale} onNavigate={closeMobile} />
         </div>
       )}
     </header>

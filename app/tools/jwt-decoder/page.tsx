@@ -11,7 +11,7 @@ export default function JwtDecoderPage() {
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       instructions={
         <>
           <p>粘贴 JWT Token，自动解码 Header 和 Payload 为可读 JSON。Signature 部分仅展示，不做密码学验证。</p>

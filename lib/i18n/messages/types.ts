@@ -51,6 +51,22 @@ export interface Messages {
     notFoundHome: string
     notFoundBrowseTools: string
   }
+  workspace: {
+    sidebarExpand: string
+    sidebarCollapse: string
+    scaleCompact: string
+    scaleComfortable: string
+    scaleLarge: string
+    focusMode: string
+    exitFocus: string
+    panelFullscreen: string
+    panelExitFullscreen: string
+    reset: string
+    zoomIn: string
+    zoomOut: string
+    workspaceSize: string
+    workspaceHint: string
+  }
   home: {
     metaTitle: string
     metaDescription: string

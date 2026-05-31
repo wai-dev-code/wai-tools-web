@@ -21,7 +21,7 @@ export function JsonSeoPageContent({ locale, slug }: { locale: Locale; slug: str
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       locale={locale}
       instructions={
         <>
@@ -47,7 +47,7 @@ export function Base64SeoPageContent({ locale, slug }: { locale: Locale; slug: s
 
   return (
     <ToolLayout
-      tool={tool}
+      toolSlug={tool.slug}
       locale={locale}
       instructions={
         <>

@@ -20,3 +20,11 @@ export function isAdsenseConfigured(): boolean {
 export function getAdSlot(name: AdSlotName): string | undefined {
   return adsenseConfig.slots[name]
 }
+
+/**
+ * 全屏模式是否允许展示底部广告。
+ * 仅当 AdSense 已配置且为静态页脚条（不浮层、不遮挡编辑区）时返回 true。
+ */
+export function isImmersiveBottomAdAllowed(): boolean {
+  return isAdsenseConfigured() && Boolean(getAdSlot("toolBottom"))
+}

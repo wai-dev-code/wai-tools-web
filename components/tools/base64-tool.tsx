@@ -699,14 +699,14 @@ function EditorPanel({
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-1">{actions}</div>
       </div>
-      <div className="flex min-h-[min(50vh,480px)] flex-1 flex-col">
+      <div className="flex min-h-[var(--tool-editor-min-h)] flex-1 flex-col">
         <JsonLineEditor
           value={value}
           onChange={readOnly ? () => {} : onChange!}
           readOnly={readOnly}
           showLineNumbers={showLineNumbers}
           placeholder={placeholder}
-          className={cn("h-full min-h-[min(50vh,480px)] rounded-none border-0", readOnly && "bg-muted/20")}
+          className={cn("h-full min-h-[var(--tool-editor-min-h)] rounded-none border-0", readOnly && "bg-muted/20")}
         />
       </div>
     </div>
