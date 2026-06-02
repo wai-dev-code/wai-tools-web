@@ -57,11 +57,14 @@ const en: Messages = {
     workspaceHint: "Adjust editor height for this tool",
   },
   home: {
-    metaTitle: "WaiHub - Developer Tools Online",
+    metaTitle: "WaiHub - Developer Tools Hub Online",
     metaDescription:
-      "Free JSON formatter, Base64, URL encoder, JWT decoder, UUID generator, and timestamp tools. Runs in your browser — no signup required.",
-    title: "Developer tools, ready when you are",
-    subtitle: "JSON, encoding, JWT, UUID — runs in your browser, no signup",
+      "Free developer tools hub: JSON formatter, Base64, URL encoder, JWT decoder, UUID generator, timestamp converter, and regex tester. Runs in your browser in English, 中文, and 日本語 — no signup.",
+    title: "Developer Tools Hub",
+    subtitle:
+      "{n} tools in one place — JSON, encoding, JWT, Regex & more. Processed in your browser, not on our servers. English · 中文 · 日本語",
+    blogSectionTitle: "Tips & tutorials",
+    blogViewAll: "View all posts",
     searchPlaceholder: "Search tools, e.g. JSON, JWT, UUID...",
     categoryAll: "All",
     useNow: "Use now →",

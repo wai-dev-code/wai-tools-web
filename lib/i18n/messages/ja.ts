@@ -57,11 +57,14 @@ const ja: Messages = {
     workspaceHint: "エディタの高さを調整",
   },
   home: {
-    metaTitle: "WaiHub - 開発者向けオンラインツール",
+    metaTitle: "WaiHub - 開発者ツール Hub",
     metaDescription:
-      "JSON フォーマッター、Base64、URL エンコード、JWT デコード、UUID 生成、タイムスタンプ変換など。ブラウザ内で動作、登録不要。",
-    title: "開発者ツール、すぐ使える",
-    subtitle: "JSON・エンコード・JWT・UUID — ブラウザ内で実行",
+      "無料の開発者ツール Hub：JSON、Base64、URL、JWT、UUID、タイムスタンプ、正規表現テスターなど。ブラウザ内で処理。English・中文・日本語対応、登録不要。",
+    title: "開発者ツール Hub",
+    subtitle:
+      "{n} 種類のツールを一箇所で — JSON・エンコード・JWT・Regex など。ブラウザ内で処理し、サーバーに送信しません。English · 中文 · 日本語",
+    blogSectionTitle: "チュートリアルとヒント",
+    blogViewAll: "記事一覧へ",
     searchPlaceholder: "ツールを検索（JSON、JWT、UUID など）",
     categoryAll: "すべて",
     useNow: "今すぐ使う →",

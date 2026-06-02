@@ -57,11 +57,14 @@ const zh: Messages = {
     workspaceHint: "调整当前工具的编辑区高度",
   },
   home: {
-    metaTitle: "WaiHub - 开发者在线工具",
+    metaTitle: "WaiHub - 开发者工具 Hub",
     metaDescription:
-      "WaiHub 提供 JSON 格式化、Base64、URL 编解码、JWT 解码、UUID 生成、时间戳转换等免费开发者工具，浏览器内运行，无需注册。",
-    title: "开发者工具，即开即用",
-    subtitle: "JSON、编码、JWT、UUID — 浏览器内运行，数据不上传",
+      "免费开发者工具 Hub：JSON 格式化、Base64、URL 编解码、JWT 解码、UUID 生成、时间戳转换、正则测试等。浏览器内处理，支持中文、English、日本語，无需注册。",
+    title: "开发者工具 Hub",
+    subtitle:
+      "共 {n} 款工具一站可用 — JSON、编码、JWT、正则等。数据在浏览器内处理，不上传服务器。中文 · English · 日本語",
+    blogSectionTitle: "教程与技巧",
+    blogViewAll: "查看全部文章",
     searchPlaceholder: "搜索工具，如 JSON、JWT、UUID...",
     categoryAll: "全部",
     useNow: "立即使用 →",

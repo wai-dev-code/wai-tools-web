@@ -38,7 +38,9 @@ export function HomeToolHub({ locale = defaultLocale }: { locale?: Locale }) {
           <h1 className="mb-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {m.home.title}
           </h1>
-          <p className="text-muted-foreground">{m.home.subtitle}</p>
+          <p className="mx-auto max-w-2xl text-muted-foreground">
+            {formatMessage(m.home.subtitle, { n: visibleTools.length })}
+          </p>
         </div>
 
         <div className="relative mx-auto mb-6 max-w-xl">

@@ -85,6 +85,8 @@ export interface Messages {
     noResults: string
     toolsCount: string
     viewAll: string
+    blogSectionTitle: string
+    blogViewAll: string
     faqTitle: string
     faqs: FaqItem[]
   }
