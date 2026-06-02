@@ -5,6 +5,7 @@ export const localizedToolSlugs = [
   "jwt-decoder",
   "timestamp",
   "uuid-generator",
+  "regex-tester",
 ] as const
 
 export type LocalizedToolSlug = (typeof localizedToolSlugs)[number]

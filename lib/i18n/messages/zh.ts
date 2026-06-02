@@ -5,6 +5,7 @@ import { urlToolZh, urlEncoderPageZh } from "@/lib/i18n/messages/url-tool-messag
 import { jwtToolZh, jwtDecoderPageZh } from "@/lib/i18n/messages/jwt-tool-messages"
 import { timestampToolZh, timestampPageZh } from "@/lib/i18n/messages/timestamp-tool-messages"
 import { uuidToolZh, uuidGeneratorPageZh } from "@/lib/i18n/messages/uuid-tool-messages"
+import { regexToolZh, regexTesterPageZh } from "@/lib/i18n/messages/regex-tool-messages"
 import { staticZh } from "@/lib/i18n/messages/static-pages"
 import { legalZh } from "@/lib/i18n/messages/legal-pages"
 import { seoZh } from "@/lib/i18n/messages/seo-pages"
@@ -120,6 +121,11 @@ const zh: Messages = {
       short: "UUID v4 生成与批量导出",
       desc: "批量生成 UUID v4，支持大写、无连字符、花括号格式，复制与下载",
     },
+    regexTester: {
+      name: "正则表达式测试",
+      short: "测试与调试正则表达式",
+      desc: "实时测试正则，高亮匹配，查看捕获组，浏览器内运行",
+    },
   },
   jsonFormatterPage: {
     metaTitle: "JSON 格式化 - 免费在线工具",
@@ -151,6 +157,7 @@ const zh: Messages = {
   jwtDecoderPage: jwtDecoderPageZh,
   timestampPage: timestampPageZh,
   uuidGeneratorPage: uuidGeneratorPageZh,
+  regexTesterPage: regexTesterPageZh,
   seo: seoZh,
   jsonTool: jsonToolZh,
   base64Tool: base64ToolZh,
@@ -158,6 +165,7 @@ const zh: Messages = {
   jwtTool: jwtToolZh,
   timestampTool: timestampToolZh,
   uuidTool: uuidToolZh,
+  regexTool: regexToolZh,
   aboutPage: staticZh.about,
   contactPage: staticZh.contact,
   blogPage: staticZh.blog,

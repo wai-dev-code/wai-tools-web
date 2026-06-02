@@ -88,8 +88,7 @@ export const tools: ToolDefinition[] = [
     shortDescription: "测试与调试正则表达式",
     icon: FileSearch,
     category: "dev",
-    keywords: ["regex", "正则", "regexp", "匹配", "pattern"],
-    hidden: true,
+    keywords: ["regex", "regexp", "regular expression", "正则", "pattern", "match", "test"],
   },
   {
     slug: "jwt-decoder",

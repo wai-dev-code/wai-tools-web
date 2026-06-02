@@ -5,6 +5,7 @@ import type { JwtToolMessages, JwtDecoderPageMessages } from "@/lib/i18n/message
 import type { TimestampToolMessages, TimestampPageMessages } from "@/lib/i18n/messages/timestamp-tool-messages"
 import type { UrlToolMessages, UrlEncoderPageMessages } from "@/lib/i18n/messages/url-tool-messages"
 import type { UuidToolMessages, UuidGeneratorPageMessages } from "@/lib/i18n/messages/uuid-tool-messages"
+import type { RegexToolMessages, RegexTesterPageMessages } from "@/lib/i18n/messages/regex-tool-messages"
 import type { LegalPagesMessages } from "@/lib/i18n/messages/legal-pages"
 import type { SeoPagesMessages } from "@/lib/i18n/messages/seo-pages"
 import type { StaticPageMessages } from "@/lib/i18n/messages/static-pages"
@@ -108,6 +109,7 @@ export interface Messages {
     jwtDecoder: ToolText
     timestamp: ToolText
     uuidGenerator: ToolText
+    regexTester: ToolText
   }
   jsonFormatterPage: {
     metaTitle: string
@@ -125,6 +127,7 @@ export interface Messages {
   jwtDecoderPage: JwtDecoderPageMessages
   timestampPage: TimestampPageMessages
   uuidGeneratorPage: UuidGeneratorPageMessages
+  regexTesterPage: RegexTesterPageMessages
   seo: SeoPagesMessages
   jsonTool: JsonToolMessages
   base64Tool: Base64ToolMessages
@@ -132,6 +135,7 @@ export interface Messages {
   jwtTool: JwtToolMessages
   timestampTool: TimestampToolMessages
   uuidTool: UuidToolMessages
+  regexTool: RegexToolMessages
   aboutPage: StaticPageMessages["about"]
   contactPage: StaticPageMessages["contact"]
   blogPage: StaticPageMessages["blog"]

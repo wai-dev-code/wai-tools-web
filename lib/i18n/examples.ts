@@ -8,6 +8,7 @@ import {
   timestampExamples,
   urlEncoderExamples,
   uuidGeneratorExamples,
+  regexTesterExamples,
   type Base64Example,
   type JsonFormatterExample,
   type JwtDecoderExample,
@@ -54,7 +55,7 @@ export function getBase64FileExamples(locale: Locale) {
 function mapToolExamples<T>(
   locale: Locale,
   list: ToolExampleItem<T>[],
-  examplesKey: "urlTool" | "jwtTool" | "timestampTool" | "uuidTool"
+  examplesKey: "urlTool" | "jwtTool" | "timestampTool" | "uuidTool" | "regexTool"
 ): ToolExampleItem<T>[] {
   const labels = getMessages(locale)[examplesKey].examples
   return list.map((ex) => ({
@@ -78,4 +79,8 @@ export function getTimestampExamples(locale: Locale): ToolExampleItem<TimestampE
 
 export function getUuidGeneratorExamples(locale: Locale): ToolExampleItem<UuidGeneratorExample>[] {
   return mapToolExamples(locale, uuidGeneratorExamples, "uuidTool")
+}
+
+export function getRegexTesterExamples(locale: Locale): ToolExampleItem<import("@/lib/tool-examples").RegexTesterExample>[] {
+  return mapToolExamples(locale, regexTesterExamples, "regexTool")
 }

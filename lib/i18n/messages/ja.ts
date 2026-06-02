@@ -5,6 +5,7 @@ import { urlToolJa, urlEncoderPageJa } from "@/lib/i18n/messages/url-tool-messag
 import { jwtToolJa, jwtDecoderPageJa } from "@/lib/i18n/messages/jwt-tool-messages"
 import { timestampToolJa, timestampPageJa } from "@/lib/i18n/messages/timestamp-tool-messages"
 import { uuidToolJa, uuidGeneratorPageJa } from "@/lib/i18n/messages/uuid-tool-messages"
+import { regexToolJa, regexTesterPageJa } from "@/lib/i18n/messages/regex-tool-messages"
 import { staticJa } from "@/lib/i18n/messages/static-pages"
 import { legalJa } from "@/lib/i18n/messages/legal-pages"
 import { seoJa } from "@/lib/i18n/messages/seo-pages"
@@ -120,6 +121,11 @@ const ja: Messages = {
       short: "UUID v4 生成とエクスポート",
       desc: "UUID v4 一括生成 — 大文字、ハイフンなし、波括弧、コピーとダウンロード",
     },
+    regexTester: {
+      name: "正規表現テスター",
+      short: "正規表現のテストとデバッグ",
+      desc: "リアルタイムでマッチをハイライト、キャプチャグループを確認 — ブラウザ内で実行",
+    },
   },
   jsonFormatterPage: {
     metaTitle: "JSON フォーマッター - 無料オンラインツール",
@@ -151,6 +157,7 @@ const ja: Messages = {
   jwtDecoderPage: jwtDecoderPageJa,
   timestampPage: timestampPageJa,
   uuidGeneratorPage: uuidGeneratorPageJa,
+  regexTesterPage: regexTesterPageJa,
   seo: seoJa,
   jsonTool: jsonToolJa,
   base64Tool: base64ToolJa,
@@ -158,6 +165,7 @@ const ja: Messages = {
   jwtTool: jwtToolJa,
   timestampTool: timestampToolJa,
   uuidTool: uuidToolJa,
+  regexTool: regexToolJa,
   aboutPage: staticJa.about,
   contactPage: staticJa.contact,
   blogPage: staticJa.blog,

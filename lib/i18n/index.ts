@@ -107,6 +107,7 @@ const TOOL_TEXT_KEY: Record<LocalizedToolSlug, keyof Messages["tools"]> = {
   "jwt-decoder": "jwtDecoder",
   timestamp: "timestamp",
   "uuid-generator": "uuidGenerator",
+  "regex-tester": "regexTester",
 }
 
 const TOOL_PAGE_KEY: Record<
@@ -117,6 +118,7 @@ const TOOL_PAGE_KEY: Record<
   | "jwtDecoderPage"
   | "timestampPage"
   | "uuidGeneratorPage"
+  | "regexTesterPage"
 > = {
   "json-formatter": "jsonFormatterPage",
   base64: "base64Page",
@@ -124,6 +126,7 @@ const TOOL_PAGE_KEY: Record<
   "jwt-decoder": "jwtDecoderPage",
   timestamp: "timestampPage",
   "uuid-generator": "uuidGeneratorPage",
+  "regex-tester": "regexTesterPage",
 }
 
 export function getLocalizedToolText(slug: LocalizedToolSlug, locale: Locale) {

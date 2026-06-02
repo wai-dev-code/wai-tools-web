@@ -21,11 +21,7 @@ export interface JwtDecoderExample {
   token: string
 }
 
-export interface RegexTesterExample {
-  pattern: string
-  flags: { g: boolean; i: boolean; m: boolean }
-  text: string
-}
+export type { RegexTesterExample } from "@/lib/regex-pattern-library"
 
 export interface TimestampExample {
   timestamp: string
@@ -200,28 +196,7 @@ export const jwtDecoderExamples: ToolExampleItem<JwtDecoderExample>[] = [
   },
 ]
 
-export const regexTesterExamples: ToolExampleItem<RegexTesterExample>[] = [
-  {
-    id: "numbers",
-    label: "提取数字",
-    description: "全局匹配 \\d+",
-    data: {
-      pattern: "\\d+",
-      flags: { g: true, i: false, m: false },
-      text: "Order 123, price 45.67, id 9999",
-    },
-  },
-  {
-    id: "email",
-    label: "邮箱匹配",
-    description: "常见邮箱正则",
-    data: {
-      pattern: "[\\w.-]+@[\\w.-]+\\.\\w+",
-      flags: { g: true, i: true, m: false },
-      text: "Contact: alice@example.com or BOB@Company.ORG",
-    },
-  },
-]
+export { regexPatternLibrary as regexTesterExamples } from "@/lib/regex-pattern-library"
 
 export const timestampExamples: ToolExampleItem<TimestampExample>[] = [
   {

@@ -5,6 +5,7 @@ import { urlToolEn, urlEncoderPageEn } from "@/lib/i18n/messages/url-tool-messag
 import { jwtToolEn, jwtDecoderPageEn } from "@/lib/i18n/messages/jwt-tool-messages"
 import { timestampToolEn, timestampPageEn } from "@/lib/i18n/messages/timestamp-tool-messages"
 import { uuidToolEn, uuidGeneratorPageEn } from "@/lib/i18n/messages/uuid-tool-messages"
+import { regexToolEn, regexTesterPageEn } from "@/lib/i18n/messages/regex-tool-messages"
 import { staticEn } from "@/lib/i18n/messages/static-pages"
 import { legalEn } from "@/lib/i18n/messages/legal-pages"
 import { seoEn } from "@/lib/i18n/messages/seo-pages"
@@ -120,6 +121,11 @@ const en: Messages = {
       short: "UUID v4 generate & export",
       desc: "Batch UUID v4 with uppercase, no hyphens, braces — copy & download",
     },
+    regexTester: {
+      name: "Regex Tester",
+      short: "Test & debug regular expressions",
+      desc: "Real-time regex testing with match highlighting and capture groups in your browser",
+    },
   },
   jsonFormatterPage: {
     metaTitle: "JSON Formatter - Free Online Tool",
@@ -151,6 +157,7 @@ const en: Messages = {
   jwtDecoderPage: jwtDecoderPageEn,
   timestampPage: timestampPageEn,
   uuidGeneratorPage: uuidGeneratorPageEn,
+  regexTesterPage: regexTesterPageEn,
   seo: seoEn,
   jsonTool: jsonToolEn,
   base64Tool: base64ToolEn,
@@ -158,6 +165,7 @@ const en: Messages = {
   jwtTool: jwtToolEn,
   timestampTool: timestampToolEn,
   uuidTool: uuidToolEn,
+  regexTool: regexToolEn,
   aboutPage: staticEn.about,
   contactPage: staticEn.contact,
   blogPage: staticEn.blog,

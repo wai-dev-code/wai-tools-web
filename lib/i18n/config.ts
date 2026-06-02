@@ -19,6 +19,7 @@ export const coreLocalizedPaths = [
   "tools/jwt-decoder",
   "tools/timestamp",
   "tools/uuid-generator",
+  "tools/regex-tester",
   "about",
   "contact",
   "blog",
