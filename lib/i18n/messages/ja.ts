@@ -65,7 +65,7 @@ const ja: Messages = {
   home: {
     metaTitle: "WaiHub - 開発者ツール Hub",
     metaDescription:
-      "無料の開発者ツール Hub：JSON、Base64、URL、JWT、UUID、タイムスタンプ、正規表現テスターなど。ブラウザ内で処理。English・中文・日本語対応、登録不要。",
+      "無料の開発者ツール Hub：JSON、Base64、URL、JWT、UUID、パスワード生成、QRコード、MD5/SHA ハッシュ、正規表現、タイムスタンプなど 10 種以上。ブラウザ内で処理、登録不要。",
     title: "開発者ツール Hub",
     subtitle:
       "{n} 種類のツールを一箇所で — JSON・エンコード・JWT・Regex など。ブラウザ内で処理し、サーバーに送信しません。English · 中文 · 日本語",
@@ -132,18 +132,18 @@ const ja: Messages = {
     },
     passwordGenerator: {
       name: "パスワード生成",
-      short: "安全なランダムパスワード",
-      desc: "長さ・文字種・除外文字を指定、強度表示、ワンクリックコピー",
+      short: "オンライン強力パスワード生成",
+      desc: "無料パスワード生成：長さ・文字種・除外、強度表示、ワンクリックコピー",
     },
     qrCodeGenerator: {
       name: "QRコード生成",
-      short: "テキスト・URL・メール・電話・WiFi",
-      desc: "多種類の QR コードを生成、プレビュー、PNG ダウンロード",
+      short: "URL・WiFi 対応 QR メーカー",
+      desc: "無料 QR コード生成：テキスト・URL・メール・電話・WiFi、PNG ダウンロード",
     },
     hashGenerator: {
       name: "ハッシュ生成",
-      short: "MD5 / SHA マルチアルゴリズム",
-      desc: "MD5、SHA-1、SHA-256、SHA-512 を同時計算、コピー対応",
+      short: "MD5 / SHA256 計算",
+      desc: "MD5 ハッシュと SHA-1/SHA-256/SHA-512 を同時計算、コピー対応",
     },
     regexTester: {
       name: "正規表現テスター",

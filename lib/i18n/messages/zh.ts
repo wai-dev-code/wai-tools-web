@@ -65,7 +65,7 @@ const zh: Messages = {
   home: {
     metaTitle: "WaiHub - 开发者工具 Hub",
     metaDescription:
-      "免费开发者工具 Hub：JSON 格式化、Base64、URL 编解码、JWT 解码、UUID 生成、时间戳转换、正则测试等。浏览器内处理，支持中文、English、日本語，无需注册。",
+      "免费开发者工具 Hub：JSON 格式化、Base64、URL 编解码、JWT 解码、UUID、密码生成器、二维码生成、MD5/SHA 哈希、正则测试、时间戳转换等 10+ 工具。浏览器内处理，支持中文、English、日本語，无需注册。",
     title: "开发者工具 Hub",
     subtitle:
       "共 {n} 款工具一站可用 — JSON、编码、JWT、正则等。数据在浏览器内处理，不上传服务器。中文 · English · 日本語",
@@ -132,18 +132,18 @@ const zh: Messages = {
     },
     passwordGenerator: {
       name: "密码生成器",
-      short: "安全随机密码生成",
-      desc: "可调长度、字符集与排除字符，实时强度检测，一键复制",
+      short: "在线强密码 / 随机密码生成",
+      desc: "免费密码生成器：长度与字符集可调、排除字符、强度检测，对标 LastPass，浏览器内一键复制",
     },
     qrCodeGenerator: {
       name: "二维码生成器",
-      short: "文本、网址、邮箱、电话、WiFi",
-      desc: "生成多类型二维码，实时预览，下载 PNG",
+      short: "QR Code 文本/网址/WiFi",
+      desc: "免费二维码在线生成：文本、URL、邮箱、电话、WiFi，预览并下载 PNG",
     },
     hashGenerator: {
       name: "哈希生成器",
-      short: "MD5 / SHA 多算法哈希",
-      desc: "同时计算 MD5、SHA-1、SHA-256、SHA-512，一键复制",
+      short: "MD5 / SHA256 在线计算",
+      desc: "MD5 哈希生成器与 SHA-1/SHA-256/SHA-512 同时计算，十六进制结果一键复制",
     },
     regexTester: {
       name: "正则表达式测试",

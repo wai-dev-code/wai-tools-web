@@ -65,7 +65,7 @@ const en: Messages = {
   home: {
     metaTitle: "WaiHub - Developer Tools Hub Online",
     metaDescription:
-      "Free developer tools hub: JSON formatter, Base64, URL encoder, JWT decoder, UUID generator, timestamp converter, and regex tester. Runs in your browser in English, 中文, and 日本語 — no signup.",
+      "Free developer tools hub: JSON formatter, Base64, URL encoder, JWT decoder, UUID, password generator, QR code generator, MD5/SHA hash, regex tester, timestamp converter, and more. Runs in your browser — no signup.",
     title: "Developer Tools Hub",
     subtitle:
       "{n} tools in one place — JSON, encoding, JWT, Regex & more. Processed in your browser, not on our servers. English · 中文 · 日本語",
@@ -132,18 +132,18 @@ const en: Messages = {
     },
     passwordGenerator: {
       name: "Password Generator",
-      short: "Secure random passwords",
-      desc: "Custom length, charset, exclusions, strength meter, one-click copy",
+      short: "Strong random password online",
+      desc: "Free password generator: custom length & charset, exclusions, strength meter, LastPass-style, one-click copy",
     },
     qrCodeGenerator: {
       name: "QR Code Generator",
-      short: "Text, URL, email, phone, WiFi",
-      desc: "Generate QR codes with live preview and PNG download",
+      short: "QR maker for URL & WiFi",
+      desc: "Free QR code generator online: text, URL, email, phone, WiFi — preview and PNG download",
     },
     hashGenerator: {
       name: "Hash Generator",
-      short: "MD5 / SHA multi-algorithm",
-      desc: "MD5, SHA-1, SHA-256, SHA-512 computed at once with copy",
+      short: "MD5 & SHA256 calculator",
+      desc: "MD5 hash generator plus SHA-1/SHA-256/SHA-512 at once — hex digests with one-click copy",
     },
     regexTester: {
       name: "Regex Tester",

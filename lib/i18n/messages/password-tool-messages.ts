@@ -102,9 +102,9 @@ export const passwordToolJa: PasswordToolMessages = {
 }
 
 export const passwordGeneratorPageZh: PasswordGeneratorPageMessages = {
-  metaTitle: "密码生成器 - 免费在线工具",
+  metaTitle: "密码生成器 - 免费在线强密码生成工具",
   metaDescription:
-    "在线生成安全随机密码，可调长度、字符集、排除字符，实时强度检测，一键复制。浏览器内运行，不上传服务器。",
+    "免费在线密码生成器：随机强密码、可调长度与字符集、排除易混淆字符、强度检测、一键复制。对标 LastPass，浏览器内运行不上传。",
   instructions: [
     "拖动滑块或输入数字设置密码长度（4–128 位）。",
     "勾选大写、小写、数字、符号，并可追加自定义字符或排除易混淆字符。",
@@ -127,9 +127,9 @@ export const passwordGeneratorPageZh: PasswordGeneratorPageMessages = {
 }
 
 export const passwordGeneratorPageEn: PasswordGeneratorPageMessages = {
-  metaTitle: "Password Generator - Free Online Tool",
+  metaTitle: "Password Generator - Free Strong Random Password Online",
   metaDescription:
-    "Generate secure random passwords with custom length, charset, exclusions, strength meter, and one-click copy. Runs in your browser.",
+    "Free online password generator like LastPass: random secure passwords, custom length & charset, exclusions, strength meter, one-click copy. Runs in your browser.",
   instructions: [
     "Set length (4–128) with the slider or number input.",
     "Choose uppercase, lowercase, numbers, symbols; add custom chars or exclude ambiguous ones.",
@@ -152,9 +152,9 @@ export const passwordGeneratorPageEn: PasswordGeneratorPageMessages = {
 }
 
 export const passwordGeneratorPageJa: PasswordGeneratorPageMessages = {
-  metaTitle: "パスワード生成 - 無料オンラインツール",
+  metaTitle: "パスワード生成 - 無料オンライン強力パスワード",
   metaDescription:
-    "安全なランダムパスワードを長さ・文字種・除外文字を指定して生成。強度表示とワンクリックコピー。ブラウザ内で完結。",
+    "無料パスワード生成ツール：ランダム強力パスワード、長さ・文字種・除外文字、強度表示、ワンクリックコピー。ブラウザ内完結。",
   instructions: [
     "スライダーまたは数値で長さ（4〜128）を設定します。",
     "大文字・小文字・数字・記号を選択し、カスタム文字の追加や除外ができます。",

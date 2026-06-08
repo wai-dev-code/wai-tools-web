@@ -76,9 +76,9 @@ export const hashToolJa: HashToolMessages = {
 }
 
 export const hashGeneratorPageZh: HashGeneratorPageMessages = {
-  metaTitle: "哈希生成器 - MD5 / SHA 在线工具",
+  metaTitle: "哈希生成器 - MD5 / SHA256 在线计算",
   metaDescription:
-    "在线计算 MD5、SHA-1、SHA-256、SHA-512 哈希值，多算法结果同时展示，一键复制。浏览器内运行，不上传数据。",
+    "免费 MD5 哈希生成器与 SHA-1/SHA-256/SHA-512 在线计算，多算法结果同时展示，一键复制。浏览器内运行，不上传数据。",
   instructions: [
     "在输入框粘贴或输入任意文本，四种哈希值实时同步计算。",
     "每条结果可单独复制，也可一键复制全部。",
@@ -101,9 +101,9 @@ export const hashGeneratorPageZh: HashGeneratorPageMessages = {
 }
 
 export const hashGeneratorPageEn: HashGeneratorPageMessages = {
-  metaTitle: "Hash Generator - MD5 / SHA Online Tool",
+  metaTitle: "Hash Generator - MD5 & SHA256 Online Calculator",
   metaDescription:
-    "Compute MD5, SHA-1, SHA-256, and SHA-512 hashes at once. Copy individually or all together. Runs in your browser.",
+    "Free MD5 hash generator and SHA-1/SHA-256/SHA-512 calculator online. All digests at once, copy individually or together. Runs in your browser.",
   instructions: [
     "Type or paste text — all four hashes update in real time.",
     "Copy each hash separately or copy all at once.",
@@ -126,9 +126,9 @@ export const hashGeneratorPageEn: HashGeneratorPageMessages = {
 }
 
 export const hashGeneratorPageJa: HashGeneratorPageMessages = {
-  metaTitle: "ハッシュ生成 - MD5 / SHA オンラインツール",
+  metaTitle: "ハッシュ生成 - MD5 / SHA256 オンライン計算",
   metaDescription:
-    "MD5、SHA-1、SHA-256、SHA-512 を同時に計算。個別または一括コピー。ブラウザ内で完結。",
+    "無料 MD5 ハッシュ生成と SHA-1/SHA-256/SHA-512 を同時計算。個別・一括コピー。ブラウザ内完結。",
   instructions: [
     "テキストを入力すると 4 種類のハッシュがリアルタイムで更新されます。",
     "各ハッシュを個別にコピーするか、一括コピーできます。",

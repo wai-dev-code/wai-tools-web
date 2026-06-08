@@ -150,9 +150,9 @@ export const qrToolJa: QrToolMessages = {
 }
 
 export const qrCodeGeneratorPageZh: QrCodeGeneratorPageMessages = {
-  metaTitle: "二维码生成器 - 免费在线工具",
+  metaTitle: "二维码生成器 - 免费在线 QR Code 生成",
   metaDescription:
-    "在线生成二维码：文本、网址、邮箱、电话、WiFi，实时预览，一键下载 PNG。浏览器内运行，不上传数据。",
+    "免费 QR Code 在线生成：文本、网址、邮箱、电话、WiFi 二维码，实时预览，PNG 下载。扫码即用，浏览器内生成不上传。",
   instructions: [
     "选择类型（文本、网址、邮箱、电话、WiFi），填写对应字段。",
     "二维码实时更新；可调整尺寸后下载 PNG 图片。",
@@ -175,9 +175,9 @@ export const qrCodeGeneratorPageZh: QrCodeGeneratorPageMessages = {
 }
 
 export const qrCodeGeneratorPageEn: QrCodeGeneratorPageMessages = {
-  metaTitle: "QR Code Generator - Free Online Tool",
+  metaTitle: "QR Code Generator - Free Online QR Maker",
   metaDescription:
-    "Create QR codes for text, URLs, email, phone, and WiFi. Live preview and PNG download. Runs in your browser.",
+    "Free QR code generator online: text, URL, email, phone, WiFi QR codes with live preview and PNG download. Runs in your browser.",
   instructions: [
     "Pick a type (text, URL, email, phone, WiFi) and fill in the fields.",
     "The code updates in real time; adjust size and download PNG.",
@@ -200,9 +200,9 @@ export const qrCodeGeneratorPageEn: QrCodeGeneratorPageMessages = {
 }
 
 export const qrCodeGeneratorPageJa: QrCodeGeneratorPageMessages = {
-  metaTitle: "QRコード生成 - 無料オンラインツール",
+  metaTitle: "QRコード生成 - 無料オンライン QR メーカー",
   metaDescription:
-    "テキスト・URL・メール・電話・WiFi の QR コードを生成。リアルタイムプレビューと PNG ダウンロード。ブラウザ内で完結。",
+    "無料 QR コード生成：テキスト・URL・メール・電話・WiFi、プレビューと PNG ダウンロード。ブラウザ内で完結。",
   instructions: [
     "種類（テキスト、URL、メール、電話、WiFi）を選び、項目を入力します。",
     "QR コードはリアルタイム更新。サイズ調整後に PNG をダウンロードできます。",

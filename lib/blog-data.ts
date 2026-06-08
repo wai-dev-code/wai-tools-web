@@ -10,6 +10,8 @@ export interface BlogPost {
 
 /** 博客文章日期（按篇维护，反映实际发布/修订时间） */
 export const BLOG_POST_DATES = {
+  /** 密码 / 二维码 / 哈希三工具上线 */
+  securityUtilityTools: "2026-06-08",
   /** 全新文章 */
   developerToolkit: "2026-05-31",
   /** 上线 JWT 工具时发布 */
@@ -21,6 +23,15 @@ export const BLOG_POST_DATES = {
 } as const
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: "security-utility-tools-guide",
+    title: "密码、二维码与哈希：三款实用工具使用指南",
+    description:
+      "介绍 WaiHub 密码生成器、二维码生成器与哈希生成器的用法、场景与 SEO 关键词，提升日常开发与安全调试效率。",
+    date: BLOG_POST_DATES.securityUtilityTools,
+    category: "教程",
+    content: [],
+  },
   {
     slug: "developer-toolkit-guide",
     title: "开发者必备：URL、时间戳、UUID 与 JWT 工具指南",

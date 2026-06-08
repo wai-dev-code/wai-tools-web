@@ -133,12 +133,55 @@ export const staticZh: StaticPageMessages = {
   },
   blog: {
     metaTitle: "博客",
-    metaDescription: "开发者工具使用教程、技术原理与安全最佳实践。",
+    metaDescription:
+      "开发者工具教程：密码生成器、二维码生成、MD5/SHA 哈希、JSON、Base64、JWT 等使用指南与最佳实践。",
     title: "博客",
     subtitle: "开发者技巧、教程与最佳实践",
     readMore: "阅读全文",
     categories: { 教程: "教程", 技术: "技术", 安全: "安全" },
     posts: {
+      "security-utility-tools-guide": {
+        title: "密码、二维码与哈希：三款实用工具使用指南",
+        description:
+          "WaiHub 密码生成器、二维码生成器与 MD5/SHA 哈希生成器的场景、用法与选型建议，浏览器内运行不上传数据。",
+        category: "教程",
+        content: [
+          {
+            paragraphs: [
+              "WaiHub 近期新增密码生成器、二维码生成器与哈希生成器，与 JSON、Base64、JWT 等工具一样在浏览器内完成计算，适合注册账号、分享链接、校验指纹等日常场景。本文介绍三款工具的用法与关键词，便于你快速上手。",
+            ],
+          },
+          {
+            heading: "密码生成器",
+            paragraphs: [
+              "对标 LastPass Password Generator 等在线工具，支持 4–128 位长度、大小写/数字/符号字符集、自定义与排除字符，并实时显示弱/中/强强度。使用 crypto.getRandomValues 生成，密码不会上传服务器。",
+              "典型场景：注册新账号、轮换测试环境密码、生成 API 密钥占位符。建议排除易混淆字符（0/O、1/l）以便手写或口头传达。",
+            ],
+          },
+          {
+            heading: "二维码生成器",
+            paragraphs: [
+              "支持文本、网址、邮箱（mailto）、电话（tel）与 WiFi（标准 WIFI: 格式）五种类型，实时预览并可下载 PNG。WiFi 码扫描后可直接联网，适合门店、活动或家庭网络分享。",
+              "网址类型会自动补全 https://；尺寸可在 128–512px 间调节，便于打印或嵌入文档。",
+            ],
+          },
+          {
+            heading: "哈希生成器（MD5 / SHA）",
+            paragraphs: [
+              "输入任意文本即可同时得到 MD5、SHA-1、SHA-256、SHA-512 四种十六进制摘要，支持单条或全部复制。适用于 API 签名校验、缓存 key 指纹、与后端 hash 结果对照等。",
+              "MD5 已不推荐用于密码存储或防篡改，但仍常见于遗留系统校验；SHA-256/512 更适合完整性校验。请勿将生产密钥直接粘贴到不可信网站。",
+            ],
+          },
+          {
+            heading: "工具联动建议",
+            paragraphs: [
+              "注册流程：密码生成器造强密码 → 二维码生成器把官网 URL 做成扫码卡片。",
+              "接口调试：JSON 格式化响应 → 哈希生成器核对 sign 字段 → JWT 解码器查看 Token。",
+              "三款工具均支持中文、English、日本語，可从首页搜索 password、二维码、MD5 等关键词直达。",
+            ],
+          },
+        ],
+      },
       "developer-toolkit-guide": {
         title: "开发者必备：URL、时间戳、UUID 与 JWT 工具指南",
         description: "介绍 WaiHub 新增的 URL 编解码、Unix 时间戳转换、UUID 生成与 JWT 解码工具及典型用法。",
@@ -146,7 +189,7 @@ export const staticZh: StaticPageMessages = {
         content: [
           {
             paragraphs: [
-              "WaiHub 现已提供 6 款浏览器内运行的开发者工具：JSON 格式化、Base64 编解码、URL 编解码、Unix 时间戳转换、UUID 生成器与 JWT 解码器。本文聚焦后四款，帮助你在日常开发中快速选型。",
+              "WaiHub 现已提供 10 款浏览器内运行的开发者工具：JSON 格式化、Base64、URL 编解码、时间戳、UUID、正则测试、JWT 解码，以及密码/二维码/哈希生成器。本文聚焦 URL、时间戳、UUID 与 JWT，帮助你在日常开发中快速选型。",
             ],
           },
           {
@@ -365,12 +408,55 @@ export const staticEn: StaticPageMessages = {
   },
   blog: {
     metaTitle: "Blog",
-    metaDescription: "Tutorials, technical deep-dives, and best practices for developer tools.",
+    metaDescription:
+      "Tutorials for password generator, QR code, MD5/SHA hash, JSON, Base64, JWT, and more developer tools.",
     title: "Blog",
     subtitle: "Tips, tutorials, and best practices",
     readMore: "Read more",
     categories: { 教程: "Tutorial", 技术: "Technical", 安全: "Security" },
     posts: {
+      "security-utility-tools-guide": {
+        title: "Password, QR Code & Hash Generators: A Practical Guide",
+        description:
+          "How to use WaiHub's password generator, QR code generator, and MD5/SHA hash tool — all in your browser.",
+        category: "Tutorial",
+        content: [
+          {
+            paragraphs: [
+              "WaiHub added password, QR code, and hash generators alongside JSON, Base64, and JWT tools. Everything runs locally in your browser — ideal for signups, shareable links, and checksum debugging.",
+            ],
+          },
+          {
+            heading: "Password generator",
+            paragraphs: [
+              "Similar to LastPass Password Generator: length 4–128, charset toggles, custom/exclude characters, and a live weak/average/strong meter. Uses crypto.getRandomValues — nothing is uploaded.",
+              "Use for new account passwords, test env rotation, or API key placeholders. Exclude ambiguous chars (0/O, 1/l) when sharing verbally.",
+            ],
+          },
+          {
+            heading: "QR code generator",
+            paragraphs: [
+              "Create codes for text, URLs, email (mailto), phone (tel), and WiFi (standard WIFI: scheme). Live preview and PNG download. WiFi codes let guests join without typing the password.",
+              "URLs auto-prefix https:// when missing. Resize 128–512px for print or slides.",
+            ],
+          },
+          {
+            heading: "Hash generator (MD5 / SHA)",
+            paragraphs: [
+              "Type text once, get MD5, SHA-1, SHA-256, and SHA-512 hex digests together. Copy one or all — handy for API signature checks and cache fingerprints.",
+              "MD5 is legacy-friendly but not for password storage; prefer SHA-256/512 for integrity. Never paste production secrets into untrusted sites.",
+            ],
+          },
+          {
+            heading: "Workflow tips",
+            paragraphs: [
+              "Signup flow: strong password → QR card for your landing URL.",
+              "API debug: format JSON → hash the sign field → decode JWT if needed.",
+              "Search password, QR, MD5, or SHA-256 on the WaiHub home page to jump straight to each tool.",
+            ],
+          },
+        ],
+      },
       "developer-toolkit-guide": {
         title: "Developer Toolkit: URL, Timestamps, UUID & JWT",
         description: "How to use WaiHub's URL encoder, Unix timestamp converter, UUID generator, and JWT decoder.",
@@ -378,7 +464,7 @@ export const staticEn: StaticPageMessages = {
         content: [
           {
             paragraphs: [
-              "WaiHub now offers six in-browser developer tools: JSON formatter, Base64 codec, URL encoder/decoder, Unix timestamp converter, UUID generator, and JWT decoder. This guide focuses on the last four and when to reach for each.",
+              "WaiHub now offers ten in-browser tools including JSON, Base64, URL, timestamps, UUID, regex, JWT, plus password, QR, and hash generators. This guide focuses on URL, timestamps, UUID, and JWT.",
             ],
           },
           {
@@ -597,12 +683,55 @@ export const staticJa: StaticPageMessages = {
   },
   blog: {
     metaTitle: "ブログ",
-    metaDescription: "開発者ツールのチュートリアルと技術解説。",
+    metaDescription:
+      "パスワード生成、QRコード、MD5/SHA ハッシュ、JSON、Base64、JWT など開発者ツールのチュートリアル。",
     title: "ブログ",
     subtitle: "Tips、チュートリアル、ベストプラクティス",
     readMore: "続きを読む",
     categories: { 教程: "チュートリアル", 技术: "技術", 安全: "セキュリティ" },
     posts: {
+      "security-utility-tools-guide": {
+        title: "パスワード・QRコード・ハッシュ生成ツールガイド",
+        description:
+          "WaiHub のパスワード生成、QRコード生成、MD5/SHA ハッシュツールの使い方と活用シーン。",
+        category: "チュートリアル",
+        content: [
+          {
+            paragraphs: [
+              "WaiHub にパスワード生成、QRコード生成、ハッシュ生成が追加されました。JSON や JWT と同様、ブラウザ内で完結し、アカウント登録やリンク共有、チェックサム確認に便利です。",
+            ],
+          },
+          {
+            heading: "パスワード生成",
+            paragraphs: [
+              "LastPass などのオンライン生成器と同様、長さ 4〜128、文字種、カスタム/除外文字、強度メーターに対応。crypto.getRandomValues を使用し、サーバーに送信されません。",
+              "新規登録、テスト環境のパスワード更新、API キー仮置きなどに。0/O、1/l など紛らわしい文字は除外すると共有しやすいです。",
+            ],
+          },
+          {
+            heading: "QRコード生成",
+            paragraphs: [
+              "テキスト、URL、メール（mailto）、電話（tel）、WiFi（WIFI: 形式）に対応。プレビューと PNG ダウンロード。WiFi コードでゲストを簡単接続。",
+              "URL は https:// を自動補完。128〜512px で印刷や資料向けに調整可能。",
+            ],
+          },
+          {
+            heading: "ハッシュ生成（MD5 / SHA）",
+            paragraphs: [
+              "テキストを入力すると MD5、SHA-1、SHA-256、SHA-512 を同時表示。API 署名やキャッシュ fingerprint の照合に。",
+              "MD5 はレガシー用途向け。パスワード保存には SHA-256/512 を。本番シークレットは信頼できないサイトに貼らないでください。",
+            ],
+          },
+          {
+            heading: "連携のヒント",
+            paragraphs: [
+              "登録フロー：強力なパスワード生成 → ランディング URL の QR カード。",
+              "API デバッグ：JSON 整形 → sign フィールドをハッシュ → 必要なら JWT デコード。",
+              "ホームから password、QR、MD5、SHA-256 で各ツールに直接アクセスできます。",
+            ],
+          },
+        ],
+      },
       "developer-toolkit-guide": {
         title: "開発者向け：URL・タイムスタンプ・UUID・JWT ツール",
         description: "URL 符号化、Unix タイムスタンプ、UUID 生成、JWT デコードの使い方。",
@@ -610,7 +739,7 @@ export const staticJa: StaticPageMessages = {
         content: [
           {
             paragraphs: [
-              "WaiHub にはブラウザ内で動く開発者ツールが 6 種類あります：JSON 整形、Base64、URL 符号化、Unix タイムスタンプ、UUID 生成、JWT デコード。本記事では後 4 つに焦点を当てます。",
+              "WaiHub には JSON、Base64、URL、タイムスタンプ、UUID、正規表現、JWT に加え、パスワード/QR/ハッシュ生成を含む 10 種類のツールがあります。本記事では URL、タイムスタンプ、UUID、JWT に焦点を当てます。",
             ],
           },
           {
