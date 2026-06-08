@@ -11,6 +11,7 @@ import {
   Fingerprint,
   KeyRound,
   Link2,
+  Lock,
 } from "lucide-react"
 import { getVisibleTools } from "@/lib/tools-data"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
@@ -37,6 +38,7 @@ const toolIcons: Record<string, typeof Braces> = {
   "url-encoder": Link2,
   timestamp: Clock,
   "uuid-generator": Fingerprint,
+  "password-generator": Lock,
   "regex-tester": FileSearch,
   "jwt-decoder": KeyRound,
 }

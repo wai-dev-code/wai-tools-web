@@ -5,6 +5,7 @@ export const localizedToolSlugs = [
   "jwt-decoder",
   "timestamp",
   "uuid-generator",
+  "password-generator",
   "regex-tester",
 ] as const
 

@@ -7,6 +7,7 @@ import {
   FileSearch,
   KeyRound,
   Link2,
+  Lock,
   type LucideIcon,
 } from "lucide-react"
 
@@ -80,6 +81,15 @@ export const tools: ToolDefinition[] = [
     icon: Fingerprint,
     category: "dev",
     keywords: ["uuid", "guid", "唯一标识", "生成器", "v4"],
+  },
+  {
+    slug: "password-generator",
+    name: "密码生成器",
+    description: "生成安全随机密码，可调长度、字符集与排除字符，实时强度检测，一键复制",
+    shortDescription: "安全随机密码生成",
+    icon: Lock,
+    category: "dev",
+    keywords: ["password", "generator", "random", "secure", "密码", "生成器", "强密码"],
   },
   {
     slug: "regex-tester",

@@ -6,6 +6,10 @@ import { jwtToolEn, jwtDecoderPageEn } from "@/lib/i18n/messages/jwt-tool-messag
 import { timestampToolEn, timestampPageEn } from "@/lib/i18n/messages/timestamp-tool-messages"
 import { uuidToolEn, uuidGeneratorPageEn } from "@/lib/i18n/messages/uuid-tool-messages"
 import { regexToolEn, regexTesterPageEn } from "@/lib/i18n/messages/regex-tool-messages"
+import {
+  passwordToolEn,
+  passwordGeneratorPageEn,
+} from "@/lib/i18n/messages/password-tool-messages"
 import { staticEn } from "@/lib/i18n/messages/static-pages"
 import { legalEn } from "@/lib/i18n/messages/legal-pages"
 import { seoEn } from "@/lib/i18n/messages/seo-pages"
@@ -124,6 +128,11 @@ const en: Messages = {
       short: "UUID v4 generate & export",
       desc: "Batch UUID v4 with uppercase, no hyphens, braces — copy & download",
     },
+    passwordGenerator: {
+      name: "Password Generator",
+      short: "Secure random passwords",
+      desc: "Custom length, charset, exclusions, strength meter, one-click copy",
+    },
     regexTester: {
       name: "Regex Tester",
       short: "Test & debug regular expressions",
@@ -160,6 +169,7 @@ const en: Messages = {
   jwtDecoderPage: jwtDecoderPageEn,
   timestampPage: timestampPageEn,
   uuidGeneratorPage: uuidGeneratorPageEn,
+  passwordGeneratorPage: passwordGeneratorPageEn,
   regexTesterPage: regexTesterPageEn,
   seo: seoEn,
   jsonTool: jsonToolEn,
@@ -168,6 +178,7 @@ const en: Messages = {
   jwtTool: jwtToolEn,
   timestampTool: timestampToolEn,
   uuidTool: uuidToolEn,
+  passwordTool: passwordToolEn,
   regexTool: regexToolEn,
   aboutPage: staticEn.about,
   contactPage: staticEn.contact,

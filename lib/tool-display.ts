@@ -34,6 +34,7 @@ function getToolTextKey(slug: LocalizedToolSlug) {
     "jwt-decoder": "jwtDecoder",
     timestamp: "timestamp",
     "uuid-generator": "uuidGenerator",
+    "password-generator": "passwordGenerator",
     "regex-tester": "regexTester",
   } as const
   return map[slug]

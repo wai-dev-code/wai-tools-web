@@ -6,6 +6,10 @@ import { jwtToolJa, jwtDecoderPageJa } from "@/lib/i18n/messages/jwt-tool-messag
 import { timestampToolJa, timestampPageJa } from "@/lib/i18n/messages/timestamp-tool-messages"
 import { uuidToolJa, uuidGeneratorPageJa } from "@/lib/i18n/messages/uuid-tool-messages"
 import { regexToolJa, regexTesterPageJa } from "@/lib/i18n/messages/regex-tool-messages"
+import {
+  passwordToolJa,
+  passwordGeneratorPageJa,
+} from "@/lib/i18n/messages/password-tool-messages"
 import { staticJa } from "@/lib/i18n/messages/static-pages"
 import { legalJa } from "@/lib/i18n/messages/legal-pages"
 import { seoJa } from "@/lib/i18n/messages/seo-pages"
@@ -124,6 +128,11 @@ const ja: Messages = {
       short: "UUID v4 生成とエクスポート",
       desc: "UUID v4 一括生成 — 大文字、ハイフンなし、波括弧、コピーとダウンロード",
     },
+    passwordGenerator: {
+      name: "パスワード生成",
+      short: "安全なランダムパスワード",
+      desc: "長さ・文字種・除外文字を指定、強度表示、ワンクリックコピー",
+    },
     regexTester: {
       name: "正規表現テスター",
       short: "正規表現のテストとデバッグ",
@@ -160,6 +169,7 @@ const ja: Messages = {
   jwtDecoderPage: jwtDecoderPageJa,
   timestampPage: timestampPageJa,
   uuidGeneratorPage: uuidGeneratorPageJa,
+  passwordGeneratorPage: passwordGeneratorPageJa,
   regexTesterPage: regexTesterPageJa,
   seo: seoJa,
   jsonTool: jsonToolJa,
@@ -168,6 +178,7 @@ const ja: Messages = {
   jwtTool: jwtToolJa,
   timestampTool: timestampToolJa,
   uuidTool: uuidToolJa,
+  passwordTool: passwordToolJa,
   regexTool: regexToolJa,
   aboutPage: staticJa.about,
   contactPage: staticJa.contact,

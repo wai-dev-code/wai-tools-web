@@ -107,6 +107,7 @@ const TOOL_TEXT_KEY: Record<LocalizedToolSlug, keyof Messages["tools"]> = {
   "jwt-decoder": "jwtDecoder",
   timestamp: "timestamp",
   "uuid-generator": "uuidGenerator",
+  "password-generator": "passwordGenerator",
   "regex-tester": "regexTester",
 }
 
@@ -118,6 +119,7 @@ const TOOL_PAGE_KEY: Record<
   | "jwtDecoderPage"
   | "timestampPage"
   | "uuidGeneratorPage"
+  | "passwordGeneratorPage"
   | "regexTesterPage"
 > = {
   "json-formatter": "jsonFormatterPage",
@@ -126,6 +128,7 @@ const TOOL_PAGE_KEY: Record<
   "jwt-decoder": "jwtDecoderPage",
   timestamp: "timestampPage",
   "uuid-generator": "uuidGeneratorPage",
+  "password-generator": "passwordGeneratorPage",
   "regex-tester": "regexTesterPage",
 }
 

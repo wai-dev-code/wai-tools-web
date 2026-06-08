@@ -6,6 +6,10 @@ import { jwtToolZh, jwtDecoderPageZh } from "@/lib/i18n/messages/jwt-tool-messag
 import { timestampToolZh, timestampPageZh } from "@/lib/i18n/messages/timestamp-tool-messages"
 import { uuidToolZh, uuidGeneratorPageZh } from "@/lib/i18n/messages/uuid-tool-messages"
 import { regexToolZh, regexTesterPageZh } from "@/lib/i18n/messages/regex-tool-messages"
+import {
+  passwordToolZh,
+  passwordGeneratorPageZh,
+} from "@/lib/i18n/messages/password-tool-messages"
 import { staticZh } from "@/lib/i18n/messages/static-pages"
 import { legalZh } from "@/lib/i18n/messages/legal-pages"
 import { seoZh } from "@/lib/i18n/messages/seo-pages"
@@ -124,6 +128,11 @@ const zh: Messages = {
       short: "UUID v4 生成与批量导出",
       desc: "批量生成 UUID v4，支持大写、无连字符、花括号格式，复制与下载",
     },
+    passwordGenerator: {
+      name: "密码生成器",
+      short: "安全随机密码生成",
+      desc: "可调长度、字符集与排除字符，实时强度检测，一键复制",
+    },
     regexTester: {
       name: "正则表达式测试",
       short: "测试与调试正则表达式",
@@ -160,6 +169,7 @@ const zh: Messages = {
   jwtDecoderPage: jwtDecoderPageZh,
   timestampPage: timestampPageZh,
   uuidGeneratorPage: uuidGeneratorPageZh,
+  passwordGeneratorPage: passwordGeneratorPageZh,
   regexTesterPage: regexTesterPageZh,
   seo: seoZh,
   jsonTool: jsonToolZh,
@@ -168,6 +178,7 @@ const zh: Messages = {
   jwtTool: jwtToolZh,
   timestampTool: timestampToolZh,
   uuidTool: uuidToolZh,
+  passwordTool: passwordToolZh,
   regexTool: regexToolZh,
   aboutPage: staticZh.about,
   contactPage: staticZh.contact,
