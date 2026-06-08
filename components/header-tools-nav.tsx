@@ -13,6 +13,7 @@ import {
   Link2,
   Lock,
   QrCode,
+  Hash,
 } from "lucide-react"
 import { getVisibleTools } from "@/lib/tools-data"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
@@ -41,6 +42,7 @@ const toolIcons: Record<string, typeof Braces> = {
   "uuid-generator": Fingerprint,
   "password-generator": Lock,
   "qr-code-generator": QrCode,
+  "hash-generator": Hash,
   "regex-tester": FileSearch,
   "jwt-decoder": KeyRound,
 }

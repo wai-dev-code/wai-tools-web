@@ -14,6 +14,10 @@ import type {
   QrToolMessages,
   QrCodeGeneratorPageMessages,
 } from "@/lib/i18n/messages/qr-tool-messages"
+import type {
+  HashToolMessages,
+  HashGeneratorPageMessages,
+} from "@/lib/i18n/messages/hash-tool-messages"
 import type { LegalPagesMessages } from "@/lib/i18n/messages/legal-pages"
 import type { SeoPagesMessages } from "@/lib/i18n/messages/seo-pages"
 import type { StaticPageMessages } from "@/lib/i18n/messages/static-pages"
@@ -121,6 +125,7 @@ export interface Messages {
     uuidGenerator: ToolText
     passwordGenerator: ToolText
     qrCodeGenerator: ToolText
+    hashGenerator: ToolText
     regexTester: ToolText
   }
   jsonFormatterPage: {
@@ -141,6 +146,7 @@ export interface Messages {
   uuidGeneratorPage: UuidGeneratorPageMessages
   passwordGeneratorPage: PasswordGeneratorPageMessages
   qrCodeGeneratorPage: QrCodeGeneratorPageMessages
+  hashGeneratorPage: HashGeneratorPageMessages
   regexTesterPage: RegexTesterPageMessages
   seo: SeoPagesMessages
   jsonTool: JsonToolMessages
@@ -151,6 +157,7 @@ export interface Messages {
   uuidTool: UuidToolMessages
   passwordTool: PasswordToolMessages
   qrTool: QrToolMessages
+  hashTool: HashToolMessages
   regexTool: RegexToolMessages
   aboutPage: StaticPageMessages["about"]
   contactPage: StaticPageMessages["contact"]

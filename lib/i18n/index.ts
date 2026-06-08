@@ -109,6 +109,7 @@ const TOOL_TEXT_KEY: Record<LocalizedToolSlug, keyof Messages["tools"]> = {
   "uuid-generator": "uuidGenerator",
   "password-generator": "passwordGenerator",
   "qr-code-generator": "qrCodeGenerator",
+  "hash-generator": "hashGenerator",
   "regex-tester": "regexTester",
 }
 
@@ -122,6 +123,7 @@ const TOOL_PAGE_KEY: Record<
   | "uuidGeneratorPage"
   | "passwordGeneratorPage"
   | "qrCodeGeneratorPage"
+  | "hashGeneratorPage"
   | "regexTesterPage"
 > = {
   "json-formatter": "jsonFormatterPage",
@@ -132,6 +134,7 @@ const TOOL_PAGE_KEY: Record<
   "uuid-generator": "uuidGeneratorPage",
   "password-generator": "passwordGeneratorPage",
   "qr-code-generator": "qrCodeGeneratorPage",
+  "hash-generator": "hashGeneratorPage",
   "regex-tester": "regexTesterPage",
 }
 

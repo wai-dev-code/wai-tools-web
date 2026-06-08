@@ -36,6 +36,7 @@ function getToolTextKey(slug: LocalizedToolSlug) {
     "uuid-generator": "uuidGenerator",
     "password-generator": "passwordGenerator",
     "qr-code-generator": "qrCodeGenerator",
+    "hash-generator": "hashGenerator",
     "regex-tester": "regexTester",
   } as const
   return map[slug]

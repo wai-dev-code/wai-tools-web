@@ -9,6 +9,7 @@ import {
   Link2,
   Lock,
   QrCode,
+  Hash,
   type LucideIcon,
 } from "lucide-react"
 
@@ -82,6 +83,15 @@ export const tools: ToolDefinition[] = [
     icon: Fingerprint,
     category: "dev",
     keywords: ["uuid", "guid", "唯一标识", "生成器", "v4"],
+  },
+  {
+    slug: "hash-generator",
+    name: "哈希生成器",
+    description: "计算 MD5、SHA-1、SHA-256、SHA-512 哈希值，多算法结果同时展示，一键复制",
+    shortDescription: "MD5 / SHA 多算法哈希",
+    icon: Hash,
+    category: "encoding",
+    keywords: ["hash", "md5", "sha1", "sha256", "sha512", "checksum", "哈希", "摘要"],
   },
   {
     slug: "qr-code-generator",

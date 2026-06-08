@@ -7,6 +7,7 @@ export const localizedToolSlugs = [
   "uuid-generator",
   "password-generator",
   "qr-code-generator",
+  "hash-generator",
   "regex-tester",
 ] as const
 

@@ -11,6 +11,7 @@ import {
   passwordGeneratorPageJa,
 } from "@/lib/i18n/messages/password-tool-messages"
 import { qrToolJa, qrCodeGeneratorPageJa } from "@/lib/i18n/messages/qr-tool-messages"
+import { hashToolJa, hashGeneratorPageJa } from "@/lib/i18n/messages/hash-tool-messages"
 import { staticJa } from "@/lib/i18n/messages/static-pages"
 import { legalJa } from "@/lib/i18n/messages/legal-pages"
 import { seoJa } from "@/lib/i18n/messages/seo-pages"
@@ -139,6 +140,11 @@ const ja: Messages = {
       short: "テキスト・URL・メール・電話・WiFi",
       desc: "多種類の QR コードを生成、プレビュー、PNG ダウンロード",
     },
+    hashGenerator: {
+      name: "ハッシュ生成",
+      short: "MD5 / SHA マルチアルゴリズム",
+      desc: "MD5、SHA-1、SHA-256、SHA-512 を同時計算、コピー対応",
+    },
     regexTester: {
       name: "正規表現テスター",
       short: "正規表現のテストとデバッグ",
@@ -177,6 +183,7 @@ const ja: Messages = {
   uuidGeneratorPage: uuidGeneratorPageJa,
   passwordGeneratorPage: passwordGeneratorPageJa,
   qrCodeGeneratorPage: qrCodeGeneratorPageJa,
+  hashGeneratorPage: hashGeneratorPageJa,
   regexTesterPage: regexTesterPageJa,
   seo: seoJa,
   jsonTool: jsonToolJa,
@@ -187,6 +194,7 @@ const ja: Messages = {
   uuidTool: uuidToolJa,
   passwordTool: passwordToolJa,
   qrTool: qrToolJa,
+  hashTool: hashToolJa,
   regexTool: regexToolJa,
   aboutPage: staticJa.about,
   contactPage: staticJa.contact,

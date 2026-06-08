@@ -11,6 +11,7 @@ import {
   passwordGeneratorPageEn,
 } from "@/lib/i18n/messages/password-tool-messages"
 import { qrToolEn, qrCodeGeneratorPageEn } from "@/lib/i18n/messages/qr-tool-messages"
+import { hashToolEn, hashGeneratorPageEn } from "@/lib/i18n/messages/hash-tool-messages"
 import { staticEn } from "@/lib/i18n/messages/static-pages"
 import { legalEn } from "@/lib/i18n/messages/legal-pages"
 import { seoEn } from "@/lib/i18n/messages/seo-pages"
@@ -139,6 +140,11 @@ const en: Messages = {
       short: "Text, URL, email, phone, WiFi",
       desc: "Generate QR codes with live preview and PNG download",
     },
+    hashGenerator: {
+      name: "Hash Generator",
+      short: "MD5 / SHA multi-algorithm",
+      desc: "MD5, SHA-1, SHA-256, SHA-512 computed at once with copy",
+    },
     regexTester: {
       name: "Regex Tester",
       short: "Test & debug regular expressions",
@@ -177,6 +183,7 @@ const en: Messages = {
   uuidGeneratorPage: uuidGeneratorPageEn,
   passwordGeneratorPage: passwordGeneratorPageEn,
   qrCodeGeneratorPage: qrCodeGeneratorPageEn,
+  hashGeneratorPage: hashGeneratorPageEn,
   regexTesterPage: regexTesterPageEn,
   seo: seoEn,
   jsonTool: jsonToolEn,
@@ -187,6 +194,7 @@ const en: Messages = {
   uuidTool: uuidToolEn,
   passwordTool: passwordToolEn,
   qrTool: qrToolEn,
+  hashTool: hashToolEn,
   regexTool: regexToolEn,
   aboutPage: staticEn.about,
   contactPage: staticEn.contact,

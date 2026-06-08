@@ -5,8 +5,8 @@ import { getToolCategoryLabel } from "@/lib/tool-display"
 import { categoryLabels, getVisibleTools, type ToolDefinition } from "@/lib/tools-data"
 
 const SLUG_TEXT_KEY: Record<
-  "json-formatter" | "base64" | "url-encoder" | "jwt-decoder" | "timestamp" | "uuid-generator" | "password-generator" | "qr-code-generator" | "regex-tester",
-  "jsonFormatter" | "base64" | "urlEncoder" | "jwtDecoder" | "timestamp" | "uuidGenerator" | "passwordGenerator" | "qrCodeGenerator" | "regexTester"
+  "json-formatter" | "base64" | "url-encoder" | "jwt-decoder" | "timestamp" | "uuid-generator" | "password-generator" | "qr-code-generator" | "hash-generator" | "regex-tester",
+  "jsonFormatter" | "base64" | "urlEncoder" | "jwtDecoder" | "timestamp" | "uuidGenerator" | "passwordGenerator" | "qrCodeGenerator" | "hashGenerator" | "regexTester"
 > = {
   "json-formatter": "jsonFormatter",
   base64: "base64",
@@ -16,6 +16,7 @@ const SLUG_TEXT_KEY: Record<
   "uuid-generator": "uuidGenerator",
   "password-generator": "passwordGenerator",
   "qr-code-generator": "qrCodeGenerator",
+  "hash-generator": "hashGenerator",
   "regex-tester": "regexTester",
 }
 
