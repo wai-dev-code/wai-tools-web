@@ -10,6 +10,7 @@ import {
   passwordToolZh,
   passwordGeneratorPageZh,
 } from "@/lib/i18n/messages/password-tool-messages"
+import { qrToolZh, qrCodeGeneratorPageZh } from "@/lib/i18n/messages/qr-tool-messages"
 import { staticZh } from "@/lib/i18n/messages/static-pages"
 import { legalZh } from "@/lib/i18n/messages/legal-pages"
 import { seoZh } from "@/lib/i18n/messages/seo-pages"
@@ -133,6 +134,11 @@ const zh: Messages = {
       short: "安全随机密码生成",
       desc: "可调长度、字符集与排除字符，实时强度检测，一键复制",
     },
+    qrCodeGenerator: {
+      name: "二维码生成器",
+      short: "文本、网址、邮箱、电话、WiFi",
+      desc: "生成多类型二维码，实时预览，下载 PNG",
+    },
     regexTester: {
       name: "正则表达式测试",
       short: "测试与调试正则表达式",
@@ -170,6 +176,7 @@ const zh: Messages = {
   timestampPage: timestampPageZh,
   uuidGeneratorPage: uuidGeneratorPageZh,
   passwordGeneratorPage: passwordGeneratorPageZh,
+  qrCodeGeneratorPage: qrCodeGeneratorPageZh,
   regexTesterPage: regexTesterPageZh,
   seo: seoZh,
   jsonTool: jsonToolZh,
@@ -179,6 +186,7 @@ const zh: Messages = {
   timestampTool: timestampToolZh,
   uuidTool: uuidToolZh,
   passwordTool: passwordToolZh,
+  qrTool: qrToolZh,
   regexTool: regexToolZh,
   aboutPage: staticZh.about,
   contactPage: staticZh.contact,

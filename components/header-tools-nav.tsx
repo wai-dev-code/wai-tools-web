@@ -12,6 +12,7 @@ import {
   KeyRound,
   Link2,
   Lock,
+  QrCode,
 } from "lucide-react"
 import { getVisibleTools } from "@/lib/tools-data"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
@@ -39,6 +40,7 @@ const toolIcons: Record<string, typeof Braces> = {
   timestamp: Clock,
   "uuid-generator": Fingerprint,
   "password-generator": Lock,
+  "qr-code-generator": QrCode,
   "regex-tester": FileSearch,
   "jwt-decoder": KeyRound,
 }

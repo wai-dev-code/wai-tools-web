@@ -20,6 +20,7 @@ export const coreLocalizedPaths = [
   "tools/timestamp",
   "tools/uuid-generator",
   "tools/password-generator",
+  "tools/qr-code-generator",
   "tools/regex-tester",
   "about",
   "contact",

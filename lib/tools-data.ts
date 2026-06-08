@@ -8,6 +8,7 @@ import {
   KeyRound,
   Link2,
   Lock,
+  QrCode,
   type LucideIcon,
 } from "lucide-react"
 
@@ -81,6 +82,15 @@ export const tools: ToolDefinition[] = [
     icon: Fingerprint,
     category: "dev",
     keywords: ["uuid", "guid", "唯一标识", "生成器", "v4"],
+  },
+  {
+    slug: "qr-code-generator",
+    name: "二维码生成器",
+    description: "生成文本、网址、邮箱、电话、WiFi 二维码，实时预览，下载 PNG",
+    shortDescription: "多类型二维码生成与下载",
+    icon: QrCode,
+    category: "dev",
+    keywords: ["qr", "qrcode", "二维码", "barcode", "wifi", "url", "generator"],
   },
   {
     slug: "password-generator",

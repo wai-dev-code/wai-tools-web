@@ -108,6 +108,7 @@ const TOOL_TEXT_KEY: Record<LocalizedToolSlug, keyof Messages["tools"]> = {
   timestamp: "timestamp",
   "uuid-generator": "uuidGenerator",
   "password-generator": "passwordGenerator",
+  "qr-code-generator": "qrCodeGenerator",
   "regex-tester": "regexTester",
 }
 
@@ -120,6 +121,7 @@ const TOOL_PAGE_KEY: Record<
   | "timestampPage"
   | "uuidGeneratorPage"
   | "passwordGeneratorPage"
+  | "qrCodeGeneratorPage"
   | "regexTesterPage"
 > = {
   "json-formatter": "jsonFormatterPage",
@@ -129,6 +131,7 @@ const TOOL_PAGE_KEY: Record<
   timestamp: "timestampPage",
   "uuid-generator": "uuidGeneratorPage",
   "password-generator": "passwordGeneratorPage",
+  "qr-code-generator": "qrCodeGeneratorPage",
   "regex-tester": "regexTesterPage",
 }
 
