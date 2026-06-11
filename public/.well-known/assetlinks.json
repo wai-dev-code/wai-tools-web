@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.eqr.exchange.android",
+      "sha256_cert_fingerprints": [
+        "90:50:C7:42:EB:C3:24:1A:7C:19:0B:0D:85:98:3B:57:82:95:C0:1F:B6:39:2B:A5:75:0B:95:04:BE:FF:65:90",
+        "08:5E:67:BE:13:6D:84:2D:E1:6C:3D:DC:C1:28:00:0F:08:C9:8C:CC:2D:8D:53:40:A8:D3:61:CD:5C:48:A8:0C"
+      ]
+    }
+  }
+]
