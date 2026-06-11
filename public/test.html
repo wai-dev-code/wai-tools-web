@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>App Link Test — waihub.net</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f5f5f5;
+      color: #262626;
+      min-height: 100vh;
+      padding: 24px 16px 40px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
+    h1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+
+    .status {
+      font-size: 14px;
+      color: #595959;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .countdown {
+      font-size: 40px;
+      font-weight: 700;
+      color: #1677ff;
+      text-align: center;
+      margin: 12px 0 4px;
+      min-height: 48px;
+    }
+
+    .countdown-label {
+      font-size: 13px;
+      color: #8c8c8c;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #fff;
+      background: #1677ff;
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      margin-bottom: 10px;
+    }
+
+    .btn:active { background: #0958d9; }
+
+    .btn-secondary {
+      background: #fff;
+      color: #1677ff;
+      border: 1px solid #1677ff;
+    }
+
+    .btn-secondary:active { background: #f0f7ff; }
+
+    .tips {
+      margin-top: 18px;
+      padding: 12px;
+      background: #fffbe6;
+      border: 1px solid #ffe58f;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #8c6d1f;
+      line-height: 1.6;
+    }
+
+    .tips strong { color: #614700; }
+
+    .target-url {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #bfbfbf;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>App Link 测试页</h1>
+    <p class="status" id="statusText">请手动点击按钮测试（自动跳转无法可靠唤起 App）</p>
+    <div class="countdown" id="countdown">5...</div>
+    <p class="countdown-label">倒计时</p>
+
+    <a class="btn" id="appLinkBtn" href="https://waihub.net/alchemyPay/payResult">
+      打开 App Link（需 assetlinks.json）
+    </a>
+
+    <a class="btn btn-secondary" id="intentLinkBtn" href="#">
+      Android Intent 直开 App（无需 assetlinks）
+    </a>
+
+    <div class="tips">
+      <strong>部署说明</strong><br>
+      1. 本页须通过 <strong>HTTPS</strong> 访问，不能用 <code>file://</code><br>
+      2. 推荐部署为 <code>https://waihub.net/alchemyPay/payResult</code>（与 App Manifest 路径一致）<br>
+      3. 服务器需提供 <code>https://waihub.net/.well-known/assetlinks.json</code><br>
+      4. App Link 蓝色按钮需<strong>用户真实点击</strong>；灰色 Intent 按钮可用于开发快速验证<br>
+      5. 修改 Manifest / 重装 APK 后再测
+    </div>
+
+    <p class="target-url" id="targetUrl"></p>
+  </div>
+
+  <script>
+    (function () {
+      var TARGET_URL = "https://waihub.net/alchemyPay/payResult";
+      var ANDROID_PACKAGE = "com.eqr.exchange.android";
+      var countdownEl = document.getElementById("countdown");
+      var statusText = document.getElementById("statusText");
+      var targetUrlEl = document.getElementById("targetUrl");
+      var intentLinkBtn = document.getElementById("intentLinkBtn");
+      var remaining = 5;
+      var timerId = null;
+
+      var intentUrl =
+        "intent://waihub.net/alchemyPay/payResult#Intent;" +
+        "scheme=https;" +
+        "package=" + ANDROID_PACKAGE + ";" +
+        "S.browser_fallback_url=" + encodeURIComponent(TARGET_URL) + ";" +
+        "end";
+
+      intentLinkBtn.href = intentUrl;
+      targetUrlEl.textContent = "目标地址：" + TARGET_URL;
+
+      function stopTimer() {
+        if (timerId !== null) {
+          clearInterval(timerId);
+          timerId = null;
+        }
+      }
+
+      function updateCountdown() {
+        countdownEl.textContent = remaining + "...";
+        if (remaining <= 0) {
+          stopTimer();
+          countdownEl.textContent = "请点按钮";
+          statusText.textContent = "倒计时结束：请点击上方按钮测试回跳";
+          return;
+        }
+        remaining -= 1;
+      }
+
+      updateCountdown();
+      timerId = setInterval(updateCountdown, 1000);
+    })();
+  </script>
+</body>
+</html>
