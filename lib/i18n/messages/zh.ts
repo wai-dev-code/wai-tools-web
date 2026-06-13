@@ -89,6 +89,8 @@ const zh: Messages = {
     faqSubtitle: "关于价格、隐私与使用方式的常见问题。",
     faqTitle: "常见问题",
     searchPlaceholder: "搜索工具，如 JSON、JWT、UUID...",
+    searchTypewriterPrefix: "搜索工具，如 ",
+    searchTypewriterHints: ["JSON", "JWT", "UUID", "Base64", "正则", "哈希", "时间戳"],
     categoryAll: "全部",
     useNow: "立即使用 →",
     noResults: "未找到匹配的工具，试试其他关键词",

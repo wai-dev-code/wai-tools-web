@@ -94,6 +94,8 @@ export interface Messages {
     title: string
     subtitle: string
     searchPlaceholder: string
+    searchTypewriterPrefix: string
+    searchTypewriterHints: string[]
     categoryAll: string
     useNow: string
     noResults: string

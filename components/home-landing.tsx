@@ -7,12 +7,11 @@ import {
   ArrowUpRight,
   BookOpen,
   Layers,
-  Search,
-  Shield,
   Sparkles,
+  Shield,
   Zap,
 } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { HomeSearchInput } from "@/components/home-search-input"
 import {
   Accordion,
   AccordionContent,
@@ -153,17 +152,7 @@ export function HomeLanding({ locale = defaultLocale }: { locale?: Locale }) {
             <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{m.toolsSectionSubtitle}</p>
           </div>
 
-          <div className="relative mx-auto mb-6 max-w-xl">
-            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={m.searchPlaceholder}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="h-12 rounded-xl border-border/60 bg-card/50 pl-10 text-base backdrop-blur-sm transition-colors focus-visible:border-primary/50"
-              aria-label={m.searchPlaceholder}
-            />
-          </div>
+          <HomeSearchInput locale={locale} value={query} onChange={setQuery} />
 
           <div className="mb-8 flex flex-wrap justify-center gap-2">
             {visibleCategories.map((cat) => (

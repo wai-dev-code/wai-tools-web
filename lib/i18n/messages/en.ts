@@ -89,6 +89,8 @@ const en: Messages = {
     faqSubtitle: "Quick answers about pricing, privacy, and how WaiHub works.",
     faqTitle: "FAQ",
     searchPlaceholder: "Search tools, e.g. JSON, JWT, UUID...",
+    searchTypewriterPrefix: "Search tools, e.g. ",
+    searchTypewriterHints: ["JSON", "JWT", "UUID", "Base64", "Regex", "Hash", "Timestamp"],
     categoryAll: "All",
     useNow: "Use now →",
     noResults: "No tools found. Try another keyword.",

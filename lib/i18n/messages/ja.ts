@@ -88,6 +88,8 @@ const ja: Messages = {
     ],
     faqSubtitle: "料金、プライバシー、使い方に関するよくある質問。",
     searchPlaceholder: "ツールを検索（JSON、JWT、UUID など）",
+    searchTypewriterPrefix: "ツールを検索：",
+    searchTypewriterHints: ["JSON", "JWT", "UUID", "Base64", "正規表現", "ハッシュ", "タイムスタンプ"],
     categoryAll: "すべて",
     useNow: "今すぐ使う →",
     noResults: "該当するツールがありません",
