@@ -13,6 +13,7 @@ import {
 import { qrToolZh, qrCodeGeneratorPageZh } from "@/lib/i18n/messages/qr-tool-messages"
 import { hashToolZh, hashGeneratorPageZh } from "@/lib/i18n/messages/hash-tool-messages"
 import { staticZh } from "@/lib/i18n/messages/static-pages"
+import { blogPostsBatch2Zh } from "@/lib/i18n/messages/blog-posts-batch2-zh"
 import { legalZh } from "@/lib/i18n/messages/legal-pages"
 import { seoZh } from "@/lib/i18n/messages/seo-pages"
 
@@ -33,6 +34,8 @@ const zh: Messages = {
     base64: "Base64 编解码",
     privacy: "隐私政策",
     terms: "服务条款",
+    cookies: "Cookie 政策",
+    changelog: "更新日志",
     contact: "联系我们",
     localRun: "浏览器内运行",
     free: "免费",
@@ -65,7 +68,7 @@ const zh: Messages = {
   home: {
     metaTitle: "WaiHub - 开发者工具 Hub",
     metaDescription:
-      "免费开发者工具 Hub：JSON 格式化、Base64、URL 编解码、JWT 解码、UUID、密码生成器、二维码生成、MD5/SHA 哈希、正则测试、时间戳转换等 10+ 工具。浏览器内处理，支持中文、English、日本語，无需注册。",
+      "免费开发者工具 Hub：JSON 格式化、Base64、URL 编解码、JWT 解码、UUID、正则、哈希、二维码等 10 款工具。浏览器内处理，隐私优先，无需注册。",
     title: "开发者工具 Hub",
     subtitle:
       "共 {n} 款工具一站可用 — JSON、编码、JWT、正则等。数据在浏览器内处理，不上传服务器。中文 · English · 日本語",
@@ -81,13 +84,43 @@ const zh: Messages = {
     faqs: [
       { q: "WaiHub 的工具是否免费？", a: "是的，所有工具完全免费，无需注册，无隐藏费用。" },
       { q: "我的数据是否安全？", a: "工具在您的浏览器内运行，输入内容通常不会上传至我们的服务器。请勿在不可信网站粘贴生产环境的密钥或 Token。" },
-      { q: "支持哪些浏览器？", a: "支持 Chrome、Firefox、Safari、Edge 等现代浏览器的最新版本。" },
+      { q: "支持哪些浏览器？", a: "支持 Chrome、Firefox、Safari、Edge 等现代浏览器的最新版本，包括桌面和移动端。" },
       { q: "如何反馈问题或建议新工具？", a: "请通过联系我们页面或发送邮件，我们会尽快回复。" },
+      { q: "需要注册账号吗？", a: "不需要。所有工具无需注册或登录即可直接使用。" },
+      { q: "可以商用吗？", a: "可以。个人和商业开发均可免费使用，无限制。" },
+      { q: "支持哪些语言？", a: "网站支持 English、简体中文和 日本語 三种语言。" },
+      { q: "有多少款工具？", a: "WaiHub 提供 10 款核心开发者工具，覆盖 JSON、编码、安全和 API 调试。" },
+      { q: "有文件大小限制吗？", a: "大多数工具支持最大 5 MB 输入。更大文件可能暂停实时分析以保持性能。" },
+      { q: "在哪里学习各工具用法？", a: "每个工具页面都包含完整指南、分步说明、示例和 FAQ。" },
+    ],
+    whatIsTitle: "什么是 WaiHub？",
+    whatIsParagraphs: [
+      "WaiHub 是一个免费的在线开发者工具平台，将常用实用工具集中在一处。从 JSON 格式化和 Base64 编码到 JWT 解码和正则测试，WaiHub 帮助开发者调试 API、处理数据、完成日常编码任务，无需安装软件或注册账号。",
+      "与传统仅罗列链接的工具聚合站不同，WaiHub 每个工具页面都包含详细指南、分步说明、实际示例和 FAQ。无论学习概念还是解决生产问题，每个页面都是有价值的资源，而不只是一个功能按钮。",
+      "隐私是核心原则：所有工具完全在浏览器中使用 JavaScript 运行。你的 JSON、Token、密码和文件在本地处理，不会上传到 WaiHub 服务器。配合 English、中文和日文支持，WaiHub 面向全球需要快速、安全、可靠在线工具的开发者。",
+    ],
+    whyChooseTitle: "为什么选择 WaiHub？",
+    whyChooseItems: [
+      { title: "快速", description: "输入即得结果，无需等待服务器响应，一切都在浏览器本地运行。" },
+      { title: "安全", description: "浏览器内处理意味着敏感数据留在你的设备上，不上传、不存储。" },
+      { title: "隐私优先", description: "我们不收集工具输入内容。JSON、JWT Token 和密码均在本地处理。" },
+      { title: "免费", description: "10 款工具完全免费，无需注册，无高级版，无使用限制。" },
+      { title: "浏览器运行", description: "支持桌面、平板和移动端的现代浏览器，无需安装或插件。" },
+    ],
+    useCasesTitle: "常见使用场景",
+    useCasesItems: [
+      { title: "API 开发", description: "格式化 JSON 响应、解码 JWT Token、调试 API 集成中的认证流程。" },
+      { title: "前后端联调", description: "编码 URL、转换时间戳、验证数据格式，连接前后端系统。" },
+      { title: "数据处理", description: "转换 Base64、解析 Query 字符串、计算哈希、JSON/YAML/XML 互转。" },
+      { title: "JWT 解析", description: "解码 JWT Header 和 Payload，检查过期时间，理解 OAuth 调试中的声明。" },
+      { title: "JSON 格式化", description: "美化压缩的 API 响应、校验语法、用树形视图探索嵌套结构。" },
+      { title: "时间戳转换", description: "Unix 时间戳与可读日期互转，日志分析和时区调试必备。" },
+      { title: "二维码生成", description: "为 URL、WiFi 凭证和联系信息创建可扫描二维码，用于活动和营销。" },
     ],
   },
   toolsPage: {
     metaTitle: "全部工具",
-    metaDescription: "浏览 WaiHub 提供的免费开发者在线工具。",
+    metaDescription: "浏览 WaiHub 10 款免费开发者工具。JSON、Base64、JWT、正则等，浏览器内处理，隐私优先。",
     title: "全部工具",
     subtitle: "{n} 个免费开发者工具，浏览器内运行",
     searchPlaceholder: "搜索工具...",
@@ -198,7 +231,13 @@ const zh: Messages = {
   regexTool: regexToolZh,
   aboutPage: staticZh.about,
   contactPage: staticZh.contact,
-  blogPage: staticZh.blog,
+  blogPage: {
+    ...staticZh.blog,
+    posts: {
+      ...staticZh.blog.posts,
+      ...blogPostsBatch2Zh,
+    },
+  },
   theme: staticZh.theme,
   errors: staticZh.errors,
   legal: legalZh,

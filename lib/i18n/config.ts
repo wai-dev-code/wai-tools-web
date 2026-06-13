@@ -31,7 +31,7 @@ export const coreLocalizedPaths = [
 export type CoreLocalizedPath = (typeof coreLocalizedPaths)[number]
 
 /** 仅英文、不带 locale 前缀的固定路径 */
-export const englishOnlyPaths = ["privacy", "terms"] as const
+export const englishOnlyPaths = ["privacy", "terms", "cookies", "changelog"] as const
 
 export function isEnglishOnlyPath(path: string): boolean {
   const normalized = path.replace(/^\//, "")

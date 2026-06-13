@@ -7,7 +7,7 @@ import { getAllLocalizedUrls } from "@/lib/i18n"
 import { siteConfig } from "@/lib/tools-data"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPages = ["/privacy", "/terms"].map((path) => ({
+  const staticPages = ["/privacy", "/terms", "/cookies", "/changelog"].map((path) => ({
     url: `${siteConfig.url}${path}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,

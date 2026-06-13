@@ -13,6 +13,7 @@ import {
 import { qrToolEn, qrCodeGeneratorPageEn } from "@/lib/i18n/messages/qr-tool-messages"
 import { hashToolEn, hashGeneratorPageEn } from "@/lib/i18n/messages/hash-tool-messages"
 import { staticEn } from "@/lib/i18n/messages/static-pages"
+import { blogPostsBatch2En } from "@/lib/i18n/messages/blog-posts-batch2-en"
 import { legalEn } from "@/lib/i18n/messages/legal-pages"
 import { seoEn } from "@/lib/i18n/messages/seo-pages"
 
@@ -33,6 +34,8 @@ const en: Messages = {
     base64: "Base64 Encode/Decode",
     privacy: "Privacy Policy",
     terms: "Terms of Service",
+    cookies: "Cookie Policy",
+    changelog: "Changelog",
     contact: "Contact",
     localRun: "In-browser",
     free: "Free",
@@ -65,7 +68,7 @@ const en: Messages = {
   home: {
     metaTitle: "WaiHub - Developer Tools Hub Online",
     metaDescription:
-      "Free developer tools hub: JSON formatter, Base64, URL encoder, JWT decoder, UUID, password generator, QR code generator, MD5/SHA hash, regex tester, timestamp converter, and more. Runs in your browser — no signup.",
+      "Free developer tools hub: JSON, Base64, URL encoder, JWT, UUID, regex, hash, QR code & more. 10 tools, browser-based, privacy-first processing. No signup.",
     title: "Developer Tools Hub",
     subtitle:
       "{n} tools in one place — JSON, encoding, JWT, Regex & more. Processed in your browser, not on our servers. English · 中文 · 日本語",
@@ -81,13 +84,43 @@ const en: Messages = {
     faqs: [
       { q: "Are WaiHub tools free?", a: "Yes. All tools are free with no signup and no hidden fees." },
       { q: "Is my data safe?", a: "Tools run in your browser — input is typically not uploaded to our servers. Do not paste production secrets or tokens into untrusted sites." },
-      { q: "Which browsers are supported?", a: "Latest versions of Chrome, Firefox, Safari, and Edge." },
+      { q: "Which browsers are supported?", a: "Latest versions of Chrome, Firefox, Safari, and Edge on desktop and mobile." },
       { q: "How can I send feedback?", a: "Use the contact page or email us — we reply as soon as we can." },
+      { q: "Do I need to create an account?", a: "No. All tools work instantly without registration or login." },
+      { q: "Can I use WaiHub commercially?", a: "Yes. Personal and commercial development use is free without restriction." },
+      { q: "What languages are supported?", a: "The site supports English, Chinese (简体中文), and Japanese (日本語)." },
+      { q: "How many tools are available?", a: "WaiHub offers 10 core developer tools covering JSON, encoding, security, and API debugging." },
+      { q: "Is there a file size limit?", a: "Most tools support inputs up to 5 MB. Larger files may pause real-time analysis for performance." },
+      { q: "Where can I learn how to use each tool?", a: "Each tool page includes a full guide with features, step-by-step instructions, examples, and FAQ." },
+    ],
+    whatIsTitle: "What is WaiHub?",
+    whatIsParagraphs: [
+      "WaiHub is a free online developer tools platform that brings essential utilities together in one place. From JSON formatting and Base64 encoding to JWT decoding and regex testing, WaiHub helps developers debug APIs, process data, and solve everyday coding tasks without installing software or creating accounts.",
+      "Unlike traditional tool aggregators that simply list links, every WaiHub tool page includes detailed guides, step-by-step instructions, real-world examples, and FAQ sections. This makes each page a useful resource — not just a utility button — whether you are learning a concept or solving a production issue.",
+      "Privacy is a core principle: all tools run entirely in your browser using JavaScript. Your JSON, tokens, passwords, and files are processed locally and are not uploaded to WaiHub servers. Combined with support for English, Chinese, and Japanese, WaiHub is designed for developers worldwide who need fast, secure, and reliable online tools.",
+    ],
+    whyChooseTitle: "Why Choose WaiHub?",
+    whyChooseItems: [
+      { title: "Fast", description: "Instant results as you type. No waiting for server responses — everything runs locally in your browser." },
+      { title: "Secure", description: "Browser-based processing means your sensitive data stays on your device. No uploads, no storage on our servers." },
+      { title: "Privacy First", description: "We do not collect your tool inputs. JSON, JWT tokens, and passwords are processed locally and never sent to us." },
+      { title: "Free", description: "All 10 tools are completely free. No signup, no premium tier, no usage limits or hidden fees." },
+      { title: "Browser-Based", description: "Works on any modern browser on desktop, tablet, and mobile. No installation or plugins required." },
+    ],
+    useCasesTitle: "Popular Use Cases",
+    useCasesItems: [
+      { title: "API Development", description: "Format JSON responses, decode JWT tokens, and debug authentication flows during API integration." },
+      { title: "Frontend & Backend Integration", description: "Encode URLs, convert timestamps, and validate data formats when connecting frontend and backend systems." },
+      { title: "Data Processing", description: "Transform Base64, parse query strings, hash strings, and convert between JSON, YAML, and XML." },
+      { title: "JWT Inspection", description: "Decode JWT header and payload, check expiration times, and understand token claims during OAuth debugging." },
+      { title: "JSON Formatting", description: "Beautify minified API responses, validate syntax, and explore nested structures with tree view." },
+      { title: "Timestamp Conversion", description: "Convert Unix timestamps to readable dates and back — essential for log analysis and timezone debugging." },
+      { title: "QR Code Generation", description: "Create scannable QR codes for URLs, WiFi credentials, and contact info for events and marketing." },
     ],
   },
   toolsPage: {
     metaTitle: "All Tools",
-    metaDescription: "Browse free developer tools on WaiHub.",
+    metaDescription: "Browse 10 free developer tools on WaiHub. JSON, Base64, JWT, regex, hash, and more — all run in your browser with privacy-first processing.",
     title: "All Tools",
     subtitle: "{n} free developer tools — runs in your browser",
     searchPlaceholder: "Search tools...",
@@ -198,7 +231,13 @@ const en: Messages = {
   regexTool: regexToolEn,
   aboutPage: staticEn.about,
   contactPage: staticEn.contact,
-  blogPage: staticEn.blog,
+  blogPage: {
+    ...staticEn.blog,
+    posts: {
+      ...staticEn.blog.posts,
+      ...blogPostsBatch2En,
+    },
+  },
   theme: staticEn.theme,
   errors: staticEn.errors,
   legal: legalEn,

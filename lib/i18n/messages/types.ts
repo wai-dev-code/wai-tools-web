@@ -57,6 +57,8 @@ export interface Messages {
     base64: string
     privacy: string
     terms: string
+    cookies: string
+    changelog: string
     contact: string
     localRun: string
     free: string
@@ -99,6 +101,12 @@ export interface Messages {
     viewAll: string
     blogSectionTitle: string
     blogViewAll: string
+    whatIsTitle: string
+    whatIsParagraphs: string[]
+    whyChooseTitle: string
+    whyChooseItems: { title: string; description: string }[]
+    useCasesTitle: string
+    useCasesItems: { title: string; description: string }[]
     faqTitle: string
     faqs: FaqItem[]
   }

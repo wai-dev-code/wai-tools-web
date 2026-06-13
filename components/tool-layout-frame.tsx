@@ -6,22 +6,15 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JsonLd } from "@/components/json-ld"
 import { AdSlot } from "@/components/ad-slot"
+import { ToolContentSections } from "@/components/tool-content-sections"
 import { isImmersiveBottomAdAllowed } from "@/lib/adsense"
 import { ToolContentShell } from "@/components/tool-content-shell"
 import { PanelFullscreenProvider, usePanelFullscreenOptional } from "@/components/panel-fullscreen-context"
 import { ToolWorkspaceProvider } from "@/components/tool-workspace-provider"
-import {
-  getToolBySlug,
-  getToolsByCategory,
-  siteConfig,
-  type ToolDefinition,
-} from "@/lib/tools-data"
+import { getToolBySlug, siteConfig, type ToolDefinition } from "@/lib/tools-data"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
-import {
-  getLocalizedToolText,
-  getMessages,
-  localizeHref,
-} from "@/lib/i18n"
+import type { ToolPageSeoContent } from "@/lib/i18n/messages/tool-page-content-types"
+import { getLocalizedToolText, getMessages, localizeHref } from "@/lib/i18n"
 import { isLocalizedToolSlug } from "@/lib/i18n/localized-tool-slug"
 import { cn } from "@/lib/utils"
 
@@ -29,8 +22,7 @@ interface ToolLayoutFrameProps {
   toolSlug: string
   locale?: Locale
   children: React.ReactNode
-  instructions: React.ReactNode
-  faq?: { question: string; answer: string }[]
+  content: ToolPageSeoContent
 }
 
 function getLocalizedToolInfo(tool: ToolDefinition, locale: Locale) {
@@ -41,13 +33,7 @@ function getLocalizedToolInfo(tool: ToolDefinition, locale: Locale) {
   return { name: tool.name, description: tool.description }
 }
 
-function ToolLayoutBody({
-  toolSlug,
-  locale = defaultLocale,
-  children,
-  instructions,
-  faq,
-}: ToolLayoutFrameProps) {
+function ToolLayoutBody({ toolSlug, locale = defaultLocale, children, content }: ToolLayoutFrameProps) {
   const tool = getToolBySlug(toolSlug)
   if (!tool) return null
 
@@ -58,6 +44,14 @@ function ToolLayoutBody({
   const showImmersiveAd = immersive && isImmersiveBottomAdAllowed()
   const toolUrl = `${siteConfig.url}${localizeHref(locale, `tools/${tool.slug}`)}`
   const lang = locale === "zh" ? "zh-CN" : locale === "ja" ? "ja" : "en"
+
+  const sectionLabels = {
+    features: content.features.title,
+    howToUse: content.howToUse.title,
+    examples: content.examples.title,
+    faq: m.common.faq,
+    relatedTools: m.common.relatedTools,
+  }
 
   return (
     <div className="min-h-screen bg-background" lang={lang}>
@@ -74,15 +68,41 @@ function ToolLayoutBody({
           inLanguage: lang,
         }}
       />
-      {faq && faq.length > 0 && (
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: m.common.home,
+              item: `${siteConfig.url}${localizeHref(locale, "")}`,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: m.common.tools,
+              item: `${siteConfig.url}${localizeHref(locale, "tools")}`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: localized.name,
+              item: toolUrl,
+            },
+          ],
+        }}
+      />
+      {content.faq.length > 0 && (
         <JsonLd
           data={{
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            mainEntity: faq.map((item) => ({
+            mainEntity: content.faq.map((item) => ({
               "@type": "Question",
-              name: item.question,
-              acceptedAnswer: { "@type": "Answer", text: item.answer },
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
             })),
           }}
         />
@@ -137,27 +157,7 @@ function ToolLayoutBody({
           {!immersive && (
             <>
               <AdSlot name="toolBottom" disclaimer={m.common.adDisclaimer} />
-
-              <section className="mb-10 rounded-xl border border-border bg-card/50 p-6">
-                <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.instructions}</h2>
-                <div className="space-y-3 text-sm text-muted-foreground">{instructions}</div>
-              </section>
-
-              {faq && faq.length > 0 && (
-                <section className="rounded-xl border border-border bg-card/50 p-6">
-                  <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.faq}</h2>
-                  <dl className="space-y-4">
-                    {faq.map((item) => (
-                      <div key={item.question}>
-                        <dt className="font-medium text-foreground">{item.question}</dt>
-                        <dd className="mt-1 text-sm text-muted-foreground">{item.answer}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </section>
-              )}
-
-              <RelatedTools currentSlug={tool.slug} locale={locale} />
+              <ToolContentSections content={content} labels={sectionLabels} locale={locale} />
             </>
           )}
         </main>
@@ -174,42 +174,6 @@ function ToolLayoutBody({
 
       {!immersive && <Footer locale={locale} />}
     </div>
-  )
-}
-
-function RelatedTools({ currentSlug, locale }: { currentSlug: string; locale: Locale }) {
-  const m = getMessages(locale)
-  const current = getToolBySlug(currentSlug)
-  if (!current) return null
-  const related = getToolsByCategory(current.category)
-    .filter((t) => t.slug !== currentSlug)
-    .slice(0, 3)
-  if (related.length === 0) return null
-
-  return (
-    <section className="mt-10">
-      <h2 className="mb-4 text-lg font-semibold text-foreground">{m.common.relatedTools}</h2>
-      <div className="grid gap-3 sm:grid-cols-3">
-        {related.map((t) => {
-          const label = isLocalizedToolSlug(t.slug)
-            ? getLocalizedToolText(t.slug, locale).name
-            : t.name
-          const short = isLocalizedToolSlug(t.slug)
-            ? getLocalizedToolText(t.slug, locale).short
-            : t.shortDescription
-          return (
-            <Link
-              key={t.slug}
-              href={localizeHref(locale, `tools/${t.slug}`)}
-              className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/50 hover:bg-card/80"
-            >
-              <div className="font-medium text-foreground">{label}</div>
-              <div className="mt-1 text-xs text-muted-foreground">{short}</div>
-            </Link>
-          )
-        })}
-      </div>
-    </section>
   )
 }
 

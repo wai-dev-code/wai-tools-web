@@ -27,6 +27,8 @@ export function Footer({ locale = defaultLocale }: { locale?: Locale }) {
       links: [
         { name: m.common.privacy, href: "/privacy" },
         { name: m.common.terms, href: "/terms" },
+        { name: m.common.cookies, href: "/cookies" },
+        { name: m.common.changelog, href: "/changelog" },
       ],
     },
   }

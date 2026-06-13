@@ -151,3 +151,31 @@ export function TermsPageContent() {
     </div>
   )
 }
+
+export function CookiesPageContent() {
+  const locale = useLocale()
+  const page = useMessages().legal.cookies
+
+  return (
+    <div className="min-h-screen bg-background" lang={langAttr(locale)}>
+      <DocumentTitle title={`${page.title} | ${siteConfig.name}`} />
+      <Header locale={locale} />
+      <LegalBody page={page} />
+      <Footer locale={locale} />
+    </div>
+  )
+}
+
+export function ChangelogPageContent() {
+  const locale = useLocale()
+  const page = useMessages().legal.changelog
+
+  return (
+    <div className="min-h-screen bg-background" lang={langAttr(locale)}>
+      <DocumentTitle title={`${page.title} | ${siteConfig.name}`} />
+      <Header locale={locale} />
+      <LegalBody page={page} />
+      <Footer locale={locale} />
+    </div>
+  )
+}

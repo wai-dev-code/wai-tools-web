@@ -19,6 +19,8 @@ export interface LegalPageContent {
 export interface LegalPagesMessages {
   privacy: LegalPageContent
   terms: LegalPageContent
+  cookies: LegalPageContent
+  changelog: LegalPageContent
 }
 
 export const legalZh: LegalPagesMessages = {
@@ -113,6 +115,67 @@ export const legalZh: LegalPagesMessages = {
       {
         title: "条款变更",
         paragraphs: ["我们保留随时修改本条款的权利。变更后继续使用即视为接受新条款。"],
+      },
+    ],
+  },
+  cookies: {
+    metaTitle: "Cookie 政策",
+    metaDescription: "WaiHub Cookie 政策——我们如何使用 Cookie 及如何管理您的偏好。",
+    title: "Cookie 政策",
+    lastUpdated: "最后更新：2026 年 6 月 13 日",
+    sections: [
+      {
+        title: "什么是 Cookie",
+        paragraphs: [
+          "Cookie 是网站存储在您浏览器中的小型文本文件，用于记住偏好、分析使用情况或投放广告。",
+        ],
+      },
+      {
+        title: "我们如何使用 Cookie",
+        paragraphs: ["WaiHub 可能使用以下类型的 Cookie："],
+        bullets: [
+          "必要 Cookie：保障网站基本功能正常运行",
+          "分析 Cookie：通过 Vercel Analytics 等了解匿名访问统计",
+          "广告 Cookie：Google AdSense 等合作伙伴用于投放相关广告",
+        ],
+      },
+      {
+        title: "管理 Cookie",
+        paragraphs: [
+          "您可通过浏览器设置阻止或删除 Cookie。阻止 Cookie 可能影响部分功能。个性化广告可通过 Google 广告设置或 aboutads.info 管理。",
+        ],
+      },
+    ],
+  },
+  changelog: {
+    metaTitle: "更新日志",
+    metaDescription: "WaiHub 产品更新日志——新工具、功能改进与内容更新记录。",
+    title: "更新日志",
+    lastUpdated: "最后更新：2026 年 6 月 13 日",
+    sections: [
+      {
+        title: "2026 年 6 月",
+        bullets: [
+          "为全部 10 个工具页面增加详细指南、功能说明、使用步骤、示例与 FAQ",
+          "首页新增平台介绍、优势说明与使用场景模块",
+          "博客扩展至 20 篇技术文章",
+          "新增 Cookie 政策与更新日志页面",
+        ],
+      },
+      {
+        title: "2026 年 5 月",
+        bullets: [
+          "上线密码生成器、二维码生成器、哈希生成器",
+          "新增 URL 编解码、时间戳转换、UUID 生成、JWT 解码工具",
+          "支持 English、简体中文、日本語 三语",
+        ],
+      },
+      {
+        title: "2026 年 4 月",
+        bullets: [
+          "WaiHub 正式上线，首批 JSON 格式化与 Base64 工具",
+          "发布隐私政策与服务条款",
+        ],
       },
     ],
   },
@@ -219,6 +282,67 @@ export const legalEn: LegalPagesMessages = {
       },
     ],
   },
+  cookies: {
+    metaTitle: "Cookie Policy",
+    metaDescription: "WaiHub cookie policy — how we use cookies and how to manage your preferences.",
+    title: "Cookie Policy",
+    lastUpdated: "Last updated: June 13, 2026",
+    sections: [
+      {
+        title: "What Are Cookies",
+        paragraphs: [
+          "Cookies are small text files stored in your browser by websites. They remember preferences, analyze usage, or deliver advertisements.",
+        ],
+      },
+      {
+        title: "How We Use Cookies",
+        paragraphs: ["WaiHub may use the following types of cookies:"],
+        bullets: [
+          "Essential cookies: required for basic site functionality",
+          "Analytics cookies: anonymous usage statistics via Vercel Analytics",
+          "Advertising cookies: Google AdSense and partners for relevant ads",
+        ],
+      },
+      {
+        title: "Managing Cookies",
+        paragraphs: [
+          "You can block or delete cookies through your browser settings. Blocking cookies may affect some features. Manage personalized ads via Google Ad Settings or aboutads.info.",
+        ],
+      },
+    ],
+  },
+  changelog: {
+    metaTitle: "Changelog",
+    metaDescription: "WaiHub product changelog — new tools, improvements, and content updates.",
+    title: "Changelog",
+    lastUpdated: "Last updated: June 13, 2026",
+    sections: [
+      {
+        title: "June 2026",
+        bullets: [
+          "Added detailed guides, features, steps, examples, and FAQ to all 10 tool pages",
+          "Homepage: platform intro, benefits, and use case sections",
+          "Blog expanded to 20 technical articles",
+          "Added Cookie Policy and Changelog pages",
+        ],
+      },
+      {
+        title: "May 2026",
+        bullets: [
+          "Launched Password, QR Code, and Hash generators",
+          "Added URL Encoder, Timestamp, UUID, and JWT Decoder tools",
+          "English, Chinese, and Japanese language support",
+        ],
+      },
+      {
+        title: "April 2026",
+        bullets: [
+          "WaiHub launch with JSON Formatter and Base64 tools",
+          "Published Privacy Policy and Terms of Service",
+        ],
+      },
+    ],
+  },
 }
 
 export const legalJa: LegalPagesMessages = {
@@ -313,6 +437,67 @@ export const legalJa: LegalPagesMessages = {
       {
         title: "規約の変更",
         paragraphs: ["本規約は随時変更される場合があります。変更後の利用は同意とみなします。"],
+      },
+    ],
+  },
+  cookies: {
+    metaTitle: "Cookie ポリシー",
+    metaDescription: "WaiHub の Cookie ポリシー — Cookie の使用と設定管理について。",
+    title: "Cookie ポリシー",
+    lastUpdated: "最終更新：2026年6月13日",
+    sections: [
+      {
+        title: "Cookie とは",
+        paragraphs: [
+          "Cookie はウェブサイトがブラウザに保存する小さなテキストファイルです。設定の記憶、利用分析、広告配信に使用されます。",
+        ],
+      },
+      {
+        title: "Cookie の使用",
+        paragraphs: ["WaiHub は以下のタイプの Cookie を使用する場合があります："],
+        bullets: [
+          "必須 Cookie：サイトの基本機能に必要",
+          "分析 Cookie：Vercel Analytics 等による匿名統計",
+          "広告 Cookie：Google AdSense 等による関連広告",
+        ],
+      },
+      {
+        title: "Cookie の管理",
+        paragraphs: [
+          "ブラウザ設定で Cookie をブロックまたは削除できます。パーソナライズ広告は Google 広告設定または aboutads.info で管理できます。",
+        ],
+      },
+    ],
+  },
+  changelog: {
+    metaTitle: "更新履歴",
+    metaDescription: "WaiHub の更新履歴 — 新ツール、機能改善、コンテンツ更新。",
+    title: "更新履歴",
+    lastUpdated: "最終更新：2026年6月13日",
+    sections: [
+      {
+        title: "2026年6月",
+        bullets: [
+          "全10ツールページにガイド、機能、手順、例、FAQ を追加",
+          "ホームページにプラットフォーム紹介、メリット、利用シーンを追加",
+          "ブログを20記事に拡充",
+          "Cookie ポリシーと更新履歴ページを追加",
+        ],
+      },
+      {
+        title: "2026年5月",
+        bullets: [
+          "パスワード、QRコード、ハッシュジェネレーターを公開",
+          "URL、タイムスタンプ、UUID、JWT デコーダーを追加",
+          "English、中文、日本語 の3言語サポート",
+        ],
+      },
+      {
+        title: "2026年4月",
+        bullets: [
+          "WaiHub 正式公開 — JSON フォーマッターと Base64 ツール",
+          "プライバシーポリシーと利用規約を公開",
+        ],
       },
     ],
   },

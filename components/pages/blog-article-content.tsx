@@ -7,6 +7,9 @@ import { AdSlot } from "@/components/ad-slot"
 import { formatBlogDate } from "@/lib/blog-i18n"
 import { getBlogPost } from "@/lib/blog-data"
 import { getMessages, localizeHref } from "@/lib/i18n"
+import { JsonLd } from "@/components/json-ld"
+import { buildOrganizationPublisher } from "@/lib/organization-schema"
+import { siteConfig } from "@/lib/tools-data"
 
 export function BlogArticleContent({ locale, slug }: { locale: Locale; slug: string }) {
   const post = getBlogPost(slug)
@@ -17,9 +20,25 @@ export function BlogArticleContent({ locale, slug }: { locale: Locale; slug: str
   if (!localized) notFound()
 
   const lang = locale === "zh" ? "zh-CN" : locale === "ja" ? "ja" : "en"
+  const articleUrl = `${siteConfig.url}${localizeHref(locale, `blog/${slug}`)}`
 
   return (
     <div className="min-h-screen bg-background" lang={lang}>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: localized.title,
+          description: localized.description,
+          datePublished: post.date,
+          dateModified: post.date,
+          author: { "@type": "Organization", name: siteConfig.name },
+          publisher: buildOrganizationPublisher(),
+          mainEntityOfPage: articleUrl,
+          inLanguage: lang,
+          url: articleUrl,
+        }}
+      />
       <Header locale={locale} />
       <main className="mx-auto max-w-3xl px-4 pt-24 pb-16 lg:px-6">
         <Link

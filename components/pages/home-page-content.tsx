@@ -1,6 +1,7 @@
 import type { Locale } from "@/lib/i18n/config"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { HomeIntroSections } from "@/components/home-intro-sections"
 import { HomeBlogTeaser } from "@/components/home-blog-teaser"
 import { HomeToolHub } from "@/components/home-tool-hub"
 import { CompactFAQ } from "@/components/compact-faq"
@@ -33,6 +34,7 @@ export function HomePageContent({ locale }: { locale: Locale }) {
       <Header locale={locale} />
       <main>
         <HomeToolHub locale={locale} />
+        <HomeIntroSections locale={locale} />
         <HomeBlogTeaser locale={locale} />
         <CompactFAQ locale={locale} />
       </main>

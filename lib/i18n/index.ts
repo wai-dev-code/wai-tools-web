@@ -13,7 +13,8 @@ import type { Messages } from "@/lib/i18n/messages/types"
 import { getSeoPageKey, seoLocalizedSlugs } from "@/lib/i18n/messages/seo-pages"
 import zh from "@/lib/i18n/messages/zh"
 import { getBlogPost } from "@/lib/blog-data"
-import { siteConfig } from "@/lib/tools-data"
+import { getToolBySlug, siteConfig } from "@/lib/tools-data"
+import { getToolSeoMeta } from "@/lib/tool-page-seo-meta"
 import { type LocalizedToolSlug } from "@/lib/i18n/localized-tool-slug"
 
 const catalogs: Record<Locale, Messages> = { zh, en, ja }
@@ -82,6 +83,12 @@ export function createPageMetadata(
 ): Metadata {
   const canonicalPath = localizeHref(locale, path)
   const alternates = buildLanguageAlternates(path)
+  const ogLocale = hreflangMap[locale].replace("-", "_")
+  const alternateLocales = locales
+    .filter((l) => l !== locale)
+    .map((l) => hreflangMap[l].replace("-", "_"))
+
+  const fullTitle = `${title} | ${siteConfig.name}`
 
   return {
     title,
@@ -91,11 +98,22 @@ export function createPageMetadata(
       ? { ...alternates, canonical: `${siteConfig.url}${canonicalPath}` }
       : { canonical: `${siteConfig.url}${canonicalPath}` },
     openGraph: {
-      title: `${title} | ${siteConfig.name}`,
+      title: fullTitle,
       description,
       url: `${siteConfig.url}${canonicalPath}`,
       type: "website",
-      locale: hreflangMap[locale].replace("-", "_"),
+      siteName: siteConfig.name,
+      locale: ogLocale,
+      alternateLocale: alternateLocales,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   }
 }
@@ -161,9 +179,15 @@ export function generateLocalizedToolMetadata(
   locale: Locale,
   slug: LocalizedToolSlug
 ): Metadata {
-  const m = getMessages(locale)
-  const page = m[TOOL_PAGE_KEY[slug]]
-  return createPageMetadata(locale, `tools/${slug}`, page.metaTitle, page.metaDescription)
+  const seo = getToolSeoMeta(slug, locale)
+  const tool = getToolBySlug(slug)
+  return createPageMetadata(
+    locale,
+    `tools/${slug}`,
+    seo.metaTitle,
+    seo.metaDescription,
+    tool?.keywords
+  )
 }
 
 export function generateLocalizedSeoMetadataBySlug(locale: Locale, slug: string): Metadata {

@@ -13,6 +13,7 @@ import {
 import { qrToolJa, qrCodeGeneratorPageJa } from "@/lib/i18n/messages/qr-tool-messages"
 import { hashToolJa, hashGeneratorPageJa } from "@/lib/i18n/messages/hash-tool-messages"
 import { staticJa } from "@/lib/i18n/messages/static-pages"
+import { blogPostsBatch2Ja } from "@/lib/i18n/messages/blog-posts-batch2-ja"
 import { legalJa } from "@/lib/i18n/messages/legal-pages"
 import { seoJa } from "@/lib/i18n/messages/seo-pages"
 
@@ -33,6 +34,8 @@ const ja: Messages = {
     base64: "Base64 変換",
     privacy: "プライバシーポリシー",
     terms: "利用規約",
+    cookies: "Cookie ポリシー",
+    changelog: "更新履歴",
     contact: "お問い合わせ",
     localRun: "ブラウザ内実行",
     free: "無料",
@@ -65,7 +68,7 @@ const ja: Messages = {
   home: {
     metaTitle: "WaiHub - 開発者ツール Hub",
     metaDescription:
-      "無料の開発者ツール Hub：JSON、Base64、URL、JWT、UUID、パスワード生成、QRコード、MD5/SHA ハッシュ、正規表現、タイムスタンプなど 10 種以上。ブラウザ内で処理、登録不要。",
+      "無料の開発者ツール Hub：JSON、Base64、URL、JWT、UUID、正規表現、ハッシュ、QR など 10 種。ブラウザ内処理、プライバシー優先、登録不要。",
     title: "開発者ツール Hub",
     subtitle:
       "{n} 種類のツールを一箇所で — JSON・エンコード・JWT・Regex など。ブラウザ内で処理し、サーバーに送信しません。English · 中文 · 日本語",
@@ -81,13 +84,43 @@ const ja: Messages = {
     faqs: [
       { q: "無料で使えますか？", a: "はい。すべてのツールが無料で、登録も不要です。" },
       { q: "データは安全ですか？", a: "ツールはブラウザ内で動作し、入力内容は通常サーバーに送信されません。本番の秘密鍵や Token は信頼できないサイトに貼り付けないでください。" },
-      { q: "対応ブラウザは？", a: "Chrome、Firefox、Safari、Edge の最新版。" },
+      { q: "対応ブラウザは？", a: "Chrome、Firefox、Safari、Edge の最新版（デスクトップ・モバイル）。" },
       { q: "フィードバックの方法は？", a: "お問い合わせページまたはメールでご連絡ください。" },
+      { q: "アカウント登録は必要？", a: "不要です。すべてのツールは登録・ログインなしで即座に利用できます。" },
+      { q: "商用利用できますか？", a: "はい。個人・商用の開発作業に制限なく無料で利用できます。" },
+      { q: "対応言語は？", a: "English、简体中文、日本語 の 3 言語をサポートしています。" },
+      { q: "ツールは何種類？", a: "JSON、エンコード、セキュリティ、API デバッグをカバーする 10 種類のコアツールを提供。" },
+      { q: "ファイルサイズ制限は？", a: "ほとんどのツールは最大 5 MB まで対応。大きなファイルはパフォーマンスのためリアルタイム分析を一時停止します。" },
+      { q: "各ツールの使い方はどこで学べる？", a: "各ツールページに完全ガイド、手順、例、FAQ が含まれています。" },
+    ],
+    whatIsTitle: "WaiHub とは？",
+    whatIsParagraphs: [
+      "WaiHub は、開発者向けの無料オンラインツールプラットフォームで、必須ユーティリティを一箇所に集約しています。JSON 整形、Base64 エンコード、JWT デコード、正規表現テストなど、API デバッグ、データ処理、日常のコーディングタスクをソフトウェアのインストールやアカウント作成なしで解決できます。",
+      "リンクを並べるだけの従来のツール集約サイトと異なり、WaiHub の各ツールページには詳細ガイド、手順説明、実例、FAQ が含まれています。概念を学ぶときも本番問題を解くときも、各ページは単なるボタンではなく有用なリソースです。",
+      "プライバシーは核心原則：すべてのツールは JavaScript でブラウザ内で完全に動作します。JSON、トークン、パスワード、ファイルはローカルで処理され、WaiHub サーバーにアップロードされません。English、中文、日本語 をサポートし、世界中の開発者向けに設計されています。",
+    ],
+    whyChooseTitle: "WaiHub を選ぶ理由",
+    whyChooseItems: [
+      { title: "高速", description: "入力と同時に結果表示。サーバー応答を待つ必要なし — すべてブラウザ内でローカル実行。" },
+      { title: "セキュア", description: "ブラウザベースの処理で機密データはデバイス上に保持。アップロード・サーバー保存なし。" },
+      { title: "プライバシー優先", description: "ツール入力を収集しません。JSON、JWT、パスワードはすべてローカル処理。" },
+      { title: "無料", description: "10 種類すべて完全無料。登録不要、プレミアム層なし、利用制限なし。" },
+      { title: "ブラウザベース", description: "デスクトップ、タブレット、モバイルの最新ブラウザで動作。インストール・プラグイン不要。" },
+    ],
+    useCasesTitle: "よくある利用シーン",
+    useCasesItems: [
+      { title: "API 開発", description: "JSON レスポンスの整形、JWT デコード、API 統合時の認証フローのデバッグ。" },
+      { title: "フロント・バックエンド連携", description: "URL エンコード、タイムスタンプ変換、データ形式の検証。" },
+      { title: "データ処理", description: "Base64 変換、Query 文字列解析、ハッシュ計算、JSON/YAML/XML 変換。" },
+      { title: "JWT 解析", description: "JWT Header と Payload のデコード、有効期限の確認、OAuth デバッグ。" },
+      { title: "JSON 整形", description: "圧縮 API レスポンスの美化、構文検証、ツリービューでのネスト探索。" },
+      { title: "タイムスタンプ変換", description: "Unix タイムスタンプと日付の相互変換。ログ分析・タイムゾーンデバッグに必須。" },
+      { title: "QR コード生成", description: "URL、WiFi 認証情報、連絡先のスキャン可能 QR コードをイベント・マーケティング用に作成。" },
     ],
   },
   toolsPage: {
     metaTitle: "すべてのツール",
-    metaDescription: "WaiHub の無料開発者ツール一覧。",
+    metaDescription: "WaiHub の無料開発者ツール 10 種を一覧。JSON、Base64、JWT、正規表現など。ブラウザ内処理、プライバシー優先。",
     title: "すべてのツール",
     subtitle: "{n} 件の無料ツール — ブラウザ内で実行",
     searchPlaceholder: "ツールを検索...",
@@ -198,7 +231,13 @@ const ja: Messages = {
   regexTool: regexToolJa,
   aboutPage: staticJa.about,
   contactPage: staticJa.contact,
-  blogPage: staticJa.blog,
+  blogPage: {
+    ...staticJa.blog,
+    posts: {
+      ...staticJa.blog.posts,
+      ...blogPostsBatch2Ja,
+    },
+  },
   theme: staticJa.theme,
   errors: staticJa.errors,
   legal: legalJa,
