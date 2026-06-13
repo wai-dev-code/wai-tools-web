@@ -1,10 +1,7 @@
 import type { Locale } from "@/lib/i18n/config"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { HomeIntroSections } from "@/components/home-intro-sections"
-import { HomeBlogTeaser } from "@/components/home-blog-teaser"
-import { HomeToolHub } from "@/components/home-tool-hub"
-import { CompactFAQ } from "@/components/compact-faq"
+import { HomeLanding } from "@/components/home-landing"
 import { JsonLd } from "@/components/json-ld"
 import { getMessages, localizeHref } from "@/lib/i18n"
 import { buildOrganizationPublisher } from "@/lib/organization-schema"
@@ -12,9 +9,10 @@ import { siteConfig } from "@/lib/tools-data"
 
 export function HomePageContent({ locale }: { locale: Locale }) {
   const m = getMessages(locale)
+  const lang = locale === "zh" ? "zh-CN" : locale === "ja" ? "ja" : "en"
 
   return (
-    <div className="min-h-screen bg-background" lang={locale === "zh" ? "zh-CN" : locale === "ja" ? "ja" : "en"}>
+    <div className="min-h-screen bg-background" lang={lang}>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -22,7 +20,7 @@ export function HomePageContent({ locale }: { locale: Locale }) {
           name: siteConfig.name,
           url: `${siteConfig.url}${localizeHref(locale, "")}`,
           description: m.home.metaDescription,
-          inLanguage: locale === "zh" ? "zh-CN" : locale === "ja" ? "ja" : "en",
+          inLanguage: lang,
           publisher: buildOrganizationPublisher(),
           potentialAction: {
             "@type": "SearchAction",
@@ -31,12 +29,22 @@ export function HomePageContent({ locale }: { locale: Locale }) {
           },
         }}
       />
+      {m.home.faqs.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: m.home.faqs.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
+            })),
+          }}
+        />
+      )}
       <Header locale={locale} />
       <main>
-        <HomeToolHub locale={locale} />
-        <HomeIntroSections locale={locale} />
-        <HomeBlogTeaser locale={locale} />
-        <CompactFAQ locale={locale} />
+        <HomeLanding locale={locale} />
       </main>
       <Footer locale={locale} />
     </div>

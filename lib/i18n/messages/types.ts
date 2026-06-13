@@ -101,6 +101,14 @@ export interface Messages {
     viewAll: string
     blogSectionTitle: string
     blogViewAll: string
+    blogSectionSubtitle: string
+    heroBadge: string
+    heroCta: string
+    heroCtaSecondary: string
+    toolsSectionTitle: string
+    toolsSectionSubtitle: string
+    stats: { value: string; label: string }[]
+    faqSubtitle: string
     whatIsTitle: string
     whatIsParagraphs: string[]
     whyChooseTitle: string
