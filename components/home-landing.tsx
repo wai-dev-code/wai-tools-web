@@ -11,6 +11,7 @@ import {
   Shield,
   Zap,
 } from "lucide-react"
+import { HomeHeroLottie } from "@/components/home-hero-lottie"
 import { HomeSearchInput } from "@/components/home-search-input"
 import {
   Accordion,
@@ -63,7 +64,7 @@ export function HomeLanding({ locale = defaultLocale }: { locale?: Locale }) {
   return (
     <div className="relative">
       {/* Hero + gradient mesh */}
-      <section className="relative overflow-hidden px-4 pt-28 pb-16 lg:px-6 lg:pb-24">
+      <section className="relative overflow-hidden px-4 pt-28 pb-10 lg:px-6 lg:pb-14">
         <div
           className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,oklch(0.55_0.19_250/0.25),transparent)]"
           aria-hidden
@@ -85,67 +86,73 @@ export function HomeLanding({ locale = defaultLocale }: { locale?: Locale }) {
           aria-hidden
         />
 
-        <div className="mx-auto max-w-4xl text-center home-animate-in">
-          <div
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm"
-          >
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-            </span>
-            {m.heroBadge}
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1fr_minmax(0,380px)] lg:gap-12">
+          <div className="text-center home-animate-in lg:text-left">
+            <div
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm"
+            >
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+              </span>
+              {m.heroBadge}
+            </div>
+
+            <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+              {m.title}
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg lg:mx-0">
+              {formatMessage(m.subtitle, { n: visibleTools.length })}
+            </p>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground/90 lg:mx-0">
+              {m.whatIsParagraphs[0]}
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+              <Link
+                href={localizeHref(locale, "tools")}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-primary/30"
+              >
+                {m.heroCta}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href={localizeHref(locale, "blog")}
+                className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/50 px-5 py-2.5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-primary/40 hover:bg-card"
+              >
+                {m.heroCtaSecondary}
+              </Link>
+            </div>
           </div>
 
-          <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            {m.title}
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg">
-            {formatMessage(m.subtitle, { n: visibleTools.length })}
-          </p>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground/90">
-            {m.whatIsParagraphs[0]}
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href={localizeHref(locale, "tools")}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:shadow-primary/30"
-            >
-              {m.heroCta}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href={localizeHref(locale, "blog")}
-              className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/50 px-5 py-2.5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:border-primary/40 hover:bg-card"
-            >
-              {m.heroCtaSecondary}
-            </Link>
+          <div className="home-animate-in mx-auto w-full lg:mx-0" style={{ animationDelay: "120ms" }}>
+            <HomeHeroLottie />
           </div>
         </div>
       </section>
 
       {/* Statistics */}
-      <section className="border-y border-border/50 bg-card/20 px-4 py-12 lg:px-6">
-        <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="border-y border-border/50 bg-card/20 px-4 py-5 lg:px-6">
+        <div className="mx-auto grid max-w-5xl gap-x-6 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
           {m.stats.map((stat, i) => (
             <div
               key={stat.label}
               className="home-animate-in text-center"
               style={{ animationDelay: `${i * 80}ms` }}
             >
-              <p className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <p className="text-2xl font-bold leading-none tracking-tight text-foreground sm:text-3xl">
                 {stat.value}
               </p>
-              <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
+              <p className="mt-1 text-xs leading-snug text-muted-foreground sm:text-sm">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Tools grid */}
-      <section id="tools" className="px-4 py-20 lg:px-6">
+      <section id="tools" className="px-4 py-14 lg:px-6 lg:py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10 text-center home-animate-in">
+          <div className="mb-8 text-center home-animate-in">
             <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               {m.toolsSectionTitle}
             </h2>
