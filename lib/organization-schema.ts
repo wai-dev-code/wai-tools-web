@@ -11,7 +11,7 @@ export function buildOrganizationJsonLd(locale: Locale) {
     "@type": "Organization",
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/icon.svg`,
+    logo: `${siteConfig.url}/android-chrome-512x512.png`,
     description: m.common.footerTagline,
     email: siteConfig.contactEmail,
   }
@@ -23,6 +23,6 @@ export function buildOrganizationPublisher() {
     "@type": "Organization" as const,
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/icon.svg`,
+    logo: `${siteConfig.url}/android-chrome-512x512.png`,
   }
 }
