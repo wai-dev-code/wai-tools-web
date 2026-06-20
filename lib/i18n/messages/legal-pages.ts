@@ -50,7 +50,7 @@ export const legalZh: LegalPagesMessages = {
         paragraphs: ["我们可能通过以下方式收集非个人身份信息："],
         bullets: [
           "访问日志（IP 地址、浏览器类型、访问页面、时间戳）",
-          "通过 Vercel Analytics 等服务的匿名使用统计",
+          "通过 Vercel Analytics、Google Analytics 等服务的匿名使用统计",
           "Cookie 及类似技术（见下文）",
         ],
       },
@@ -135,7 +135,7 @@ export const legalZh: LegalPagesMessages = {
         paragraphs: ["WaiHub 可能使用以下类型的 Cookie："],
         bullets: [
           "必要 Cookie：保障网站基本功能正常运行",
-          "分析 Cookie：通过 Vercel Analytics 等了解匿名访问统计",
+          "分析 Cookie：通过 Vercel Analytics、Google Analytics 等了解访问与互动统计",
           "广告 Cookie：Google AdSense 等合作伙伴用于投放相关广告",
         ],
       },
@@ -209,7 +209,7 @@ export const legalEn: LegalPagesMessages = {
         paragraphs: ["We may collect non-personally identifiable information such as:"],
         bullets: [
           "Access logs (IP address, browser type, pages visited, timestamps)",
-          "Anonymous usage statistics via services like Vercel Analytics",
+          "Anonymous usage statistics via services like Vercel Analytics and Google Analytics",
           "Cookies and similar technologies (see below)",
         ],
       },
@@ -300,7 +300,7 @@ export const legalEn: LegalPagesMessages = {
         paragraphs: ["WaiHub may use the following types of cookies:"],
         bullets: [
           "Essential cookies: required for basic site functionality",
-          "Analytics cookies: anonymous usage statistics via Vercel Analytics",
+          "Analytics cookies: usage and engagement statistics via Vercel Analytics and Google Analytics",
           "Advertising cookies: Google AdSense and partners for relevant ads",
         ],
       },
@@ -374,7 +374,7 @@ export const legalJa: LegalPagesMessages = {
         paragraphs: ["以下のような非個人識別情報を収集する場合があります："],
         bullets: [
           "アクセスログ（IP アドレス、ブラウザ種類、訪問ページ、タイムスタンプ）",
-          "Vercel Analytics 等による匿名利用統計",
+          "Vercel Analytics、Google Analytics 等による匿名利用統計",
           "Cookie および類似技術（下記参照）",
         ],
       },
@@ -459,7 +459,7 @@ export const legalJa: LegalPagesMessages = {
         paragraphs: ["WaiHub は以下のタイプの Cookie を使用する場合があります："],
         bullets: [
           "必須 Cookie：サイトの基本機能に必要",
-          "分析 Cookie：Vercel Analytics 等による匿名統計",
+          "分析 Cookie：Vercel Analytics、Google Analytics 等によるアクセス・操作統計",
           "広告 Cookie：Google AdSense 等による関連広告",
         ],
       },

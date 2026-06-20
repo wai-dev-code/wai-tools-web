@@ -10,6 +10,7 @@ import { AdSlot } from "@/components/ad-slot"
 import { ToolContentSections } from "@/components/tool-content-sections"
 import { ToolWorkflowLinks } from "@/components/tool-workflow-links"
 import { recordRecentTool } from "@/lib/recent-tools"
+import { trackGaEvent } from "@/lib/google-analytics"
 import { isImmersiveBottomAdAllowed } from "@/lib/adsense"
 import { ToolContentShell } from "@/components/tool-content-shell"
 import { PanelFullscreenProvider, usePanelFullscreenOptional } from "@/components/panel-fullscreen-context"
@@ -42,6 +43,11 @@ function ToolLayoutBody({ toolSlug, locale = defaultLocale, children, content }:
   useEffect(() => {
     if (tool) recordRecentTool(tool.slug)
   }, [tool])
+
+  useEffect(() => {
+    if (!tool) return
+    trackGaEvent("tool_view", { tool_slug: tool.slug, locale })
+  }, [tool, locale])
 
   if (!tool) return null
 
