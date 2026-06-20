@@ -1,6 +1,7 @@
 import type { FaqItem } from "@/lib/i18n/messages/types"
 
 export interface TextDiffToolMessages {
+  intro: string
   leftLabel: string
   rightLabel: string
   leftPlaceholder: string
@@ -25,8 +26,10 @@ export interface TextDiffPageMessages {
 }
 
 export const textDiffToolZh: TextDiffToolMessages = {
-  leftLabel: "原始文本",
-  rightLabel: "对比文本",
+  intro:
+    "左右各粘贴一份文本，工具会按行对比差异：适合核对配置、日志、代码片段或文档改版。绿色=右侧新增，红色=左侧删除，黄色=同一行内容不同。",
+  leftLabel: "左侧（旧版本 / 原文）",
+  rightLabel: "右侧（新版本 / 修改后）",
   leftPlaceholder: "粘贴原始文本…",
   rightPlaceholder: "粘贴对比文本…",
   clear: "清空",
@@ -42,8 +45,10 @@ export const textDiffToolZh: TextDiffToolMessages = {
 }
 
 export const textDiffToolEn: TextDiffToolMessages = {
-  leftLabel: "Original text",
-  rightLabel: "Compare text",
+  intro:
+    "Paste two versions side by side to compare line-by-line — useful for configs, logs, code snippets, or doc edits. Green = added on the right, red = removed from the left, amber = same line changed.",
+  leftLabel: "Left (original / before)",
+  rightLabel: "Right (updated / after)",
   leftPlaceholder: "Paste original text…",
   rightPlaceholder: "Paste text to compare…",
   clear: "Clear",
@@ -59,8 +64,10 @@ export const textDiffToolEn: TextDiffToolMessages = {
 }
 
 export const textDiffToolJa: TextDiffToolMessages = {
-  leftLabel: "元のテキスト",
-  rightLabel: "比較テキスト",
+  intro:
+    "左右にテキストを貼り付けて行単位で比較します。設定・ログ・コード・文書の差分確認に便利です。緑=右に追加、赤=左から削除、黄=同じ行が変更。",
+  leftLabel: "左（変更前）",
+  rightLabel: "右（変更後）",
   leftPlaceholder: "元のテキストを貼り付け…",
   rightPlaceholder: "比較するテキストを貼り付け…",
   clear: "クリア",

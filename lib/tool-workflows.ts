@@ -92,16 +92,6 @@ export const TOOL_WORKFLOW_MAP: Partial<Record<LocalizedToolSlug, ToolWorkflowSt
       },
     },
   ],
-  "text-diff": [
-    {
-      targetSlug: "json-formatter",
-      labels: {
-        en: "Format text as JSON",
-        zh: "将文本格式化为 JSON",
-        ja: "テキストを JSON 整形",
-      },
-    },
-  ],
 }
 
 export function getToolWorkflowSteps(slug: string): ToolWorkflowStep[] {

@@ -32,39 +32,45 @@ export function TextDiffTool({ locale = defaultLocale }: TextDiffToolProps) {
 
   return (
     <div className="space-y-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">{ui.intro}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 shrink-0 px-3 text-xs"
+          onClick={() => {
+            setLeft("")
+            setRight("")
+          }}
+        >
+          <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+          {ui.clear}
+        </Button>
+      </div>
+
       <div className="grid min-w-0 gap-4 lg:grid-cols-2">
         <div className="min-w-0 space-y-2">
-          <div className="flex items-center justify-between gap-2">
-            <Label htmlFor="diff-left">{ui.leftLabel}</Label>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 px-2 text-xs"
-              onClick={() => {
-                setLeft("")
-                setRight("")
-              }}
-            >
-              <Trash2 className="mr-1 h-3 w-3" />
-              {ui.clear}
-            </Button>
-          </div>
+          <Label htmlFor="diff-left" className="text-sm font-medium">
+            {ui.leftLabel}
+          </Label>
           <Textarea
             id="diff-left"
             value={left}
             onChange={(e) => setLeft(e.target.value)}
             placeholder={ui.leftPlaceholder}
-            className="min-h-[160px] font-mono text-sm"
+            className="min-h-[180px] font-mono text-sm"
           />
         </div>
         <div className="min-w-0 space-y-2">
-          <Label htmlFor="diff-right">{ui.rightLabel}</Label>
+          <Label htmlFor="diff-right" className="text-sm font-medium">
+            {ui.rightLabel}
+          </Label>
           <Textarea
             id="diff-right"
             value={right}
             onChange={(e) => setRight(e.target.value)}
             placeholder={ui.rightPlaceholder}
-            className="min-h-[160px] font-mono text-sm"
+            className="min-h-[180px] font-mono text-sm"
           />
         </div>
       </div>
@@ -98,6 +104,12 @@ export function TextDiffTool({ locale = defaultLocale }: TextDiffToolProps) {
       </div>
 
       <section className="rounded-lg border border-border bg-card">
+        <div className="grid border-b border-border bg-muted/30 text-xs font-medium text-muted-foreground sm:grid-cols-2">
+          <div className="px-3 py-2">{ui.leftLabel}</div>
+          <div className="border-t border-border px-3 py-2 sm:border-t-0 sm:border-l">
+            {ui.rightLabel}
+          </div>
+        </div>
         {!hasInput ? (
           <p className="py-10 text-center text-sm text-muted-foreground">{ui.emptyHint}</p>
         ) : (
@@ -105,9 +117,9 @@ export function TextDiffTool({ locale = defaultLocale }: TextDiffToolProps) {
             {lines.map((line, index) => (
               <li
                 key={index}
-                className={cn("grid gap-2 border-l-4 p-3 sm:grid-cols-2", typeStyles[line.type])}
+                className={cn("grid gap-0 border-l-4 sm:grid-cols-2", typeStyles[line.type])}
               >
-                <div className="min-w-0 break-all">
+                <div className="min-w-0 break-all border-b border-border/40 p-3 sm:border-b-0 sm:border-r sm:border-border/40">
                   {line.type === "added" ? (
                     <span className="text-muted-foreground/50">—</span>
                   ) : (
@@ -119,7 +131,7 @@ export function TextDiffTool({ locale = defaultLocale }: TextDiffToolProps) {
                     </>
                   )}
                 </div>
-                <div className="min-w-0 break-all">
+                <div className="min-w-0 break-all p-3">
                   {line.type === "removed" ? (
                     <span className="text-muted-foreground/50">—</span>
                   ) : (
