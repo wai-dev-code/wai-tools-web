@@ -99,13 +99,7 @@ function PatternLibrary({
   }, [examples, query])
 
   return (
-    <div
-      className={cn(
-        "flex min-h-0 flex-col space-y-2",
-        expanded && "min-h-0 flex-1",
-        className
-      )}
-    >
+    <div className={cn("flex flex-col space-y-2", className)}>
       <Label className="text-sm">{title}</Label>
       <Input
         value={query}
@@ -116,9 +110,9 @@ function PatternLibrary({
       />
       <div
         className={cn(
-          "min-h-0 space-y-1.5 overflow-y-auto pr-0.5",
+          "space-y-1.5 overflow-y-auto pr-0.5",
           expanded
-            ? "flex-1 max-h-none"
+            ? "min-h-[200px] max-h-[min(360px,42vh)]"
             : "max-h-[min(280px,40vh)] lg:max-h-[min(420px,50vh)]"
         )}
       >
@@ -454,14 +448,14 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
 
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-4">
-      <aside className="hidden lg:col-span-4 lg:flex lg:max-h-[calc(100vh-7rem)] lg:flex-col lg:gap-3 lg:sticky lg:top-20 lg:self-start">
+      <aside className="hidden lg:col-span-4 lg:flex lg:max-h-[calc(100vh-7rem)] lg:flex-col lg:gap-3 lg:overflow-y-auto lg:sticky lg:top-20 lg:self-start">
         <PatternLibrary
           examples={examples}
           title={ui.commonExamplesTitle}
           searchPlaceholder={ui.librarySearchPlaceholder}
           onApply={applyExample}
           expanded
-          className="rounded-lg border border-border bg-card/60 p-3 min-h-0 flex-1"
+          className="shrink-0 rounded-lg border border-border bg-card/60 p-3"
         />
         <RegexHistoryPanel
           title={ui.historyTitle}
