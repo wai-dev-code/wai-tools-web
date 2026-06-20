@@ -12,6 +12,19 @@ import {
 } from "@/lib/i18n/messages/password-tool-messages"
 import { qrToolZh, qrCodeGeneratorPageZh } from "@/lib/i18n/messages/qr-tool-messages"
 import { hashToolZh, hashGeneratorPageZh } from "@/lib/i18n/messages/hash-tool-messages"
+import {
+  htmlEncoderToolZh,
+  htmlEncoderPageZh,
+} from "@/lib/i18n/messages/html-encoder-tool-messages"
+import { textDiffToolZh, textDiffPageZh } from "@/lib/i18n/messages/text-diff-tool-messages"
+import {
+  cronParserToolZh,
+  cronParserPageZh,
+} from "@/lib/i18n/messages/cron-parser-tool-messages"
+import {
+  colorConverterToolZh,
+  colorConverterPageZh,
+} from "@/lib/i18n/messages/color-converter-tool-messages"
 import { staticZh } from "@/lib/i18n/messages/static-pages"
 import { blogPostsBatch2Zh } from "@/lib/i18n/messages/blog-posts-batch2-zh"
 import { legalZh } from "@/lib/i18n/messages/legal-pages"
@@ -48,6 +61,7 @@ const zh: Messages = {
     notFoundBrowseTools: "浏览工具",
     adLabel: "广告",
     adDisclaimer: "广告由第三方提供。您输入的数据不会发送给广告主。",
+    workflowNext: "下一步",
   },
   workspace: {
     sidebarExpand: "展开侧边栏",
@@ -81,7 +95,7 @@ const zh: Messages = {
     toolsSectionTitle: "一站式开发工具",
     toolsSectionSubtitle: "搜索、筛选并打开任意工具 — 所有处理均在浏览器内完成。",
     stats: [
-      { value: "10", label: "免费开发者工具" },
+      { value: "14", label: "免费开发者工具" },
       { value: "3", label: "支持语言" },
       { value: "0", label: "需要注册" },
       { value: "100%", label: "浏览器内处理" },
@@ -198,6 +212,26 @@ const zh: Messages = {
       short: "测试与调试正则表达式",
       desc: "实时测试正则，高亮匹配，查看捕获组，浏览器内运行",
     },
+    htmlEncoder: {
+      name: "HTML 编解码",
+      short: "HTML 实体编码与解码",
+      desc: "HTML 实体编码与解码，支持命名实体与数字实体，可选全非 ASCII 编码",
+    },
+    textDiff: {
+      name: "文本对比",
+      short: "逐行文本 Diff 对比",
+      desc: "逐行文本 diff 对比，高亮新增、删除与修改行，适用于代码与配置",
+    },
+    cronParser: {
+      name: "Cron 解析器",
+      short: "Cron 表达式解析与解读",
+      desc: "解析标准 5 段 Cron 表达式，展示各字段含义与可读摘要",
+    },
+    colorConverter: {
+      name: "颜色转换器",
+      short: "HEX/RGB/HSL 颜色互转",
+      desc: "HEX、RGB、HSL 颜色格式互转，实时预览色块，一键复制",
+    },
   },
   jsonFormatterPage: {
     metaTitle: "JSON 格式化 - 免费在线工具",
@@ -233,6 +267,10 @@ const zh: Messages = {
   qrCodeGeneratorPage: qrCodeGeneratorPageZh,
   hashGeneratorPage: hashGeneratorPageZh,
   regexTesterPage: regexTesterPageZh,
+  htmlEncoderPage: htmlEncoderPageZh,
+  textDiffPage: textDiffPageZh,
+  cronParserPage: cronParserPageZh,
+  colorConverterPage: colorConverterPageZh,
   seo: seoZh,
   jsonTool: jsonToolZh,
   base64Tool: base64ToolZh,
@@ -244,6 +282,10 @@ const zh: Messages = {
   qrTool: qrToolZh,
   hashTool: hashToolZh,
   regexTool: regexToolZh,
+  htmlEncoderTool: htmlEncoderToolZh,
+  textDiffTool: textDiffToolZh,
+  cronParserTool: cronParserToolZh,
+  colorConverterTool: colorConverterToolZh,
   aboutPage: staticZh.about,
   contactPage: staticZh.contact,
   blogPage: {

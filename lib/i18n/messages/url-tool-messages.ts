@@ -14,6 +14,9 @@ export interface UrlToolMessages {
   inputPlaceholderJson: string
   outputPlaceholder: string
   hint: string
+  queryTableTitle: string
+  queryTableKey: string
+  queryTableValue: string
   notify: {
     nothingToCopy: string
     copied: string
@@ -52,6 +55,9 @@ export const urlToolZh: UrlToolMessages = {
   inputPlaceholderJson: '{"key": "value"}',
   outputPlaceholder: "结果将显示在这里...",
   hint: "encodeURIComponent 用于 Query 参数值；encodeURI 用于完整 URL。解码时 + 号会按空格处理。",
+  queryTableTitle: "Query 参数表",
+  queryTableKey: "参数名",
+  queryTableValue: "值",
   notify: { nothingToCopy: "没有可复制的内容", copied: "已复制到剪贴板" },
   errors: {
     invalidJsonObject: "请输入 JSON 对象，如 {\"key\": \"value\"}",
@@ -86,6 +92,9 @@ export const urlToolEn: UrlToolMessages = {
   inputPlaceholderJson: '{"key": "value"}',
   outputPlaceholder: "Result appears here...",
   hint: "encodeURIComponent is for query values; encodeURI is for full URLs. + is treated as space when decoding.",
+  queryTableTitle: "Query parameters",
+  queryTableKey: "Key",
+  queryTableValue: "Value",
   notify: { nothingToCopy: "Nothing to copy", copied: "Copied to clipboard" },
   errors: {
     invalidJsonObject: "Enter a JSON object, e.g. {\"key\": \"value\"}",
@@ -120,6 +129,9 @@ export const urlToolJa: UrlToolMessages = {
   inputPlaceholderJson: '{"key": "value"}',
   outputPlaceholder: "結果はここに表示...",
   hint: "encodeURIComponent はクエリ値、encodeURI は URL 全体用。デコード時 + はスペースとして扱います。",
+  queryTableTitle: "Query パラメータ",
+  queryTableKey: "キー",
+  queryTableValue: "値",
   notify: { nothingToCopy: "コピーする内容がありません", copied: "クリップボードにコピーしました" },
   errors: {
     invalidJsonObject: "JSON オブジェクトを入力してください（例: {\"key\": \"value\"}）",

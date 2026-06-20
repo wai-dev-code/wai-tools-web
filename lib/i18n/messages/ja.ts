@@ -12,6 +12,19 @@ import {
 } from "@/lib/i18n/messages/password-tool-messages"
 import { qrToolJa, qrCodeGeneratorPageJa } from "@/lib/i18n/messages/qr-tool-messages"
 import { hashToolJa, hashGeneratorPageJa } from "@/lib/i18n/messages/hash-tool-messages"
+import {
+  htmlEncoderToolJa,
+  htmlEncoderPageJa,
+} from "@/lib/i18n/messages/html-encoder-tool-messages"
+import { textDiffToolJa, textDiffPageJa } from "@/lib/i18n/messages/text-diff-tool-messages"
+import {
+  cronParserToolJa,
+  cronParserPageJa,
+} from "@/lib/i18n/messages/cron-parser-tool-messages"
+import {
+  colorConverterToolJa,
+  colorConverterPageJa,
+} from "@/lib/i18n/messages/color-converter-tool-messages"
 import { staticJa } from "@/lib/i18n/messages/static-pages"
 import { blogPostsBatch2Ja } from "@/lib/i18n/messages/blog-posts-batch2-ja"
 import { legalJa } from "@/lib/i18n/messages/legal-pages"
@@ -48,6 +61,7 @@ const ja: Messages = {
     notFoundBrowseTools: "ツール一覧",
     adLabel: "広告",
     adDisclaimer: "広告は第三者によって配信されます。ツールに入力したデータが広告主に共有されることはありません。",
+    workflowNext: "次のステップ",
   },
   workspace: {
     sidebarExpand: "サイドバーを展開",
@@ -81,7 +95,7 @@ const ja: Messages = {
     toolsSectionTitle: "必要なツールが揃う",
     toolsSectionSubtitle: "検索・フィルターですぐに開ける — 処理はすべてブラウザ内で完結。",
     stats: [
-      { value: "10", label: "無料開発者ツール" },
+      { value: "14", label: "無料開発者ツール" },
       { value: "3", label: "対応言語" },
       { value: "0", label: "登録が必要" },
       { value: "100%", label: "ブラウザ内処理" },
@@ -198,6 +212,26 @@ const ja: Messages = {
       short: "正規表現のテストとデバッグ",
       desc: "リアルタイムでマッチをハイライト、キャプチャグループを確認 — ブラウザ内で実行",
     },
+    htmlEncoder: {
+      name: "HTML エンコード/デコード",
+      short: "HTML エンティティ変換",
+      desc: "HTML エンティティのエンコード・デコード、名前付き・数値エンティティ対応",
+    },
+    textDiff: {
+      name: "テキスト差分",
+      short: "行単位テキスト比較",
+      desc: "2 つのテキストを行単位で比較、追加・削除・変更を色分け表示",
+    },
+    cronParser: {
+      name: "Cron パーサー",
+      short: "Cron 式の解読",
+      desc: "標準 5 フィールド Cron 式を解析し、フィールド分解と読みやすい要約を表示",
+    },
+    colorConverter: {
+      name: "カラー変換",
+      short: "HEX/RGB/HSL 変換",
+      desc: "HEX・RGB・HSL 形式間で色を変換、ライブプレビューとワンクリックコピー",
+    },
   },
   jsonFormatterPage: {
     metaTitle: "JSON フォーマッター - 無料オンラインツール",
@@ -233,6 +267,10 @@ const ja: Messages = {
   qrCodeGeneratorPage: qrCodeGeneratorPageJa,
   hashGeneratorPage: hashGeneratorPageJa,
   regexTesterPage: regexTesterPageJa,
+  htmlEncoderPage: htmlEncoderPageJa,
+  textDiffPage: textDiffPageJa,
+  cronParserPage: cronParserPageJa,
+  colorConverterPage: colorConverterPageJa,
   seo: seoJa,
   jsonTool: jsonToolJa,
   base64Tool: base64ToolJa,
@@ -244,6 +282,10 @@ const ja: Messages = {
   qrTool: qrToolJa,
   hashTool: hashToolJa,
   regexTool: regexToolJa,
+  htmlEncoderTool: htmlEncoderToolJa,
+  textDiffTool: textDiffToolJa,
+  cronParserTool: cronParserToolJa,
+  colorConverterTool: colorConverterToolJa,
   aboutPage: staticJa.about,
   contactPage: staticJa.contact,
   blogPage: {

@@ -16,6 +16,12 @@ export interface StaticPageMessages {
     feedbackDesc: string
     contactLink: string
     feedbackClosing: string
+    operatorTitle: string
+    operatorDesc: string
+    contentCadenceTitle: string
+    contentCadence: string
+    lastUpdatedTitle: string
+    lastUpdated: string
   }
   contact: {
     metaTitle: string
@@ -114,6 +120,14 @@ export const staticZh: StaticPageMessages = {
     feedbackDesc: "欢迎通过",
     contactLink: "联系我们",
     feedbackClosing: "，提交功能建议或问题反馈，我们会认真阅读每一条消息。",
+    operatorTitle: "运营与维护",
+    operatorDesc:
+      "WaiHub 由独立开发者维护，联系邮箱 w8732787@gmail.com。我们专注浏览器内开发者工具，持续根据用户反馈迭代功能与文档。",
+    contentCadenceTitle: "内容更新",
+    contentCadence:
+      "工具说明、FAQ 与博客文章会随功能发布定期更新；重大变更记录在 Changelog 页面。",
+    lastUpdatedTitle: "页面信息最后更新",
+    lastUpdated: "2026 年 6 月",
   },
   contact: {
     metaTitle: "联系我们",
@@ -389,6 +403,14 @@ export const staticEn: StaticPageMessages = {
     feedbackDesc: "Reach us via",
     contactLink: "Contact",
     feedbackClosing: " — we read every message.",
+    operatorTitle: "Who maintains WaiHub",
+    operatorDesc:
+      "WaiHub is maintained by an independent developer (w8732787@gmail.com). We focus on privacy-first, in-browser developer utilities and update docs with every release.",
+    contentCadenceTitle: "Content updates",
+    contentCadence:
+      "Tool guides, FAQs, and blog posts are updated with new features. See the Changelog for release notes.",
+    lastUpdatedTitle: "Last updated",
+    lastUpdated: "June 2026",
   },
   contact: {
     metaTitle: "Contact",
@@ -664,6 +686,14 @@ export const staticJa: StaticPageMessages = {
     feedbackDesc: "お問い合わせは",
     contactLink: "お問い合わせ",
     feedbackClosing: " — 機能提案やフィードバックをお待ちしています。",
+    operatorTitle: "運営について",
+    operatorDesc:
+      "WaiHub は独立開発者が運営しています（w8732787@gmail.com）。ブラウザ内で動作するプライバシー重視のツールを継続的に改善しています。",
+    contentCadenceTitle: "コンテンツ更新",
+    contentCadence:
+      "ツール説明・FAQ・ブログは機能追加に合わせて更新します。変更履歴は Changelog を参照してください。",
+    lastUpdatedTitle: "最終更新",
+    lastUpdated: "2026年6月",
   },
   contact: {
     metaTitle: "お問い合わせ",

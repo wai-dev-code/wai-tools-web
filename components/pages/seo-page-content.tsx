@@ -2,11 +2,16 @@ import { notFound } from "next/navigation"
 import { ToolLayout } from "@/components/tool-layout"
 import { JsonFormatterTool } from "@/components/tools/json-formatter-tool"
 import { Base64Tool } from "@/components/tools/base64-tool"
+import { UrlEncoderTool } from "@/components/tools/url-encoder-tool"
+import { TimestampTool } from "@/components/tools/timestamp-tool"
+import { JwtDecoderTool } from "@/components/tools/jwt-decoder-tool"
+import { HashGeneratorTool } from "@/components/tools/hash-generator-tool"
 import type { Locale } from "@/lib/i18n/config"
 import { getMessages } from "@/lib/i18n"
 import { getSeoPageKey } from "@/lib/i18n/messages/seo-pages"
 import { getBase64ToolPage } from "@/lib/base64-tool-pages"
 import { getJsonToolPage } from "@/lib/json-tool-pages"
+import { getMiscSeoPage, type MiscSeoPageConfig } from "@/lib/misc-seo-pages"
 import { getToolOrNotFound } from "@/lib/tool-metadata"
 import { getToolPageContent } from "@/lib/tool-page-content"
 
@@ -60,6 +65,48 @@ export function Base64SeoPageContent({ locale, slug }: { locale: Locale; slug: s
   return (
     <ToolLayout toolSlug={tool.slug} locale={locale} content={content}>
       <Base64Tool module={config.module} locale={locale} />
+    </ToolLayout>
+  )
+}
+
+function renderMiscTool(config: MiscSeoPageConfig, locale: Locale) {
+  switch (config.toolSlug) {
+    case "url-encoder":
+      return <UrlEncoderTool locale={locale} defaultMode={config.toolProps?.urlMode} />
+    case "timestamp":
+      return <TimestampTool locale={locale} />
+    case "jwt-decoder":
+      return <JwtDecoderTool locale={locale} />
+    case "hash-generator":
+      return <HashGeneratorTool locale={locale} />
+    default:
+      notFound()
+  }
+}
+
+export function MiscSeoPageContent({ locale, slug }: { locale: Locale; slug: string }) {
+  const config = getMiscSeoPage(slug)
+  const key = getSeoPageKey(slug)
+  if (!config || !key) notFound()
+
+  const tool = getToolOrNotFound(config.toolSlug)
+  if (!tool) notFound()
+
+  const seo = getMessages(locale).seo[key]
+  const baseContent = getToolPageContent(config.toolSlug, locale)
+
+  const content = {
+    ...baseContent,
+    whatIs: {
+      title: seo.title,
+      paragraphs: [seo.description, seo.instruction, ...baseContent.whatIs.paragraphs.slice(1)],
+      benefits: baseContent.whatIs.benefits,
+    },
+  }
+
+  return (
+    <ToolLayout toolSlug={tool.slug} locale={locale} content={content}>
+      {renderMiscTool(config, locale)}
     </ToolLayout>
   )
 }

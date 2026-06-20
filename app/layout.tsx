@@ -7,6 +7,7 @@ import { LocaleProvider } from "@/components/locale-provider"
 import { DocumentLang } from "@/components/document-lang"
 import { ThemeProvider } from "@/components/theme-provider"
 import { siteConfig, getSiteKeywords } from "@/lib/tools-data"
+import { ogImageMetadata } from "@/lib/site-og"
 import './globals.css'
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" })
@@ -30,12 +31,20 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/site.webmanifest",
+  manifest: "/site.webmanifest",
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
     type: 'website',
     locale: 'en_US',
     siteName: siteConfig.name,
+    images: [ogImageMetadata],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [ogImageMetadata.url],
   },
   robots: {
     index: true,

@@ -15,6 +15,7 @@ import zh from "@/lib/i18n/messages/zh"
 import { getBlogPost } from "@/lib/blog-data"
 import { getToolBySlug, siteConfig } from "@/lib/tools-data"
 import { getToolSeoMeta } from "@/lib/tool-page-seo-meta"
+import { ogImageMetadata } from "@/lib/site-og"
 import { type LocalizedToolSlug } from "@/lib/i18n/localized-tool-slug"
 
 const catalogs: Record<Locale, Messages> = { zh, en, ja }
@@ -105,11 +106,13 @@ export function createPageMetadata(
       siteName: siteConfig.name,
       locale: ogLocale,
       alternateLocale: alternateLocales,
+      images: [ogImageMetadata],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description,
+      images: [ogImageMetadata.url],
     },
     robots: {
       index: true,
@@ -129,6 +132,10 @@ const TOOL_TEXT_KEY: Record<LocalizedToolSlug, keyof Messages["tools"]> = {
   "qr-code-generator": "qrCodeGenerator",
   "hash-generator": "hashGenerator",
   "regex-tester": "regexTester",
+  "html-encoder": "htmlEncoder",
+  "text-diff": "textDiff",
+  "cron-parser": "cronParser",
+  "color-converter": "colorConverter",
 }
 
 const TOOL_PAGE_KEY: Record<
@@ -143,6 +150,10 @@ const TOOL_PAGE_KEY: Record<
   | "qrCodeGeneratorPage"
   | "hashGeneratorPage"
   | "regexTesterPage"
+  | "htmlEncoderPage"
+  | "textDiffPage"
+  | "cronParserPage"
+  | "colorConverterPage"
 > = {
   "json-formatter": "jsonFormatterPage",
   base64: "base64Page",
@@ -154,6 +165,10 @@ const TOOL_PAGE_KEY: Record<
   "qr-code-generator": "qrCodeGeneratorPage",
   "hash-generator": "hashGeneratorPage",
   "regex-tester": "regexTesterPage",
+  "html-encoder": "htmlEncoderPage",
+  "text-diff": "textDiffPage",
+  "cron-parser": "cronParserPage",
+  "color-converter": "colorConverterPage",
 }
 
 export function getLocalizedToolText(slug: LocalizedToolSlug, locale: Locale) {

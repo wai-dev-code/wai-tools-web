@@ -310,6 +310,21 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
           onClearPattern={() => setPattern("")}
         />
 
+        <div className="flex flex-wrap gap-2">
+          {examples.slice(0, 6).map((ex) => (
+            <Button
+              key={ex.id}
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => applyExample(ex.data)}
+            >
+              {ex.label}
+            </Button>
+          ))}
+        </div>
+
         <FlagsRow ui={ui} flags={flags} setFlags={setFlags} showNonGlobalHint={!flags.g && !!pattern.trim()} />
 
         {!result.error && (

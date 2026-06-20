@@ -11,6 +11,14 @@ export interface SeoPagesMessages {
   base64File: SeoPageText
   base64Converter: SeoPageText
   base64Utilities: SeoPageText
+  urlEncode: SeoPageText
+  urlDecode: SeoPageText
+  queryStringParser: SeoPageText
+  unixTimestamp: SeoPageText
+  epochConverter: SeoPageText
+  jwtDebugger: SeoPageText
+  md5Generator: SeoPageText
+  sha256Generator: SeoPageText
 }
 
 export type SeoPageKey = keyof SeoPagesMessages
@@ -26,6 +34,14 @@ export const seoSlugToKey: Record<string, SeoPageKey> = {
   "base64-file": "base64File",
   "base64-converter": "base64Converter",
   "base64-utilities": "base64Utilities",
+  "url-encode": "urlEncode",
+  "url-decode": "urlDecode",
+  "query-string-parser": "queryStringParser",
+  "unix-timestamp": "unixTimestamp",
+  "epoch-converter": "epochConverter",
+  "jwt-debugger": "jwtDebugger",
+  "md5-generator": "md5Generator",
+  "sha256-generator": "sha256Generator",
 }
 
 export const seoLocalizedSlugs = Object.keys(seoSlugToKey)
@@ -91,6 +107,54 @@ export const seoZh: SeoPagesMessages = {
     keywords: ["base64 validator", "base64 校验", "base64 clean", "base64 utilities"],
     instruction: "校验 Base64 有效性、去除空白字符，查看字节统计与输入类型检测。",
   },
+  urlEncode: {
+    title: "URL Encode - 在线 URL 编码工具",
+    description: "免费 URL Encode 工具，将文本编码为 URL 安全格式，支持 encodeURIComponent 与 encodeURI。",
+    keywords: ["url encode", "url 编码", "encodeURIComponent", "percent encoding"],
+    instruction: "左侧输入文本，右侧实时显示 URL 编码结果。可切换编码模式或解析 Query String。",
+  },
+  urlDecode: {
+    title: "URL Decode - 在线 URL 解码工具",
+    description: "免费 URL Decode 工具，快速解码 percent-encoded 字符串，支持 + 号与特殊字符。",
+    keywords: ["url decode", "url 解码", "decodeURIComponent", "percent decode"],
+    instruction: "粘贴已编码的 URL 或参数到左侧，右侧显示解码后的明文。",
+  },
+  queryStringParser: {
+    title: "Query String Parser - URL 参数解析",
+    description: "免费 Query String 解析器，将 URL 查询参数转为 JSON 对象，或从 JSON 构建 Query String。",
+    keywords: ["query string parser", "url 参数解析", "query params", "url search params"],
+    instruction: "选择「解析 Query」模式，粘贴 ?key=value&... 或完整 URL，右侧输出结构化 JSON。",
+  },
+  unixTimestamp: {
+    title: "Unix Timestamp - 在线 Unix 时间戳转换",
+    description: "免费 Unix Timestamp 转换器，秒/毫秒时间戳与可读日期双向互转，支持时区与 ISO8601。",
+    keywords: ["unix timestamp", "unix 时间戳", "timestamp converter", "epoch time"],
+    instruction: "输入 10 位或 13 位时间戳，或选择日期时间，下方显示多种格式输出。",
+  },
+  epochConverter: {
+    title: "Epoch Converter - Unix Epoch 时间转换",
+    description: "免费 Epoch Converter，Unix Epoch 与本地/UTC 日期时间互转，自动识别秒与毫秒。",
+    keywords: ["epoch converter", "epoch time", "unix epoch", "时间戳转换"],
+    instruction: "粘贴 Epoch 数值或日期，工具自动识别单位并显示转换结果，可一键复制。",
+  },
+  jwtDebugger: {
+    title: "JWT Debugger - 在线 JWT 解码调试",
+    description: "免费 JWT Debugger，解码 Header 与 Payload、查看 exp/iat 声明，本地运行不上传 Token。",
+    keywords: ["jwt debugger", "jwt decode", "jwt 解码", "json web token"],
+    instruction: "粘贴 JWT 到输入框，自动解析 Header、Payload 与 Signature，并以 JSON 格式化展示。",
+  },
+  md5Generator: {
+    title: "MD5 Generator - 在线 MD5 哈希生成",
+    description: "免费 MD5 Generator，输入文本即时计算 MD5 哈希值，支持 UTF-8，浏览器本地运算。",
+    keywords: ["md5 generator", "md5 hash", "md5 生成", "md5 online"],
+    instruction: "在输入框键入或粘贴文本，下方实时显示 MD5 及其他哈希算法结果，点击即可复制。",
+  },
+  sha256Generator: {
+    title: "SHA256 Generator - 在线 SHA-256 哈希",
+    description: "免费 SHA256 Generator，快速计算 SHA-256 摘要，适用于校验、指纹与开发调试。",
+    keywords: ["sha256 generator", "sha256 hash", "sha-256", "sha256 online"],
+    instruction: "输入任意文本，工具在本地计算 SHA-256 等哈希值，结果可复制用于比对或存储。",
+  },
 }
 
 export const seoEn: SeoPagesMessages = {
@@ -154,6 +218,54 @@ export const seoEn: SeoPagesMessages = {
     keywords: ["base64 validator", "base64 clean", "base64 utilities"],
     instruction: "Validate Base64, remove whitespace, and inspect byte stats and detected input type.",
   },
+  urlEncode: {
+    title: "URL Encode - Encode Text for URLs Online",
+    description: "Free URL encoder with encodeURIComponent, encodeURI, and live output in your browser.",
+    keywords: ["url encode", "encodeURIComponent", "percent encoding", "url encoder"],
+    instruction: "Type text on the left — encoded output updates on the right. Switch modes or parse query strings.",
+  },
+  urlDecode: {
+    title: "URL Decode - Decode Percent-Encoded Strings",
+    description: "Free URL decoder for percent-encoded URLs and query values, including + as space.",
+    keywords: ["url decode", "decodeURIComponent", "percent decode", "url decoder"],
+    instruction: "Paste an encoded URL or parameter on the left. Decoded plain text appears on the right.",
+  },
+  queryStringParser: {
+    title: "Query String Parser - Parse URL Parameters",
+    description: "Parse query strings to JSON or build query strings from JSON — bidirectional, in-browser.",
+    keywords: ["query string parser", "url params", "query params", "search params"],
+    instruction: "Choose Query Parse mode, paste ?key=value&... or a full URL — structured JSON shows on the right.",
+  },
+  unixTimestamp: {
+    title: "Unix Timestamp - Convert Timestamps Online",
+    description: "Free Unix timestamp converter: seconds/milliseconds ↔ readable dates with timezone and ISO8601.",
+    keywords: ["unix timestamp", "timestamp converter", "epoch time", "unix time"],
+    instruction: "Enter a 10- or 13-digit timestamp or pick a date — multiple output formats appear below.",
+  },
+  epochConverter: {
+    title: "Epoch Converter - Unix Epoch Time Tool",
+    description: "Convert Unix epoch to local/UTC datetime and back. Auto-detects seconds vs milliseconds.",
+    keywords: ["epoch converter", "epoch time", "unix epoch", "timestamp convert"],
+    instruction: "Paste an epoch value or datetime — the tool detects the unit and shows conversions you can copy.",
+  },
+  jwtDebugger: {
+    title: "JWT Debugger - Decode JWT Tokens Online",
+    description: "Free JWT debugger: decode header & payload, inspect exp/iat claims. Runs locally — no upload.",
+    keywords: ["jwt debugger", "jwt decode", "json web token", "jwt parser"],
+    instruction: "Paste a JWT — header, payload, and signature are parsed and formatted as JSON automatically.",
+  },
+  md5Generator: {
+    title: "MD5 Generator - MD5 Hash Online",
+    description: "Free MD5 generator: hash UTF-8 text instantly in your browser with one-click copy.",
+    keywords: ["md5 generator", "md5 hash", "md5 online", "generate md5"],
+    instruction: "Type or paste text — MD5 and other hash results update live below. Click to copy any value.",
+  },
+  sha256Generator: {
+    title: "SHA256 Generator - SHA-256 Hash Online",
+    description: "Free SHA-256 generator for checksums, fingerprints, and development debugging.",
+    keywords: ["sha256 generator", "sha256 hash", "sha-256", "sha256 online"],
+    instruction: "Enter any text — SHA-256 and related hashes are computed locally. Copy results for comparison.",
+  },
 }
 
 export const seoJa: SeoPagesMessages = {
@@ -216,6 +328,54 @@ export const seoJa: SeoPagesMessages = {
     description: "Base64 検証、空白除去、バイト統計、入力型検出。",
     keywords: ["base64 validator", "base64 検証", "base64 utilities"],
     instruction: "Base64 の有効性を検証し、空白を除去。バイト統計と型検出。",
+  },
+  urlEncode: {
+    title: "URL Encode - オンライン URL エンコード",
+    description: "無料 URL エンコーダー。encodeURIComponent / encodeURI 対応、ブラウザ内でリアルタイム出力。",
+    keywords: ["url encode", "url エンコード", "encodeURIComponent"],
+    instruction: "左にテキストを入力 — 右にエンコード結果。モード切替や Query 解析も可能。",
+  },
+  urlDecode: {
+    title: "URL Decode - オンライン URL デコード",
+    description: "パーセントエンコード文字列をデコード。+ をスペースとして処理。",
+    keywords: ["url decode", "url デコード", "decodeURIComponent"],
+    instruction: "エンコード済み URL やパラメータを左に貼付 — 右にデコード結果。",
+  },
+  queryStringParser: {
+    title: "Query String Parser - URL パラメータ解析",
+    description: "Query String を JSON に変換、または JSON から Query String を生成。双方向対応。",
+    keywords: ["query string parser", "url パラメータ", "query params"],
+    instruction: "「Query 解析」モードで ?key=value&... または URL を貼付 — 右に JSON 出力。",
+  },
+  unixTimestamp: {
+    title: "Unix Timestamp - オンライン変換ツール",
+    description: "Unix タイムスタンプ（秒/ミリ秒）と日時の双方向変換。タイムゾーン・ISO8601 対応。",
+    keywords: ["unix timestamp", "タイムスタンプ", "epoch time"],
+    instruction: "10 桁または 13 桁のタイムスタンプ、または日時を入力 — 複数形式で表示。",
+  },
+  epochConverter: {
+    title: "Epoch Converter - Unix Epoch 変換",
+    description: "Unix Epoch とローカル/UTC 日時の相互変換。秒とミリ秒を自動判別。",
+    keywords: ["epoch converter", "epoch time", "unix epoch"],
+    instruction: "Epoch 数値または日時を貼付 — 単位を自動判別し、変換結果をコピー可能。",
+  },
+  jwtDebugger: {
+    title: "JWT Debugger - オンライン JWT デコード",
+    description: "JWT の Header / Payload をデコード、exp / iat を確認。ローカル実行、アップロードなし。",
+    keywords: ["jwt debugger", "jwt decode", "json web token"],
+    instruction: "JWT を貼付 — Header、Payload、Signature が JSON 整形で自動表示。",
+  },
+  md5Generator: {
+    title: "MD5 Generator - オンライン MD5 ハッシュ",
+    description: "UTF-8 テキストの MD5 ハッシュをブラウザ内で即時計算。ワンクリックコピー。",
+    keywords: ["md5 generator", "md5 hash", "md5 生成"],
+    instruction: "テキストを入力 — MD5 などのハッシュがリアルタイム表示。クリックでコピー。",
+  },
+  sha256Generator: {
+    title: "SHA256 Generator - オンライン SHA-256",
+    description: "SHA-256 ダイジェストを高速計算。チェックサム・フィンガープリントに。",
+    keywords: ["sha256 generator", "sha256 hash", "sha-256"],
+    instruction: "任意のテキストを入力 — SHA-256 等をローカル計算。結果をコピーして比較。",
   },
 }
 

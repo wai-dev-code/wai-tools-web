@@ -57,6 +57,21 @@ export function AboutPageContent({ locale }: { locale: Locale }) {
               {m.feedbackClosing}
             </p>
           </section>
+
+          <section>
+            <h2 className="mb-3 text-xl font-semibold text-foreground">{m.operatorTitle}</h2>
+            <p>{m.operatorDesc}</p>
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-xl font-semibold text-foreground">{m.contentCadenceTitle}</h2>
+            <p>{m.contentCadence}</p>
+          </section>
+
+          <section>
+            <h2 className="mb-3 text-xl font-semibold text-foreground">{m.lastUpdatedTitle}</h2>
+            <p>{m.lastUpdated}</p>
+          </section>
         </div>
       </main>
       <Footer locale={locale} />

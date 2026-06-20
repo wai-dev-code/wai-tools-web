@@ -181,6 +181,24 @@ export function JwtDecoderTool({ locale = defaultLocale }: JwtDecoderToolProps) 
           {ui.algorithm}：<span className="font-mono text-foreground">{decoded.alg}</span>
         </p>
       )}
+      <div className="rounded-md border border-border/60 bg-muted/20 p-3 text-sm">
+        <p className="mb-2 font-medium text-foreground">{ui.guideTitle}</p>
+        <ul className="space-y-1 text-muted-foreground">
+          {Object.entries(ui.algorithms).map(([alg, desc]) => (
+            <li key={alg}>
+              <span className="font-mono text-foreground">{alg}</span> — {desc}
+            </li>
+          ))}
+        </ul>
+        <p className="mb-2 mt-3 font-medium text-foreground">{ui.claimsGuideTitle}</p>
+        <ul className="space-y-1 text-muted-foreground">
+          {Object.entries(ui.claimsGuide).map(([key, desc]) => (
+            <li key={key}>
+              <span className="font-mono text-foreground">{key}</span> — {desc}
+            </li>
+          ))}
+        </ul>
+      </div>
       {claims.length > 0 && (
         <div className="rounded-md border border-border bg-secondary/30 p-3 space-y-2">
           <p className="text-sm font-medium text-foreground">{ui.timeClaims}</p>

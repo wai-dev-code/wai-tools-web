@@ -58,6 +58,26 @@ const en: Record<LocalizedToolSlug, ToolSeoMeta> = {
     metaDescription:
       "Generate strong random passwords online. Custom length, charset, strength meter, crypto-random. Free password generator — runs in your browser.",
   },
+  "html-encoder": {
+    metaTitle: "HTML Encoder/Decoder - Free Online Tool",
+    metaDescription:
+      "Encode and decode HTML entities online. Named and numeric entities, optional non-ASCII. Free HTML encoder — runs in your browser, no upload.",
+  },
+  "text-diff": {
+    metaTitle: "Text Diff - Free Line-by-Line Compare",
+    metaDescription:
+      "Compare two texts line by line with color highlighting. Free online diff viewer for code and configs — browser-based, no upload.",
+  },
+  "cron-parser": {
+    metaTitle: "Cron Parser - Free Expression Decoder",
+    metaDescription:
+      "Parse standard 5-field cron expressions with human-readable summary. Free cron decoder — runs in your browser, no upload.",
+  },
+  "color-converter": {
+    metaTitle: "Color Converter - HEX/RGB/HSL Online",
+    metaDescription:
+      "Convert colors between HEX, RGB, and HSL with live preview. Free online color converter — browser-based, ideal for CSS and design.",
+  },
 }
 
 const zh: Record<LocalizedToolSlug, ToolSeoMeta> = {
@@ -111,6 +131,26 @@ const zh: Record<LocalizedToolSlug, ToolSeoMeta> = {
     metaDescription:
       "在线生成强随机密码。可调长度与字符集，实时强度检测，crypto 随机。免费密码生成器，浏览器内运行，不上传数据。",
   },
+  "html-encoder": {
+    metaTitle: "HTML 编解码 - 免费在线工具",
+    metaDescription:
+      "在线 HTML 实体编码与解码，支持命名与数字实体。免费 HTML 编码器，浏览器内处理，不上传数据。",
+  },
+  "text-diff": {
+    metaTitle: "文本对比 - 免费在线逐行 Diff",
+    metaDescription:
+      "在线逐行文本对比，高亮新增、删除与修改。免费 diff 工具，适用于代码与配置，浏览器内运行。",
+  },
+  "cron-parser": {
+    metaTitle: "Cron 解析器 - 免费在线解读",
+    metaDescription:
+      "在线解析标准 5 段 Cron 表达式，生成可读摘要。免费 Cron 解码器，浏览器内运行，不上传数据。",
+  },
+  "color-converter": {
+    metaTitle: "颜色转换器 - HEX/RGB/HSL 在线互转",
+    metaDescription:
+      "在线 HEX、RGB、HSL 颜色互转，实时预览。免费颜色转换器，浏览器内运行，适合前端与设计开发。",
+  },
 }
 
 const ja: Record<LocalizedToolSlug, ToolSeoMeta> = {
@@ -163,6 +203,26 @@ const ja: Record<LocalizedToolSlug, ToolSeoMeta> = {
     metaTitle: "パスワードジェネレーター - 無料ツール",
     metaDescription:
       "強力なランダムパスワードをオンライン生成。長さ・文字セット調整、強度メーター、crypto ランダム。無料、ブラウザ内実行、非アップロード。",
+  },
+  "html-encoder": {
+    metaTitle: "HTML エンコード/デコード - 無料ツール",
+    metaDescription:
+      "HTML エンティティのオンラインエンコード・デコード。名前付き・数値エンティティ対応。無料、ブラウザ内処理、非アップロード。",
+  },
+  "text-diff": {
+    metaTitle: "テキスト差分 - 行単位オンライン比較",
+    metaDescription:
+      "2 つのテキストを行単位で比較、色分けハイライト。コード・設定向け無料 diff ビューア、ブラウザ内完結。",
+  },
+  "cron-parser": {
+    metaTitle: "Cron パーサー - 無料オンライン解読",
+    metaDescription:
+      "標準 5 フィールド Cron 式を解析し読みやすい要約を表示。無料 Cron デコーダー、ブラウザ内実行、非アップロード。",
+  },
+  "color-converter": {
+    metaTitle: "カラー変換 - HEX/RGB/HSL オンライン",
+    metaDescription:
+      "HEX・RGB・HSL を相互変換、ライブプレビュー付き。無料オンラインカラー変換、CSS・デザイン向け、ブラウザ内完結。",
   },
 }
 

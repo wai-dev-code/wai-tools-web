@@ -12,6 +12,19 @@ import {
 } from "@/lib/i18n/messages/password-tool-messages"
 import { qrToolEn, qrCodeGeneratorPageEn } from "@/lib/i18n/messages/qr-tool-messages"
 import { hashToolEn, hashGeneratorPageEn } from "@/lib/i18n/messages/hash-tool-messages"
+import {
+  htmlEncoderToolEn,
+  htmlEncoderPageEn,
+} from "@/lib/i18n/messages/html-encoder-tool-messages"
+import { textDiffToolEn, textDiffPageEn } from "@/lib/i18n/messages/text-diff-tool-messages"
+import {
+  cronParserToolEn,
+  cronParserPageEn,
+} from "@/lib/i18n/messages/cron-parser-tool-messages"
+import {
+  colorConverterToolEn,
+  colorConverterPageEn,
+} from "@/lib/i18n/messages/color-converter-tool-messages"
 import { staticEn } from "@/lib/i18n/messages/static-pages"
 import { blogPostsBatch2En } from "@/lib/i18n/messages/blog-posts-batch2-en"
 import { legalEn } from "@/lib/i18n/messages/legal-pages"
@@ -48,6 +61,7 @@ const en: Messages = {
     notFoundBrowseTools: "Browse tools",
     adLabel: "Advertisement",
     adDisclaimer: "Ads are served by third parties. Data you enter in the tool is not shared with advertisers.",
+    workflowNext: "Next steps",
   },
   workspace: {
     sidebarExpand: "Expand sidebar",
@@ -68,7 +82,7 @@ const en: Messages = {
   home: {
     metaTitle: "WaiHub - Developer Tools Hub Online",
     metaDescription:
-      "Free developer tools hub: JSON, Base64, URL encoder, JWT, UUID, regex, hash, QR code & more. 10 tools, browser-based, privacy-first processing. No signup.",
+      "Free developer tools hub: JSON, Base64, URL encoder, JWT, UUID, regex, hash, QR code, HTML encoder, text diff, cron & more. 14 tools, browser-based, privacy-first.",
     title: "Developer Tools Hub",
     subtitle:
       "{n} tools in one place — JSON, encoding, JWT, Regex & more. Processed in your browser, not on our servers. English · 中文 · 日本語",
@@ -81,7 +95,7 @@ const en: Messages = {
     toolsSectionTitle: "Every tool you need",
     toolsSectionSubtitle: "Search, filter, and open any utility — all processing stays in your browser.",
     stats: [
-      { value: "10", label: "Free developer tools" },
+      { value: "14", label: "Free developer tools" },
       { value: "3", label: "Languages supported" },
       { value: "0", label: "Signup required" },
       { value: "100%", label: "Browser-based" },
@@ -198,6 +212,26 @@ const en: Messages = {
       short: "Test & debug regular expressions",
       desc: "Real-time regex testing with match highlighting and capture groups in your browser",
     },
+    htmlEncoder: {
+      name: "HTML Encoder",
+      short: "HTML entity encode/decode",
+      desc: "Encode and decode HTML entities with named and numeric support, optional non-ASCII encoding",
+    },
+    textDiff: {
+      name: "Text Diff",
+      short: "Line-by-line text compare",
+      desc: "Compare two texts line by line with color-coded additions, removals, and changes",
+    },
+    cronParser: {
+      name: "Cron Parser",
+      short: "Decode cron expressions",
+      desc: "Parse standard 5-field cron expressions with field breakdown and human-readable summary",
+    },
+    colorConverter: {
+      name: "Color Converter",
+      short: "HEX/RGB/HSL converter",
+      desc: "Convert colors between HEX, RGB, and HSL with live preview and one-click copy",
+    },
   },
   jsonFormatterPage: {
     metaTitle: "JSON Formatter - Free Online Tool",
@@ -233,6 +267,10 @@ const en: Messages = {
   qrCodeGeneratorPage: qrCodeGeneratorPageEn,
   hashGeneratorPage: hashGeneratorPageEn,
   regexTesterPage: regexTesterPageEn,
+  htmlEncoderPage: htmlEncoderPageEn,
+  textDiffPage: textDiffPageEn,
+  cronParserPage: cronParserPageEn,
+  colorConverterPage: colorConverterPageEn,
   seo: seoEn,
   jsonTool: jsonToolEn,
   base64Tool: base64ToolEn,
@@ -244,6 +282,10 @@ const en: Messages = {
   qrTool: qrToolEn,
   hashTool: hashToolEn,
   regexTool: regexToolEn,
+  htmlEncoderTool: htmlEncoderToolEn,
+  textDiffTool: textDiffToolEn,
+  cronParserTool: cronParserToolEn,
+  colorConverterTool: colorConverterToolEn,
   aboutPage: staticEn.about,
   contactPage: staticEn.contact,
   blogPage: {

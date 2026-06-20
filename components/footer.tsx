@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { SiteLogo } from "@/components/site-logo"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { getMessages, localizeHref } from "@/lib/i18n"
 
@@ -39,9 +40,7 @@ export function Footer({ locale = defaultLocale }: { locale?: Locale }) {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href={localizeHref(locale, "")} className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <span className="text-lg font-bold text-primary-foreground">W</span>
-              </div>
+              <SiteLogo size={32} />
               <span className="text-xl font-semibold text-foreground">WaiHub</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">{m.common.footerTagline}</p>

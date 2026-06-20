@@ -11,6 +11,10 @@ import { regexTesterContent } from "./regex-tester"
 import { hashGeneratorContent } from "./hash-generator"
 import { qrCodeGeneratorContent } from "./qr-code-generator"
 import { passwordGeneratorContent } from "./password-generator"
+import { htmlEncoderContent } from "./html-encoder"
+import { textDiffContent } from "./text-diff"
+import { cronParserContent } from "./cron-parser"
+import { colorConverterContent } from "./color-converter"
 
 const contentBySlug: Record<LocalizedToolSlug, Record<Locale, ToolPageSeoContent>> = {
   "json-formatter": jsonFormatterContent,
@@ -23,6 +27,10 @@ const contentBySlug: Record<LocalizedToolSlug, Record<Locale, ToolPageSeoContent
   "hash-generator": hashGeneratorContent,
   "qr-code-generator": qrCodeGeneratorContent,
   "password-generator": passwordGeneratorContent,
+  "html-encoder": htmlEncoderContent,
+  "text-diff": textDiffContent,
+  "cron-parser": cronParserContent,
+  "color-converter": colorConverterContent,
 }
 
 export function getToolPageContent(slug: LocalizedToolSlug, locale: Locale): ToolPageSeoContent {

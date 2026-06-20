@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer"
 import { JsonLd } from "@/components/json-ld"
 import { AdSlot } from "@/components/ad-slot"
 import { ToolContentSections } from "@/components/tool-content-sections"
+import { ToolWorkflowLinks } from "@/components/tool-workflow-links"
 import { isImmersiveBottomAdAllowed } from "@/lib/adsense"
 import { ToolContentShell } from "@/components/tool-content-shell"
 import { PanelFullscreenProvider, usePanelFullscreenOptional } from "@/components/panel-fullscreen-context"
@@ -150,6 +151,13 @@ function ToolLayoutBody({ toolSlug, locale = defaultLocale, children, content }:
                   : "mb-6 rounded-xl border border-border bg-card/50 p-4 sm:p-6"
               )}
             >
+              {!immersive && (
+                <ToolWorkflowLinks
+                  toolSlug={tool.slug}
+                  locale={locale}
+                  title={m.common.workflowNext}
+                />
+              )}
               {children}
             </div>
           </ToolContentShell>

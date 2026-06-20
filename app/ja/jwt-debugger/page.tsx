@@ -1,0 +1,5 @@
+import { createLocalizedMiscSeoPage } from "@/lib/create-localized-seo-page"
+
+const { metadata, Page } = createLocalizedMiscSeoPage("jwt-debugger", "ja")
+export { metadata }
+export default Page

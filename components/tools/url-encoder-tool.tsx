@@ -40,17 +40,24 @@ const ALL_MODES: UrlEncodeMode[] = [
 
 interface UrlEncoderToolProps {
   locale?: Locale
+  defaultMode?: UrlEncodeMode
 }
 
-export function UrlEncoderTool({ locale = defaultLocale }: UrlEncoderToolProps) {
+export function UrlEncoderTool({ locale = defaultLocale, defaultMode = "component-encode" }: UrlEncoderToolProps) {
   const ui = getMessages(locale).urlTool
   const examples = useMemo(() => getUrlEncoderExamples(locale), [locale])
 
   const [input, setInput] = useState("")
-  const [mode, setMode] = useState<UrlEncodeMode>("component-encode")
+  const [mode, setMode] = useState<UrlEncodeMode>(defaultMode)
 
   const result = useMemo(() => transformUrl(input, mode), [input, mode])
   const errorMessage = result.error ? ui.errors[result.error] : null
+
+  const queryRows = useMemo(() => {
+    if (mode !== "query-parse" || !input.trim()) return []
+    const params = new URLSearchParams(input.trim().startsWith("?") ? input.trim().slice(1) : input.trim())
+    return Array.from(params.entries()).map(([key, value]) => ({ key, value }))
+  }, [mode, input])
 
   const applyExample = (example: UrlEncoderExample) => {
     setInput(example.input)
@@ -160,6 +167,30 @@ export function UrlEncoderTool({ locale = defaultLocale }: UrlEncoderToolProps) 
           {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
         </div>
       </div>
+
+      {queryRows.length > 0 && (
+        <div className="rounded-lg border border-border/60 overflow-hidden">
+          <p className="border-b border-border/60 bg-muted/30 px-3 py-2 text-sm font-medium text-foreground">
+            {ui.queryTableTitle}
+          </p>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border/60 bg-muted/20 text-left text-muted-foreground">
+                <th className="px-3 py-2 font-medium">{ui.queryTableKey}</th>
+                <th className="px-3 py-2 font-medium">{ui.queryTableValue}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {queryRows.map((row) => (
+                <tr key={row.key} className="border-b border-border/40 last:border-0">
+                  <td className="px-3 py-2 font-mono text-foreground">{row.key}</td>
+                  <td className="px-3 py-2 font-mono text-muted-foreground">{row.value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <p className="text-xs text-muted-foreground">{ui.hint}</p>
     </div>

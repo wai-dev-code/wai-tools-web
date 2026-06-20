@@ -10,6 +10,10 @@ import {
   Lock,
   QrCode,
   Hash,
+  Code2,
+  FileDiff,
+  CalendarClock,
+  Palette,
   type LucideIcon,
 } from "lucide-react"
 
@@ -167,6 +171,42 @@ export const tools: ToolDefinition[] = [
     category: "api",
     keywords: ["jwt", "token", "json web token", "web token", "解码", "decode", "bearer", "oauth"],
   },
+  {
+    slug: "html-encoder",
+    name: "HTML 编解码",
+    description: "HTML 实体编码与解码，支持命名实体与数字实体，可选全非 ASCII 编码",
+    shortDescription: "HTML 实体编码与解码",
+    icon: Code2,
+    category: "encoding",
+    keywords: ["html", "entity", "encode", "decode", "escape", "unescape", "html entity", "编码", "解码", "实体"],
+  },
+  {
+    slug: "text-diff",
+    name: "文本对比",
+    description: "逐行文本 diff 对比，高亮新增、删除与修改行，适用于代码与配置",
+    shortDescription: "逐行文本 Diff 对比",
+    icon: FileDiff,
+    category: "dev",
+    keywords: ["diff", "text diff", "compare", "line diff", "文本对比", "差异", "对比", "code diff"],
+  },
+  {
+    slug: "cron-parser",
+    name: "Cron 解析器",
+    description: "解析标准 5 段 Cron 表达式，展示各字段含义与可读摘要",
+    shortDescription: "Cron 表达式解析与解读",
+    icon: CalendarClock,
+    category: "dev",
+    keywords: ["cron", "crontab", "schedule", "parser", "定时任务", "cron expression", "表达式"],
+  },
+  {
+    slug: "color-converter",
+    name: "颜色转换器",
+    description: "HEX、RGB、HSL 颜色格式互转，实时预览色块，一键复制",
+    shortDescription: "HEX/RGB/HSL 颜色互转",
+    icon: Palette,
+    category: "dev",
+    keywords: ["color", "hex", "rgb", "hsl", "converter", "颜色", "色值", "转换", "css color"],
+  },
 ]
 
 export function getVisibleTools(): ToolDefinition[] {
@@ -200,6 +240,6 @@ export const siteConfig = {
   url: resolveSiteUrl(),
   contactEmail: "w8732787@gmail.com",
   /** 文章、隐私政策、服务条款等内容的统一更新日期（ISO） */
-  contentUpdatedAt: "2026-04-20",
-  contentUpdatedLabel: "2026 年 4 月 20 日",
+  contentUpdatedAt: "2026-06-20",
+  contentUpdatedLabel: "2026 年 6 月 20 日",
 }

@@ -18,6 +18,22 @@ import type {
   HashToolMessages,
   HashGeneratorPageMessages,
 } from "@/lib/i18n/messages/hash-tool-messages"
+import type {
+  HtmlEncoderToolMessages,
+  HtmlEncoderPageMessages,
+} from "@/lib/i18n/messages/html-encoder-tool-messages"
+import type {
+  TextDiffToolMessages,
+  TextDiffPageMessages,
+} from "@/lib/i18n/messages/text-diff-tool-messages"
+import type {
+  CronParserToolMessages,
+  CronParserPageMessages,
+} from "@/lib/i18n/messages/cron-parser-tool-messages"
+import type {
+  ColorConverterToolMessages,
+  ColorConverterPageMessages,
+} from "@/lib/i18n/messages/color-converter-tool-messages"
 import type { LegalPagesMessages } from "@/lib/i18n/messages/legal-pages"
 import type { SeoPagesMessages } from "@/lib/i18n/messages/seo-pages"
 import type { StaticPageMessages } from "@/lib/i18n/messages/static-pages"
@@ -71,6 +87,7 @@ export interface Messages {
     notFoundBrowseTools: string
     adLabel: string
     adDisclaimer: string
+    workflowNext: string
   }
   workspace: {
     sidebarExpand: string
@@ -145,6 +162,10 @@ export interface Messages {
     qrCodeGenerator: ToolText
     hashGenerator: ToolText
     regexTester: ToolText
+    htmlEncoder: ToolText
+    textDiff: ToolText
+    cronParser: ToolText
+    colorConverter: ToolText
   }
   jsonFormatterPage: {
     metaTitle: string
@@ -166,6 +187,10 @@ export interface Messages {
   qrCodeGeneratorPage: QrCodeGeneratorPageMessages
   hashGeneratorPage: HashGeneratorPageMessages
   regexTesterPage: RegexTesterPageMessages
+  htmlEncoderPage: HtmlEncoderPageMessages
+  textDiffPage: TextDiffPageMessages
+  cronParserPage: CronParserPageMessages
+  colorConverterPage: ColorConverterPageMessages
   seo: SeoPagesMessages
   jsonTool: JsonToolMessages
   base64Tool: Base64ToolMessages
@@ -177,6 +202,10 @@ export interface Messages {
   qrTool: QrToolMessages
   hashTool: HashToolMessages
   regexTool: RegexToolMessages
+  htmlEncoderTool: HtmlEncoderToolMessages
+  textDiffTool: TextDiffToolMessages
+  cronParserTool: CronParserToolMessages
+  colorConverterTool: ColorConverterToolMessages
   aboutPage: StaticPageMessages["about"]
   contactPage: StaticPageMessages["contact"]
   blogPage: StaticPageMessages["blog"]

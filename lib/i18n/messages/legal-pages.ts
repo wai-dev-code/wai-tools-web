@@ -151,15 +151,16 @@ export const legalZh: LegalPagesMessages = {
     metaTitle: "更新日志",
     metaDescription: "WaiHub 产品更新日志——新工具、功能改进与内容更新记录。",
     title: "更新日志",
-    lastUpdated: "最后更新：2026 年 6 月 13 日",
+    lastUpdated: "最后更新：2026 年 6 月 20 日",
     sections: [
       {
         title: "2026 年 6 月",
         bullets: [
-          "为全部 10 个工具页面增加详细指南、功能说明、使用步骤、示例与 FAQ",
-          "首页新增平台介绍、优势说明与使用场景模块",
-          "博客扩展至 20 篇技术文章",
-          "新增 Cookie 政策与更新日志页面",
+          "工具增至 14 个：新增 HTML 编解码、文本对比、Cron 解析、颜色转换",
+          "新增 8 个 SEO 着陆页（URL、时间戳、JWT、MD5/SHA256）",
+          "配置 OG 分享图、favicon 套装与品牌 Logo",
+          "工具工作流链接、JWT 算法说明、URL Query 表格、正则快捷模板",
+          "About 页增强运营者与内容更新说明（EEAT）",
         ],
       },
       {
@@ -315,15 +316,16 @@ export const legalEn: LegalPagesMessages = {
     metaTitle: "Changelog",
     metaDescription: "WaiHub product changelog — new tools, improvements, and content updates.",
     title: "Changelog",
-    lastUpdated: "Last updated: June 13, 2026",
+    lastUpdated: "Last updated: June 20, 2026",
     sections: [
       {
         title: "June 2026",
         bullets: [
-          "Added detailed guides, features, steps, examples, and FAQ to all 10 tool pages",
-          "Homepage: platform intro, benefits, and use case sections",
-          "Blog expanded to 20 technical articles",
-          "Added Cookie Policy and Changelog pages",
+          "14 developer tools: added HTML Encoder, Text Diff, Cron Parser, and Color Converter",
+          "8 new SEO landing pages (URL encode/decode, timestamps, JWT, MD5/SHA256)",
+          "OG share image, favicon pack, and branded header logo",
+          "Tool workflow links, JWT algorithm guide, URL query table, regex quick presets",
+          "About page EEAT: operator info and content update cadence",
         ],
       },
       {
@@ -473,15 +475,16 @@ export const legalJa: LegalPagesMessages = {
     metaTitle: "更新履歴",
     metaDescription: "WaiHub の更新履歴 — 新ツール、機能改善、コンテンツ更新。",
     title: "更新履歴",
-    lastUpdated: "最終更新：2026年6月13日",
+    lastUpdated: "最終更新：2026年6月20日",
     sections: [
       {
         title: "2026年6月",
         bullets: [
-          "全10ツールページにガイド、機能、手順、例、FAQ を追加",
-          "ホームページにプラットフォーム紹介、メリット、利用シーンを追加",
-          "ブログを20記事に拡充",
-          "Cookie ポリシーと更新履歴ページを追加",
+          "ツール14個：HTML エンコード、テキスト Diff、Cron パーサー、カラー変換を追加",
+          "SEO ランディング8ページ（URL、タイムスタンプ、JWT、MD5/SHA256）",
+          "OG 画像、favicon、ブランドロゴを設定",
+          "ワークフローリンク、JWT ガイド、URL Query 表、正規表現クイックプリセット",
+          "About ページに運営者情報と更新方針を追加",
         ],
       },
       {

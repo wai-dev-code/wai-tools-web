@@ -9,6 +9,10 @@ export const localizedToolSlugs = [
   "qr-code-generator",
   "hash-generator",
   "regex-tester",
+  "html-encoder",
+  "text-diff",
+  "cron-parser",
+  "color-converter",
 ] as const
 
 export type LocalizedToolSlug = (typeof localizedToolSlugs)[number]

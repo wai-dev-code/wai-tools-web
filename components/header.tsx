@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { HeaderToolsDropdown, HeaderMobileNav } from "@/components/header-tools-nav"
+import { SiteLogo } from "@/components/site-logo"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { getMessages, localizeHref } from "@/lib/i18n"
 
@@ -17,9 +18,7 @@ export function Header({ locale = defaultLocale }: { locale?: Locale }) {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-6">
         <Link href={localizeHref(locale, "")} className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-lg font-bold text-primary-foreground">W</span>
-          </div>
+          <SiteLogo size={32} />
           <span className="text-xl font-semibold text-foreground">WaiHub</span>
         </Link>
 

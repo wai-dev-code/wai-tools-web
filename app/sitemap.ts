@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next"
 import { getVisibleBlogPosts } from "@/lib/blog-data"
 import { base64ToolPages } from "@/lib/base64-tool-pages"
 import { jsonToolPages } from "@/lib/json-tool-pages"
+import { miscSeoPages } from "@/lib/misc-seo-pages"
 import { coreLocalizedPaths } from "@/lib/i18n/config"
 import { getAllLocalizedUrls } from "@/lib/i18n"
 import { siteConfig } from "@/lib/tools-data"
@@ -32,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   )
 
-  const seoLandingPages = [...jsonToolPages, ...base64ToolPages].flatMap((page) =>
+  const seoLandingPages = [...jsonToolPages, ...base64ToolPages, ...miscSeoPages].flatMap((page) =>
     getAllLocalizedUrls(page.slug).map((url) => ({
       url,
       lastModified: new Date(),

@@ -23,6 +23,10 @@ export interface JwtToolMessages {
     notYetValid: string
   }
   expiredWarning: string
+  guideTitle: string
+  algorithms: Record<string, string>
+  claimsGuideTitle: string
+  claimsGuide: Record<string, string>
   errors: {
     parseFailed: string
     invalidStructure: string
@@ -57,6 +61,19 @@ export const jwtToolZh: JwtToolMessages = {
   claims: { exp: "过期时间 (exp)", iat: "签发时间 (iat)", nbf: "生效时间 (nbf)" },
   status: { expired: "已过期", valid: "有效", notYetValid: "尚未生效" },
   expiredWarning: "此 Token 的 exp 已过期（仅基于 Payload 判断，未验证签名）。",
+  guideTitle: "算法说明",
+  algorithms: {
+    HS256: "HMAC SHA-256，对称密钥签名，常见于内部服务。",
+    RS256: "RSA SHA-256，公钥验签，常见于 OAuth / OIDC。",
+    ES256: "ECDSA SHA-256，椭圆曲线签名，体积更小。",
+  },
+  claimsGuideTitle: "常见 Payload 字段",
+  claimsGuide: {
+    sub: "Subject — 用户或主体 ID",
+    iss: "Issuer — 签发方",
+    aud: "Audience — 预期接收方",
+    jti: "JWT ID — 唯一标识",
+  },
   errors: { parseFailed: "解析失败", invalidStructure: "JWT 应包含 Header.Payload.Signature 三部分" },
   notify: { nothingToCopy: "没有可复制的内容", copiedHeader: "已复制 Header", copiedPayload: "已复制 Payload" },
   examples: {
@@ -80,6 +97,19 @@ export const jwtToolEn: JwtToolMessages = {
   claims: { exp: "Expires (exp)", iat: "Issued at (iat)", nbf: "Not before (nbf)" },
   status: { expired: "Expired", valid: "Valid", notYetValid: "Not yet valid" },
   expiredWarning: "This token's exp has passed (payload only — signature not verified).",
+  guideTitle: "Algorithm guide",
+  algorithms: {
+    HS256: "HMAC SHA-256 — symmetric secret signing, common for internal APIs.",
+    RS256: "RSA SHA-256 — asymmetric, typical for OAuth / OIDC providers.",
+    ES256: "ECDSA SHA-256 — elliptic-curve signatures, smaller keys.",
+  },
+  claimsGuideTitle: "Common payload claims",
+  claimsGuide: {
+    sub: "Subject — user or principal identifier",
+    iss: "Issuer — who created the token",
+    aud: "Audience — intended recipient",
+    jti: "JWT ID — unique token identifier",
+  },
   errors: { parseFailed: "Parse failed", invalidStructure: "JWT must have Header.Payload.Signature" },
   notify: { nothingToCopy: "Nothing to copy", copiedHeader: "Copied Header", copiedPayload: "Copied Payload" },
   examples: {
@@ -103,6 +133,19 @@ export const jwtToolJa: JwtToolMessages = {
   claims: { exp: "有効期限 (exp)", iat: "発行時刻 (iat)", nbf: "開始時刻 (nbf)" },
   status: { expired: "期限切れ", valid: "有効", notYetValid: "未発効" },
   expiredWarning: "この Token の exp は期限切れです（Payload のみ、署名は未検証）。",
+  guideTitle: "アルゴリズム",
+  algorithms: {
+    HS256: "HMAC SHA-256 — 対称鍵署名、内部 API でよく使用。",
+    RS256: "RSA SHA-256 — 公開鍵検証、OAuth / OIDC で一般的。",
+    ES256: "ECDSA SHA-256 — 極小署名、鍵サイズが小さい。",
+  },
+  claimsGuideTitle: "よくある Payload クレーム",
+  claimsGuide: {
+    sub: "Subject — ユーザー ID",
+    iss: "Issuer — 発行者",
+    aud: "Audience — 受信者",
+    jti: "JWT ID — 一意 ID",
+  },
   errors: { parseFailed: "解析失敗", invalidStructure: "JWT は Header.Payload.Signature の 3 部分が必要です" },
   notify: { nothingToCopy: "コピーする内容がありません", copiedHeader: "Header をコピーしました", copiedPayload: "Payload をコピーしました" },
   examples: {

@@ -5,8 +5,8 @@ import { getToolCategoryLabel } from "@/lib/tool-display"
 import { categoryLabels, getVisibleTools, type ToolDefinition } from "@/lib/tools-data"
 
 const SLUG_TEXT_KEY: Record<
-  "json-formatter" | "base64" | "url-encoder" | "jwt-decoder" | "timestamp" | "uuid-generator" | "password-generator" | "qr-code-generator" | "hash-generator" | "regex-tester",
-  "jsonFormatter" | "base64" | "urlEncoder" | "jwtDecoder" | "timestamp" | "uuidGenerator" | "passwordGenerator" | "qrCodeGenerator" | "hashGenerator" | "regexTester"
+  "json-formatter" | "base64" | "url-encoder" | "jwt-decoder" | "timestamp" | "uuid-generator" | "password-generator" | "qr-code-generator" | "hash-generator" | "regex-tester" | "html-encoder" | "text-diff" | "cron-parser" | "color-converter",
+  "jsonFormatter" | "base64" | "urlEncoder" | "jwtDecoder" | "timestamp" | "uuidGenerator" | "passwordGenerator" | "qrCodeGenerator" | "hashGenerator" | "regexTester" | "htmlEncoder" | "textDiff" | "cronParser" | "colorConverter"
 > = {
   "json-formatter": "jsonFormatter",
   base64: "base64",
@@ -18,6 +18,10 @@ const SLUG_TEXT_KEY: Record<
   "qr-code-generator": "qrCodeGenerator",
   "hash-generator": "hashGenerator",
   "regex-tester": "regexTester",
+  "html-encoder": "htmlEncoder",
+  "text-diff": "textDiff",
+  "cron-parser": "cronParser",
+  "color-converter": "colorConverter",
 }
 
 function normalizeSearchText(value: string): string {

@@ -38,6 +38,10 @@ function getToolTextKey(slug: LocalizedToolSlug) {
     "qr-code-generator": "qrCodeGenerator",
     "hash-generator": "hashGenerator",
     "regex-tester": "regexTester",
+    "html-encoder": "htmlEncoder",
+    "text-diff": "textDiff",
+    "cron-parser": "cronParser",
+    "color-converter": "colorConverter",
   } as const
   return map[slug]
 }
