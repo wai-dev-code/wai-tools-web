@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { HeaderToolsDropdown, HeaderMobileNav } from "@/components/header-tools-nav"
 import { SiteLogo } from "@/components/site-logo"
+import { ToolCommandPalette } from "@/components/tool-command-palette"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { getMessages, localizeHref } from "@/lib/i18n"
 
@@ -24,6 +25,7 @@ export function Header({ locale = defaultLocale }: { locale?: Locale }) {
 
         <div className="hidden md:flex md:items-center md:gap-4">
           <HeaderToolsDropdown locale={locale} />
+          <ToolCommandPalette />
           <Link
             href={localizeHref(locale, "blog")}
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"

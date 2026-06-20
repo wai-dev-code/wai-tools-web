@@ -39,9 +39,9 @@ const en: Record<LocalizedToolSlug, ToolSeoMeta> = {
       "Decode JWT tokens online instantly. View header, payload, exp/iat status. Free JWT decoder with privacy-first browser processing — no server upload.",
   },
   "regex-tester": {
-    metaTitle: "Regex Tester - Free Online Tool",
+    metaTitle: "Regex Tester - Test Regular Expressions Online",
     metaDescription:
-      "Test regular expressions online with live match highlighting and capture groups. JavaScript RegExp, pattern library. Free, instant, browser-based.",
+      "Free regex tester with live match highlighting, replace & split modes, capture groups, share links, and pattern library. JavaScript RegExp in your browser.",
   },
   "hash-generator": {
     metaTitle: "Hash Generator - MD5 & SHA256 Online",
@@ -112,9 +112,9 @@ const zh: Record<LocalizedToolSlug, ToolSeoMeta> = {
       "在线解码 JWT Token，查看 Header、Payload 及 exp/iat 过期状态。免费 JWT 解码工具，浏览器内处理，不上传服务器。",
   },
   "regex-tester": {
-    metaTitle: "正则表达式测试 - 免费在线工具",
+    metaTitle: "正则表达式测试 - 在线正则测试工具",
     metaDescription:
-      "在线测试正则表达式，实时高亮匹配与捕获组。JavaScript RegExp，内置模式库。免费、即时调试，浏览器内运行，不上传数据。",
+      "免费在线正则测试：实时高亮、替换与分割模式、捕获组、分享链接与模式库。JavaScript RegExp，浏览器内运行。",
   },
   "hash-generator": {
     metaTitle: "哈希生成器 - MD5/SHA256 在线计算",
@@ -185,9 +185,9 @@ const ja: Record<LocalizedToolSlug, ToolSeoMeta> = {
       "JWT トークンをオンラインでデコード。Header、Payload、exp/iat 状態を表示。無料 JWT デコーダー、ブラウザ内処理、サーバー非送信。",
   },
   "regex-tester": {
-    metaTitle: "正規表現テスター - 無料オンラインツール",
+    metaTitle: "正規表現テスター - オンライン Regex テスト",
     metaDescription:
-      "正規表現をオンラインでテスト。リアルタイムハイライトとキャプチャグループ。JavaScript RegExp、パターンライブラリ付き。無料、ブラウザ内実行。",
+      "無料の正規表現テスター。ライブハイライト、置換・分割モード、キャプチャ、共有リンク、パターンライブラリ。ブラウザ内 JavaScript RegExp。",
   },
   "hash-generator": {
     metaTitle: "ハッシュジェネレーター - MD5/SHA256",

@@ -74,6 +74,14 @@ export const TOOL_WORKFLOW_MAP: Partial<Record<LocalizedToolSlug, ToolWorkflowSt
   ],
   "regex-tester": [
     {
+      targetSlug: "json-formatter",
+      labels: {
+        en: "Format extracted JSON",
+        zh: "格式化提取的 JSON",
+        ja: "抽出した JSON を整形",
+      },
+    },
+    {
       targetSlug: "url-encoder",
       labels: {
         en: "URL-encode matched text",
@@ -89,6 +97,46 @@ export const TOOL_WORKFLOW_MAP: Partial<Record<LocalizedToolSlug, ToolWorkflowSt
         en: "URL-encode HTML entities",
         zh: "对 HTML 实体做 URL 编码",
         ja: "HTML エンティティを URL エンコード",
+      },
+    },
+  ],
+  "cron-parser": [
+    {
+      targetSlug: "timestamp",
+      labels: {
+        en: "Convert next run to timestamp",
+        zh: "将下次执行时间转为时间戳",
+        ja: "次回実行時刻をタイムスタンプに変換",
+      },
+    },
+  ],
+  "text-diff": [
+    {
+      targetSlug: "json-formatter",
+      labels: {
+        en: "Format changed JSON snippet",
+        zh: "格式化变更后的 JSON 片段",
+        ja: "変更後の JSON を整形",
+      },
+    },
+  ],
+  "color-converter": [
+    {
+      targetSlug: "html-encoder",
+      labels: {
+        en: "Encode color for HTML/CSS",
+        zh: "为 HTML/CSS 编码颜色值",
+        ja: "HTML/CSS 用に色値をエンコード",
+      },
+    },
+  ],
+  timestamp: [
+    {
+      targetSlug: "cron-parser",
+      labels: {
+        en: "Parse cron schedule",
+        zh: "解析 Cron 调度表达式",
+        ja: "Cron スケジュールを解析",
       },
     },
   ],

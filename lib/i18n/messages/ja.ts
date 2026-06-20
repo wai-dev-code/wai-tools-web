@@ -62,6 +62,12 @@ const ja: Messages = {
     adLabel: "広告",
     adDisclaimer: "広告は第三者によって配信されます。ツールに入力したデータが広告主に共有されることはありません。",
     workflowNext: "次のステップ",
+    commandPaletteTitle: "クイック検索",
+    commandPalettePlaceholder: "ツールを検索…",
+    commandPaletteRecent: "最近",
+    commandPaletteAllTools: "すべてのツール",
+    commandPaletteShortcut: "⌘K",
+    openCommandPalette: "ツールを検索",
   },
   workspace: {
     sidebarExpand: "サイドバーを展開",

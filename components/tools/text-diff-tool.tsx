@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { formatMessage, getMessages } from "@/lib/i18n"
 import { diffLines, diffStats } from "@/lib/text-diff-utils"
+import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 
 interface TextDiffToolProps {
@@ -25,8 +26,12 @@ export function TextDiffTool({ locale = defaultLocale }: TextDiffToolProps) {
   const ui = getMessages(locale).textDiffTool
   const [left, setLeft] = useState("")
   const [right, setRight] = useState("")
+  const [ignoreWhitespace, setIgnoreWhitespace] = useState(false)
 
-  const lines = useMemo(() => diffLines(left, right), [left, right])
+  const lines = useMemo(
+    () => diffLines(left, right, { ignoreWhitespace }),
+    [left, right, ignoreWhitespace],
+  )
   const stats = useMemo(() => diffStats(lines), [lines])
   const hasInput = left.length > 0 || right.length > 0
 
@@ -46,6 +51,17 @@ export function TextDiffTool({ locale = defaultLocale }: TextDiffToolProps) {
           <Trash2 className="mr-1.5 h-3.5 w-3.5" />
           {ui.clear}
         </Button>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <Switch
+          id="diff-ignore-whitespace"
+          checked={ignoreWhitespace}
+          onCheckedChange={setIgnoreWhitespace}
+        />
+        <Label htmlFor="diff-ignore-whitespace" className="text-sm text-muted-foreground">
+          {ui.ignoreWhitespace}
+        </Label>
       </div>
 
       <div className="grid min-w-0 gap-4 lg:grid-cols-2">

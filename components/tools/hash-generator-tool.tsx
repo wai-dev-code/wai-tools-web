@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { Copy } from "lucide-react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { Copy, Upload } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -9,6 +9,7 @@ import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { formatMessage, getMessages } from "@/lib/i18n"
 import {
   computeAllHashes,
+  computeAllHashesFromBuffer,
   HASH_ALGORITHMS,
   type HashAlgorithm,
   type HashResults,
@@ -19,6 +20,8 @@ import { cn } from "@/lib/utils"
 interface HashGeneratorToolProps {
   locale?: Locale
 }
+
+type InputMode = "text" | "file"
 
 const algorithmLabelKey: Record<
   HashAlgorithm,
@@ -32,12 +35,42 @@ const algorithmLabelKey: Record<
 
 export function HashGeneratorTool({ locale = defaultLocale }: HashGeneratorToolProps) {
   const ui = getMessages(locale).hashTool
+  const [inputMode, setInputMode] = useState<InputMode>("text")
   const [input, setInput] = useState("")
+  const [fileName, setFileName] = useState<string | null>(null)
+  const [fileBuffer, setFileBuffer] = useState<ArrayBuffer | null>(null)
   const [results, setResults] = useState<HashResults | null>(null)
   const [computing, setComputing] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (!input) {
+    if (inputMode === "text") {
+      if (!input) {
+        setResults(null)
+        setComputing(false)
+        return
+      }
+
+      let cancelled = false
+      setComputing(true)
+
+      computeAllHashes(input)
+        .then((next) => {
+          if (!cancelled) {
+            setResults(next)
+            setComputing(false)
+          }
+        })
+        .catch(() => {
+          if (!cancelled) setComputing(false)
+        })
+
+      return () => {
+        cancelled = true
+      }
+    }
+
+    if (!fileBuffer) {
       setResults(null)
       setComputing(false)
       return
@@ -46,7 +79,7 @@ export function HashGeneratorTool({ locale = defaultLocale }: HashGeneratorToolP
     let cancelled = false
     setComputing(true)
 
-    computeAllHashes(input)
+    computeAllHashesFromBuffer(fileBuffer)
       .then((next) => {
         if (!cancelled) {
           setResults(next)
@@ -60,9 +93,12 @@ export function HashGeneratorTool({ locale = defaultLocale }: HashGeneratorToolP
     return () => {
       cancelled = true
     }
-  }, [input])
+  }, [input, inputMode, fileBuffer])
 
-  const hasResults = useMemo(() => results && input.length > 0, [results, input])
+  const hasResults = useMemo(() => {
+    if (inputMode === "text") return results && input.length > 0
+    return results && fileBuffer && fileBuffer.byteLength > 0
+  }, [results, input, inputMode, fileBuffer])
 
   const copyHash = async (algo: HashAlgorithm, value: string) => {
     if (!value) return
@@ -71,7 +107,7 @@ export function HashGeneratorTool({ locale = defaultLocale }: HashGeneratorToolP
   }
 
   const copyAll = async () => {
-    if (!results || !input) return
+    if (!results) return
     const text = HASH_ALGORITHMS.map(
       (algo) => `${ui[algorithmLabelKey[algo]]}: ${results[algo]}`,
     ).join("\n")
@@ -79,18 +115,82 @@ export function HashGeneratorTool({ locale = defaultLocale }: HashGeneratorToolP
     toolNotify(ui.notify.copiedAll)
   }
 
+  const handleFileChange = async (file: File | undefined) => {
+    if (!file) return
+    const buffer = await file.arrayBuffer()
+    setFileBuffer(buffer)
+    setFileName(file.name)
+    setInputMode("file")
+    toolNotify(formatMessage(ui.notify.fileLoaded, { name: file.name }))
+  }
+
+  const switchToText = () => {
+    setInputMode("text")
+    setFileBuffer(null)
+    setFileName(null)
+  }
+
   return (
     <div className="space-y-5">
       <section className="space-y-3 rounded-lg border border-border bg-card p-4">
-        <Label htmlFor="hash-input">{ui.inputLabel}</Label>
-        <Textarea
-          id="hash-input"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={ui.inputPlaceholder}
-          rows={5}
-          className="font-mono text-sm"
-        />
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant={inputMode === "text" ? "default" : "outline"}
+              onClick={switchToText}
+            >
+              {ui.textMode}
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={inputMode === "file" ? "default" : "outline"}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {ui.fileMode}
+            </Button>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="gap-1.5"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Upload className="h-3.5 w-3.5" />
+            {ui.uploadFile}
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            onChange={(e) => handleFileChange(e.target.files?.[0])}
+          />
+        </div>
+
+        {inputMode === "text" ? (
+          <>
+            <Label htmlFor="hash-input">{ui.inputLabel}</Label>
+            <Textarea
+              id="hash-input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={ui.inputPlaceholder}
+              rows={5}
+              className="font-mono text-sm"
+            />
+          </>
+        ) : (
+          <div className="rounded-md border border-dashed border-border bg-muted/20 px-4 py-6 text-center text-sm">
+            {fileName ? (
+              <p className="font-medium text-foreground">{fileName}</p>
+            ) : (
+              <p className="text-muted-foreground">{ui.uploadFile}</p>
+            )}
+          </div>
+        )}
       </section>
 
       <section className="space-y-3 rounded-lg border border-border bg-card p-4">
@@ -109,7 +209,7 @@ export function HashGeneratorTool({ locale = defaultLocale }: HashGeneratorToolP
           </Button>
         </div>
 
-        {!input ? (
+        {!hasResults ? (
           <p className="py-6 text-center text-sm text-muted-foreground">{ui.emptyInput}</p>
         ) : (
           <ul className="space-y-3">
@@ -117,10 +217,7 @@ export function HashGeneratorTool({ locale = defaultLocale }: HashGeneratorToolP
               const value = results?.[algo] ?? ""
               const label = ui[algorithmLabelKey[algo]] as string
               return (
-                <li
-                  key={algo}
-                  className="rounded-lg border border-border bg-muted/30 p-3"
-                >
+                <li key={algo} className="rounded-lg border border-border bg-muted/30 p-3">
                   <div className="mb-2 flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-primary">
                       {label}

@@ -6,9 +6,11 @@ export interface RegexUrlState {
   text: string
   flags: RegexFlags
   replacement: string
+  mode?: "match" | "replace" | "split"
 }
 
 const FLAG_KEYS = ["g", "i", "m", "s", "u", "y"] as const
+const MODE_KEYS = ["match", "replace", "split"] as const
 
 export function encodeRegexUrlState(state: RegexUrlState): URLSearchParams {
   const params = new URLSearchParams()
@@ -17,6 +19,7 @@ export function encodeRegexUrlState(state: RegexUrlState): URLSearchParams {
   const flagString = flagsToString(state.flags)
   if (flagString) params.set("f", flagString)
   if (state.replacement) params.set("r", state.replacement)
+  if (state.mode && state.mode !== "match") params.set("mode", state.mode)
   return params
 }
 
@@ -24,6 +27,11 @@ export function decodeRegexUrlState(searchParams: URLSearchParams): Partial<Rege
   const pattern = searchParams.get("p") ?? ""
   const text = searchParams.get("t") ?? ""
   const replacement = searchParams.get("r") ?? ""
+  const modeRaw = searchParams.get("mode")
+  const mode =
+    modeRaw && MODE_KEYS.includes(modeRaw as RegexUrlState["mode"])
+      ? (modeRaw as RegexUrlState["mode"])
+      : undefined
   const flagString = searchParams.get("f") ?? flagsToString(DEFAULT_REGEX_FLAGS)
   const flags = { ...DEFAULT_REGEX_FLAGS }
 
@@ -31,7 +39,7 @@ export function decodeRegexUrlState(searchParams: URLSearchParams): Partial<Rege
     flags[key] = flagString.includes(key)
   }
 
-  return { pattern, text, flags, replacement }
+  return { pattern, text, flags, replacement, mode }
 }
 
 export function buildShareUrl(basePath: string, state: RegexUrlState): string {

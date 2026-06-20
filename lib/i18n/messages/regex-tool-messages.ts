@@ -22,6 +22,9 @@ export interface RegexToolMessages {
   replacePlaceholder: string
   replacePreviewLabel: string
   replaceHint: string
+  modeTabMatch: string
+  modeTabReplace: string
+  modeTabSplit: string
   engineLabel: string
   nonGlobalHint: string
   statsTitle: string
@@ -57,6 +60,7 @@ export interface RegexToolMessages {
   patternHint: string
   explainTitle: string
   explainEmpty: string
+  visualExplainTitle: string
   explainMeanings: Record<string, string>
   snippetsTitle: string
   patternSnippets: { label: string; insert: string }[]
@@ -78,6 +82,12 @@ export interface RegexToolMessages {
   exportCsv: string
   exportJson: string
   shareLink: string
+  fullMatchFull: string
+  fullMatchPartial: string
+  fullMatchNone: string
+  replaceCount: string
+  largeTextWarning: string
+  shortcutsHint: string
   historyTitle: string
   historyEmpty: string
   historySave: string
@@ -306,6 +316,8 @@ const explainMeaningsEn: RegexToolMessages["explainMeanings"] = {
   "(?:": "Non-capturing group",
   "(?=": "Positive lookahead",
   "(?!": "Negative lookahead",
+  "(?<=": "Positive lookbehind",
+  "(?<!": "Negative lookbehind",
   "[class]": "Character class — match one of",
   literal: "Literal character",
 }
@@ -331,6 +343,8 @@ const explainMeaningsZh: RegexToolMessages["explainMeanings"] = {
   "(?:": "非捕获组",
   "(?=": "正向先行断言",
   "(?!": "负向先行断言",
+  "(?<=": "正向后行断言",
+  "(?<!": "负向后行断言",
   "[class]": "字符类 — 匹配其中一种",
   literal: "字面量字符",
 }
@@ -356,6 +370,8 @@ const explainMeaningsJa: RegexToolMessages["explainMeanings"] = {
   "(?:": "非キャプチャグループ",
   "(?=": "肯定先読み",
   "(?!": "否定先読み",
+  "(?<=": "肯定後読み",
+  "(?<!": "否定後読み",
   "[class]": "文字クラス — いずれか 1 文字",
   literal: "リテラル文字",
 }
@@ -407,6 +423,9 @@ export const regexToolEn: RegexToolMessages = {
   replacePlaceholder: "e.g. [$1] or empty to remove matches",
   replacePreviewLabel: "Substitution preview",
   replaceHint: "Uses JavaScript replacement syntax ($1, $&, etc.)",
+  modeTabMatch: "Match",
+  modeTabReplace: "Replace",
+  modeTabSplit: "Split",
   engineLabel: "JavaScript RegExp",
   nonGlobalHint: "g is off — only the first match is shown and replaced.",
   statsTitle: "Statistics",
@@ -442,6 +461,7 @@ export const regexToolEn: RegexToolMessages = {
   patternHint: "Pick an example below, or click tokens on the left to build your pattern step by step.",
   explainTitle: "Explanation",
   explainEmpty: "Enter a valid pattern to see a step-by-step breakdown.",
+  visualExplainTitle: "Pattern breakdown",
   explainMeanings: explainMeaningsEn,
   snippetsTitle: "Quick insert",
   patternSnippets: patternSnippetsEn,
@@ -463,6 +483,12 @@ export const regexToolEn: RegexToolMessages = {
   exportCsv: "CSV",
   exportJson: "JSON",
   shareLink: "Copy share link",
+  fullMatchFull: "Matches entire input",
+  fullMatchPartial: "Partial match only",
+  fullMatchNone: "No match",
+  replaceCount: "{count} replacement(s)",
+  largeTextWarning: "Large input ({count} chars) may slow matching. Consider uploading a file or trimming text.",
+  shortcutsHint: "Tip: ⌘K opens tool search. Click explanation tokens to select pattern parts.",
   historyTitle: "Recent",
   historyEmpty: "No saved patterns yet.",
   historySave: "Save to history",
@@ -536,6 +562,9 @@ export const regexToolZh: RegexToolMessages = {
   replacePlaceholder: "如 [$1] 或留空表示删除匹配",
   replacePreviewLabel: "替换预览",
   replaceHint: "支持 JavaScript 替换语法（$1、$& 等）",
+  modeTabMatch: "匹配",
+  modeTabReplace: "替换",
+  modeTabSplit: "分割",
   engineLabel: "JavaScript RegExp",
   nonGlobalHint: "未勾选 g — 仅显示并替换第一个匹配。",
   statsTitle: "统计",
@@ -571,6 +600,7 @@ export const regexToolZh: RegexToolMessages = {
   patternHint: "可先点下方示例，或点左侧速查表逐步拼出正则。",
   explainTitle: "正则解释",
   explainEmpty: "输入有效正则后，将逐段显示含义。",
+  visualExplainTitle: "模式拆解",
   explainMeanings: explainMeaningsZh,
   snippetsTitle: "快捷插入",
   patternSnippets: patternSnippetsZh,
@@ -592,6 +622,12 @@ export const regexToolZh: RegexToolMessages = {
   exportCsv: "CSV",
   exportJson: "JSON",
   shareLink: "复制分享链接",
+  fullMatchFull: "匹配整个输入",
+  fullMatchPartial: "仅部分匹配",
+  fullMatchNone: "无匹配",
+  replaceCount: "将替换 {count} 处",
+  largeTextWarning: "输入较大（{count} 字符），匹配可能变慢，建议上传文件或缩短文本。",
+  shortcutsHint: "提示：⌘K 打开工具搜索；点击解析 token 可选中模式片段。",
   historyTitle: "最近使用",
   historyEmpty: "暂无保存记录。",
   historySave: "保存到历史",
@@ -665,6 +701,9 @@ export const regexToolJa: RegexToolMessages = {
   replacePlaceholder: "例: [$1] または空で削除",
   replacePreviewLabel: "置換プレビュー",
   replaceHint: "JavaScript の置換構文（$1、$& など）に対応",
+  modeTabMatch: "マッチ",
+  modeTabReplace: "置換",
+  modeTabSplit: "分割",
   engineLabel: "JavaScript RegExp",
   nonGlobalHint: "g オフ — 最初の一致のみ表示・置換します。",
   statsTitle: "統計",
@@ -700,6 +739,7 @@ export const regexToolJa: RegexToolMessages = {
   patternHint: "下のサンプルを選ぶか、左のリファレンスから記号をクリックして組み立てます。",
   explainTitle: "解説",
   explainEmpty: "有効なパターンを入力すると、各部分の意味を表示します。",
+  visualExplainTitle: "パターン分解",
   explainMeanings: explainMeaningsJa,
   snippetsTitle: "クイック挿入",
   patternSnippets: patternSnippetsJa,
@@ -721,6 +761,12 @@ export const regexToolJa: RegexToolMessages = {
   exportCsv: "CSV",
   exportJson: "JSON",
   shareLink: "共有リンクをコピー",
+  fullMatchFull: "入力全体に一致",
+  fullMatchPartial: "部分一致のみ",
+  fullMatchNone: "一致なし",
+  replaceCount: "{count} 箇所を置換",
+  largeTextWarning: "入力が大きい（{count} 文字）。マッチが遅くなる場合があります。",
+  shortcutsHint: "ヒント: ⌘K でツール検索。解説トークンをクリックでパターン部分を選択。",
   historyTitle: "最近",
   historyEmpty: "保存されたパターンはありません。",
   historySave: "履歴に保存",

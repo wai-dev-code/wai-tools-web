@@ -7,6 +7,7 @@ export interface TextDiffToolMessages {
   leftPlaceholder: string
   rightPlaceholder: string
   clear: string
+  ignoreWhitespace: string
   statsAdded: string
   statsRemoved: string
   statsChanged: string
@@ -33,6 +34,7 @@ export const textDiffToolZh: TextDiffToolMessages = {
   leftPlaceholder: "粘贴原始文本…",
   rightPlaceholder: "粘贴对比文本…",
   clear: "清空",
+  ignoreWhitespace: "忽略空白差异",
   statsAdded: "新增 {count} 行",
   statsRemoved: "删除 {count} 行",
   statsChanged: "修改 {count} 行",
@@ -52,6 +54,7 @@ export const textDiffToolEn: TextDiffToolMessages = {
   leftPlaceholder: "Paste original text…",
   rightPlaceholder: "Paste text to compare…",
   clear: "Clear",
+  ignoreWhitespace: "Ignore whitespace",
   statsAdded: "{count} added",
   statsRemoved: "{count} removed",
   statsChanged: "{count} changed",
@@ -71,6 +74,7 @@ export const textDiffToolJa: TextDiffToolMessages = {
   leftPlaceholder: "元のテキストを貼り付け…",
   rightPlaceholder: "比較するテキストを貼り付け…",
   clear: "クリア",
+  ignoreWhitespace: "空白の差分を無視",
   statsAdded: "追加 {count} 行",
   statsRemoved: "削除 {count} 行",
   statsChanged: "変更 {count} 行",

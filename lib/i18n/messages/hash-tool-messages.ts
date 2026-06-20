@@ -3,6 +3,10 @@ import type { FaqItem } from "@/lib/i18n/messages/types"
 export interface HashToolMessages {
   inputLabel: string
   inputPlaceholder: string
+  fileLabel: string
+  uploadFile: string
+  textMode: string
+  fileMode: string
   resultsTitle: string
   emptyInput: string
   copy: string
@@ -14,6 +18,7 @@ export interface HashToolMessages {
   notify: {
     copied: string
     copiedAll: string
+    fileLoaded: string
   }
 }
 
@@ -27,6 +32,10 @@ export interface HashGeneratorPageMessages {
 export const hashToolZh: HashToolMessages = {
   inputLabel: "输入文本",
   inputPlaceholder: "输入要计算哈希的文本…",
+  fileLabel: "文件",
+  uploadFile: "上传文件",
+  textMode: "文本",
+  fileMode: "文件",
   resultsTitle: "哈希结果",
   emptyInput: "输入文本后将同时显示 MD5、SHA-1、SHA-256、SHA-512",
   copy: "复制",
@@ -38,12 +47,17 @@ export const hashToolZh: HashToolMessages = {
   notify: {
     copied: "已复制 {algo} 哈希",
     copiedAll: "已复制全部哈希",
+    fileLoaded: "已加载文件：{name}",
   },
 }
 
 export const hashToolEn: HashToolMessages = {
   inputLabel: "Input text",
   inputPlaceholder: "Enter text to hash…",
+  fileLabel: "File",
+  uploadFile: "Upload file",
+  textMode: "Text",
+  fileMode: "File",
   resultsTitle: "Hash results",
   emptyInput: "Enter text to see MD5, SHA-1, SHA-256, and SHA-512 at once",
   copy: "Copy",
@@ -55,12 +69,17 @@ export const hashToolEn: HashToolMessages = {
   notify: {
     copied: "Copied {algo} hash",
     copiedAll: "Copied all hashes",
+    fileLoaded: "Loaded file: {name}",
   },
 }
 
 export const hashToolJa: HashToolMessages = {
   inputLabel: "入力テキスト",
   inputPlaceholder: "ハッシュ化するテキストを入力…",
+  fileLabel: "ファイル",
+  uploadFile: "ファイルをアップロード",
+  textMode: "テキスト",
+  fileMode: "ファイル",
   resultsTitle: "ハッシュ結果",
   emptyInput: "テキストを入力すると MD5、SHA-1、SHA-256、SHA-512 を同時に表示",
   copy: "コピー",
@@ -72,6 +91,7 @@ export const hashToolJa: HashToolMessages = {
   notify: {
     copied: "{algo} ハッシュをコピーしました",
     copiedAll: "すべてのハッシュをコピーしました",
+    fileLoaded: "ファイルを読み込みました：{name}",
   },
 }
 

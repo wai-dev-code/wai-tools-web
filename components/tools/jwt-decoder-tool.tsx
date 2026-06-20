@@ -1,8 +1,9 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Copy, Trash2 } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { ToolExampleMenu } from "@/components/tool-example-menu"
@@ -11,6 +12,7 @@ import { defaultLocale, type Locale } from "@/lib/i18n/config"
 import { getMessages } from "@/lib/i18n"
 import type { JwtDecoderExample } from "@/lib/tool-examples"
 import { toolNotify } from "@/lib/tool-notify"
+import { verifyJwtHs256, type JwtVerifyResult } from "@/lib/jwt-verify"
 import { cn } from "@/lib/utils"
 import type { JwtToolMessages } from "@/lib/i18n/messages/jwt-tool-messages"
 
@@ -93,6 +95,18 @@ export function JwtDecoderTool({ locale = defaultLocale }: JwtDecoderToolProps) 
   const ui = getMessages(locale).jwtTool
   const examples = useMemo(() => getJwtDecoderExamples(locale), [locale])
   const [token, setToken] = useState("")
+  const [secret, setSecret] = useState("")
+  const [verifyResult, setVerifyResult] = useState<JwtVerifyResult>({ status: "skipped" })
+
+  useEffect(() => {
+    let cancelled = false
+    verifyJwtHs256(token, secret).then((result) => {
+      if (!cancelled) setVerifyResult(result)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [token, secret])
 
   const applyExample = (example: JwtDecoderExample) => {
     setToken(example.token)
@@ -145,6 +159,21 @@ export function JwtDecoderTool({ locale = defaultLocale }: JwtDecoderToolProps) 
   )
   const isExpired = claims.some((c) => c.key === "exp" && c.status === "expired")
 
+  const verifyMessage = useMemo(() => {
+    if (verifyResult.status === "valid") return ui.verifyValid
+    if (verifyResult.status === "invalid") return ui.verifyInvalid
+    if (verifyResult.status === "unsupported-alg") return ui.verifyUnsupported
+    if (verifyResult.status === "skipped" && token.trim() && decoded.alg === "HS256") return ui.verifySkipped
+    return null
+  }, [verifyResult, ui, token, decoded.alg])
+
+  const verifyTone =
+    verifyResult.status === "valid"
+      ? "text-green-700 dark:text-green-400 bg-green-500/10"
+      : verifyResult.status === "invalid"
+        ? "text-destructive bg-destructive/10"
+        : "text-muted-foreground bg-muted/30"
+
   const copySection = async (text: string, kind: "header" | "payload") => {
     if (!text) {
       toolNotify(ui.notify.nothingToCopy, "warning")
@@ -181,6 +210,20 @@ export function JwtDecoderTool({ locale = defaultLocale }: JwtDecoderToolProps) 
           {ui.algorithm}：<span className="font-mono text-foreground">{decoded.alg}</span>
         </p>
       )}
+      <div className="space-y-2">
+        <Label htmlFor="jwt-secret">{ui.secretLabel}</Label>
+        <Input
+          id="jwt-secret"
+          type="password"
+          value={secret}
+          onChange={(e) => setSecret(e.target.value)}
+          placeholder={ui.secretPlaceholder}
+          className="font-mono text-sm"
+        />
+        {verifyMessage && (
+          <p className={cn("rounded-md px-3 py-2 text-sm", verifyTone)}>{verifyMessage}</p>
+        )}
+      </div>
       <div className="rounded-md border border-border/60 bg-muted/20 p-3 text-sm">
         <p className="mb-2 font-medium text-foreground">{ui.guideTitle}</p>
         <ul className="space-y-1 text-muted-foreground">

@@ -49,3 +49,36 @@ export async function computeAllHashes(text: string): Promise<HashResults> {
     "SHA-512": sha512,
   }
 }
+
+async function digestSubtleBuffer(algorithm: HashAlgorithm, buffer: ArrayBuffer): Promise<string> {
+  const hashBuffer = await crypto.subtle.digest(algorithm, buffer)
+  return bufferToHex(hashBuffer)
+}
+
+function md5FromBuffer(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer)
+  let binary = ""
+  const chunk = 8192
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk))
+  }
+  return md5(binary)
+}
+
+export async function computeAllHashesFromBuffer(buffer: ArrayBuffer): Promise<HashResults> {
+  if (buffer.byteLength === 0) return emptyResults()
+
+  const [md5Hash, sha1, sha256, sha512] = await Promise.all([
+    Promise.resolve(md5FromBuffer(buffer)),
+    digestSubtleBuffer("SHA-1", buffer),
+    digestSubtleBuffer("SHA-256", buffer),
+    digestSubtleBuffer("SHA-512", buffer),
+  ])
+
+  return {
+    MD5: md5Hash,
+    "SHA-1": sha1,
+    "SHA-256": sha256,
+    "SHA-512": sha512,
+  }
+}

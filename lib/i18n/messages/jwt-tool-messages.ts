@@ -11,6 +11,12 @@ export interface JwtToolMessages {
   payload: string
   signature: string
   signatureHint: string
+  secretLabel: string
+  secretPlaceholder: string
+  verifyValid: string
+  verifyInvalid: string
+  verifyUnsupported: string
+  verifySkipped: string
   copy: string
   claims: {
     exp: string
@@ -56,7 +62,13 @@ export const jwtToolZh: JwtToolMessages = {
   header: "Header",
   payload: "Payload",
   signature: "Signature（未验证）",
-  signatureHint: "Signature（未验证）",
+  signatureHint: "Signature",
+  secretLabel: "密钥（HS256 验签，可选）",
+  secretPlaceholder: "输入密钥以验证 HS256 签名…",
+  verifyValid: "签名有效",
+  verifyInvalid: "签名无效",
+  verifyUnsupported: "当前仅支持 HS256 验签",
+  verifySkipped: "输入密钥后可验证 HS256 签名",
   copy: "复制",
   claims: { exp: "过期时间 (exp)", iat: "签发时间 (iat)", nbf: "生效时间 (nbf)" },
   status: { expired: "已过期", valid: "有效", notYetValid: "尚未生效" },
@@ -92,7 +104,13 @@ export const jwtToolEn: JwtToolMessages = {
   header: "Header",
   payload: "Payload",
   signature: "Signature (not verified)",
-  signatureHint: "Signature (not verified)",
+  signatureHint: "Signature",
+  secretLabel: "Secret (optional HS256 verify)",
+  secretPlaceholder: "Enter secret to verify HS256 signature…",
+  verifyValid: "Signature valid",
+  verifyInvalid: "Signature invalid",
+  verifyUnsupported: "Only HS256 verification is supported",
+  verifySkipped: "Enter a secret to verify HS256 signature",
   copy: "Copy",
   claims: { exp: "Expires (exp)", iat: "Issued at (iat)", nbf: "Not before (nbf)" },
   status: { expired: "Expired", valid: "Valid", notYetValid: "Not yet valid" },
@@ -128,7 +146,13 @@ export const jwtToolJa: JwtToolMessages = {
   header: "Header",
   payload: "Payload",
   signature: "Signature（未検証）",
-  signatureHint: "Signature（未検証）",
+  signatureHint: "Signature",
+  secretLabel: "秘密鍵（HS256 検証、任意）",
+  secretPlaceholder: "HS256 署名検証用の秘密鍵…",
+  verifyValid: "署名は有効",
+  verifyInvalid: "署名が無効",
+  verifyUnsupported: "HS256 検証のみ対応",
+  verifySkipped: "秘密鍵を入力すると HS256 署名を検証できます",
   copy: "コピー",
   claims: { exp: "有効期限 (exp)", iat: "発行時刻 (iat)", nbf: "開始時刻 (nbf)" },
   status: { expired: "期限切れ", valid: "有効", notYetValid: "未発効" },

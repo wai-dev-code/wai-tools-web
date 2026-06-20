@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
@@ -8,6 +9,7 @@ import { JsonLd } from "@/components/json-ld"
 import { AdSlot } from "@/components/ad-slot"
 import { ToolContentSections } from "@/components/tool-content-sections"
 import { ToolWorkflowLinks } from "@/components/tool-workflow-links"
+import { recordRecentTool } from "@/lib/recent-tools"
 import { isImmersiveBottomAdAllowed } from "@/lib/adsense"
 import { ToolContentShell } from "@/components/tool-content-shell"
 import { PanelFullscreenProvider, usePanelFullscreenOptional } from "@/components/panel-fullscreen-context"
@@ -36,6 +38,11 @@ function getLocalizedToolInfo(tool: ToolDefinition, locale: Locale) {
 
 function ToolLayoutBody({ toolSlug, locale = defaultLocale, children, content }: ToolLayoutFrameProps) {
   const tool = getToolBySlug(toolSlug)
+
+  useEffect(() => {
+    if (tool) recordRecentTool(tool.slug)
+  }, [tool])
+
   if (!tool) return null
 
   const m = getMessages(locale)

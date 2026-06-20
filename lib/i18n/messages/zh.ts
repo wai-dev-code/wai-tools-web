@@ -62,6 +62,12 @@ const zh: Messages = {
     adLabel: "广告",
     adDisclaimer: "广告由第三方提供。您输入的数据不会发送给广告主。",
     workflowNext: "下一步",
+    commandPaletteTitle: "快速打开",
+    commandPalettePlaceholder: "搜索工具…",
+    commandPaletteRecent: "最近使用",
+    commandPaletteAllTools: "全部工具",
+    commandPaletteShortcut: "⌘K",
+    openCommandPalette: "搜索工具",
   },
   workspace: {
     sidebarExpand: "展开侧边栏",

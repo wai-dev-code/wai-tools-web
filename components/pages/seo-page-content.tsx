@@ -6,6 +6,11 @@ import { UrlEncoderTool } from "@/components/tools/url-encoder-tool"
 import { TimestampTool } from "@/components/tools/timestamp-tool"
 import { JwtDecoderTool } from "@/components/tools/jwt-decoder-tool"
 import { HashGeneratorTool } from "@/components/tools/hash-generator-tool"
+import { ColorConverterTool } from "@/components/tools/color-converter-tool"
+import { CronParserTool } from "@/components/tools/cron-parser-tool"
+import { HtmlEncoderTool } from "@/components/tools/html-encoder-tool"
+import { TextDiffTool } from "@/components/tools/text-diff-tool"
+import { RegexTesterTool } from "@/components/tools/regex-tester-tool"
 import type { Locale } from "@/lib/i18n/config"
 import { getMessages } from "@/lib/i18n"
 import { getSeoPageKey } from "@/lib/i18n/messages/seo-pages"
@@ -79,6 +84,21 @@ function renderMiscTool(config: MiscSeoPageConfig, locale: Locale) {
       return <JwtDecoderTool locale={locale} />
     case "hash-generator":
       return <HashGeneratorTool locale={locale} />
+    case "cron-parser":
+      return <CronParserTool locale={locale} />
+    case "text-diff":
+      return <TextDiffTool locale={locale} />
+    case "html-encoder":
+      return (
+        <HtmlEncoderTool
+          locale={locale}
+          defaultMode={config.toolProps?.htmlMode ?? "encode"}
+        />
+      )
+    case "color-converter":
+      return <ColorConverterTool locale={locale} />
+    case "regex-tester":
+      return <RegexTesterTool locale={locale} />
     default:
       notFound()
   }

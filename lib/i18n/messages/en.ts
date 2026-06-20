@@ -62,6 +62,12 @@ const en: Messages = {
     adLabel: "Advertisement",
     adDisclaimer: "Ads are served by third parties. Data you enter in the tool is not shared with advertisers.",
     workflowNext: "Next steps",
+    commandPaletteTitle: "Quick open",
+    commandPalettePlaceholder: "Search tools…",
+    commandPaletteRecent: "Recent",
+    commandPaletteAllTools: "All tools",
+    commandPaletteShortcut: "⌘K",
+    openCommandPalette: "Search tools",
   },
   workspace: {
     sidebarExpand: "Expand sidebar",

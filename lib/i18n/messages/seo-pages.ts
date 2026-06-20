@@ -19,6 +19,12 @@ export interface SeoPagesMessages {
   jwtDebugger: SeoPageText
   md5Generator: SeoPageText
   sha256Generator: SeoPageText
+  cronParser: SeoPageText
+  textDiff: SeoPageText
+  htmlEncode: SeoPageText
+  htmlDecode: SeoPageText
+  colorConverter: SeoPageText
+  regexTester: SeoPageText
 }
 
 export type SeoPageKey = keyof SeoPagesMessages
@@ -42,6 +48,12 @@ export const seoSlugToKey: Record<string, SeoPageKey> = {
   "jwt-debugger": "jwtDebugger",
   "md5-generator": "md5Generator",
   "sha256-generator": "sha256Generator",
+  "cron-parser": "cronParser",
+  "text-diff": "textDiff",
+  "html-encode": "htmlEncode",
+  "html-decode": "htmlDecode",
+  "color-converter": "colorConverter",
+  "regex-tester": "regexTester",
 }
 
 export const seoLocalizedSlugs = Object.keys(seoSlugToKey)
@@ -155,6 +167,42 @@ export const seoZh: SeoPagesMessages = {
     keywords: ["sha256 generator", "sha256 hash", "sha-256", "sha256 online"],
     instruction: "输入任意文本，工具在本地计算 SHA-256 等哈希值，结果可复制用于比对或存储。",
   },
+  cronParser: {
+    title: "Cron Parser - 在线 Cron 表达式解析",
+    description: "免费 Cron 解析器：解读 5 段表达式、可读摘要与未来执行时间，对标 crontab.guru。",
+    keywords: ["cron parser", "crontab", "cron expression", "cron 解析", "下次执行时间"],
+    instruction: "输入 Cron 表达式，查看字段含义、可读摘要与下次执行时间；可点常用模板快速填入。",
+  },
+  textDiff: {
+    title: "Text Diff - 在线文本对比工具",
+    description: "免费逐行文本 Diff：高亮新增、删除与修改行，支持忽略空白，适合配置与日志对比。",
+    keywords: ["text diff", "line diff", "compare text", "文本对比", "diff online"],
+    instruction: "左右粘贴两份文本，按行对比差异；可开启「忽略空白差异」减少格式噪音。",
+  },
+  htmlEncode: {
+    title: "HTML Encode - 在线 HTML 实体编码",
+    description: "免费 HTML 实体编码工具，将特殊字符转为 &amp;、&lt; 等安全实体。",
+    keywords: ["html encode", "html entity", "html escape", "html 编码"],
+    instruction: "左侧输入文本，右侧实时显示 HTML 实体编码结果，可一键复制。",
+  },
+  htmlDecode: {
+    title: "HTML Decode - 在线 HTML 实体解码",
+    description: "免费 HTML 实体解码，将 &amp;、&lt; 等实体还原为可读字符。",
+    keywords: ["html decode", "html unescape", "html entity decode", "html 解码"],
+    instruction: "粘贴 HTML 实体到左侧，右侧显示解码后的明文。",
+  },
+  colorConverter: {
+    title: "Color Converter - HEX/RGB/HSL 互转",
+    description: "免费颜色转换器：HEX、RGB、HSL 互转，实时色块预览，一键复制 CSS 色值。",
+    keywords: ["color converter", "hex to rgb", "rgb to hex", "hsl", "颜色转换"],
+    instruction: "输入 HEX、RGB 或 HSL，其他格式与预览色块实时更新。",
+  },
+  regexTester: {
+    title: "Regex Tester - 在线正则表达式测试",
+    description: "免费正则测试器：实时高亮、捕获组、替换预览、分割与单元测试。JavaScript RegExp，浏览器内运行。",
+    keywords: ["regex tester", "regex test", "regular expression", "正则测试", "在线正则"],
+    instruction: "输入正则与测试文本，切换 Match / Replace / Split 模式；可保存历史、分享链接、导出匹配结果。",
+  },
 }
 
 export const seoEn: SeoPagesMessages = {
@@ -266,6 +314,42 @@ export const seoEn: SeoPagesMessages = {
     keywords: ["sha256 generator", "sha256 hash", "sha-256", "sha256 online"],
     instruction: "Enter any text — SHA-256 and related hashes are computed locally. Copy results for comparison.",
   },
+  cronParser: {
+    title: "Cron Parser - Decode Cron Expressions Online",
+    description: "Free cron parser with field breakdown, human summary, and next run times — like crontab.guru.",
+    keywords: ["cron parser", "crontab", "cron expression", "next run time"],
+    instruction: "Enter a cron expression for field breakdown, summary, and upcoming runs. Use presets to try common schedules.",
+  },
+  textDiff: {
+    title: "Text Diff - Compare Text Online",
+    description: "Free line-by-line text diff with added/removed/changed highlights and optional whitespace ignore.",
+    keywords: ["text diff", "line diff", "compare text", "diff online"],
+    instruction: "Paste two versions side by side. Toggle ignore whitespace to reduce formatting noise.",
+  },
+  htmlEncode: {
+    title: "HTML Encode - Entity Encoder Online",
+    description: "Free HTML entity encoder — convert special characters to safe &amp;, &lt; entities.",
+    keywords: ["html encode", "html entity", "html escape"],
+    instruction: "Type on the left — encoded HTML entities appear on the right in real time.",
+  },
+  htmlDecode: {
+    title: "HTML Decode - Entity Decoder Online",
+    description: "Free HTML entity decoder — restore &amp;, &lt; entities to plain text.",
+    keywords: ["html decode", "html unescape", "html entity decode"],
+    instruction: "Paste HTML entities on the left — decoded plain text shows on the right.",
+  },
+  colorConverter: {
+    title: "Color Converter - HEX, RGB, HSL",
+    description: "Free color converter with live swatch preview. Convert HEX, RGB, and HSL instantly.",
+    keywords: ["color converter", "hex to rgb", "rgb to hex", "hsl converter"],
+    instruction: "Enter HEX, RGB, or HSL — other formats and the preview update live.",
+  },
+  regexTester: {
+    title: "Regex Tester - Test Regular Expressions Online",
+    description: "Free regex tester with live highlights, capture groups, replace preview, split, and unit tests. JavaScript RegExp in your browser.",
+    keywords: ["regex tester", "regex test", "regular expression tester", "regexp online"],
+    instruction: "Enter pattern and test text. Switch Match / Replace / Split modes; save history, share links, export matches.",
+  },
 }
 
 export const seoJa: SeoPagesMessages = {
@@ -376,6 +460,42 @@ export const seoJa: SeoPagesMessages = {
     description: "SHA-256 ダイジェストを高速計算。チェックサム・フィンガープリントに。",
     keywords: ["sha256 generator", "sha256 hash", "sha-256"],
     instruction: "任意のテキストを入力 — SHA-256 等をローカル計算。結果をコピーして比較。",
+  },
+  cronParser: {
+    title: "Cron Parser - Cron 式解析ツール",
+    description: "5 フィールド Cron の解析、要約、次回実行時刻を表示。crontab.guru 相当。",
+    keywords: ["cron parser", "crontab", "cron expression", "次回実行"],
+    instruction: "Cron 式を入力してフィールド解析・要約・次回実行時刻を確認。テンプレートも利用可能。",
+  },
+  textDiff: {
+    title: "Text Diff - オンラインテキスト比較",
+    description: "行単位のテキスト Diff。追加・削除・変更をハイライト、空白無視オプション付き。",
+    keywords: ["text diff", "line diff", "テキスト比較", "diff online"],
+    instruction: "左右にテキストを貼り付けて比較。「空白の差分を無視」で整形ノイズを軽減。",
+  },
+  htmlEncode: {
+    title: "HTML Encode - エンティティエンコード",
+    description: "特殊文字を &amp;、&lt; などの HTML エンティティに変換。",
+    keywords: ["html encode", "html entity", "html escape"],
+    instruction: "左に入力 — 右に HTML エンティティがリアルタイム表示。",
+  },
+  htmlDecode: {
+    title: "HTML Decode - エンティティデコード",
+    description: "HTML エンティティをプレーンテキストに復元。",
+    keywords: ["html decode", "html unescape", "html entity decode"],
+    instruction: "HTML エンティティを左に貼付 — 右にデコード結果。",
+  },
+  colorConverter: {
+    title: "Color Converter - HEX/RGB/HSL",
+    description: "HEX、RGB、HSL の相互変換。プレビュー色付き。",
+    keywords: ["color converter", "hex to rgb", "hsl", "色変換"],
+    instruction: "HEX、RGB、または HSL を入力 — 他形式とプレビューがリアルタイム更新。",
+  },
+  regexTester: {
+    title: "Regex Tester - オンライン正規表現テスト",
+    description: "無料の正規表現テスター。ハイライト、キャプチャ、置換プレビュー、分割、単体テスト。ブラウザ内 JavaScript RegExp。",
+    keywords: ["regex tester", "regexp test", "正規表現 テスト", "regex online"],
+    instruction: "パターンとテスト文字列を入力。Match / Replace / Split を切替。履歴保存・共有リンク・エクスポート対応。",
   },
 }
 

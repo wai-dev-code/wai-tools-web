@@ -48,6 +48,8 @@ export function tokenizeRegexPattern(pattern: string): RegexExplainPart[] {
       else if (pattern.startsWith("(?=", i)) meaningKey = "(?="
       else if (pattern.startsWith("(?!", i)) meaningKey = "(?!"
       else if (pattern.startsWith("(?<", i)) meaningKey = "(group)"
+      else if (pattern.startsWith("(?<=", i)) meaningKey = "(?<="
+      else if (pattern.startsWith("(?<!", i)) meaningKey = "(?!<"
 
       let depth = 0
       let j = i

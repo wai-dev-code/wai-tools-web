@@ -1,7 +1,9 @@
 import type { UrlEncodeMode } from "@/lib/url-utils"
+import type { HtmlEntityMode } from "@/lib/html-entity-utils"
 
 export interface MiscSeoPageToolProps {
   urlMode?: UrlEncodeMode
+  htmlMode?: HtmlEntityMode
 }
 
 export interface MiscSeoPageConfig {
@@ -54,6 +56,38 @@ export const miscSeoPages: MiscSeoPageConfig[] = [
     slug: "sha256-generator",
     path: "/sha256-generator",
     toolSlug: "hash-generator",
+  },
+  {
+    slug: "cron-parser",
+    path: "/cron-parser",
+    toolSlug: "cron-parser",
+  },
+  {
+    slug: "text-diff",
+    path: "/text-diff",
+    toolSlug: "text-diff",
+  },
+  {
+    slug: "html-encode",
+    path: "/html-encode",
+    toolSlug: "html-encoder",
+    toolProps: { htmlMode: "encode" },
+  },
+  {
+    slug: "html-decode",
+    path: "/html-decode",
+    toolSlug: "html-encoder",
+    toolProps: { htmlMode: "decode" },
+  },
+  {
+    slug: "color-converter",
+    path: "/color-converter",
+    toolSlug: "color-converter",
+  },
+  {
+    slug: "regex-tester",
+    path: "/regex-tester",
+    toolSlug: "regex-tester",
   },
 ]
 

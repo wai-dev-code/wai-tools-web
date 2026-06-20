@@ -276,6 +276,44 @@ export function formatMatchResultsForCopy(matches: RegexMatchInfo[]): string {
 
 export type MatchExportFormat = "lines" | "csv" | "json"
 
+/** Soft limit — warn user; still attempt processing */
+export const MAX_REGEX_TEXT_CHARS = 500_000
+
+export function isRegexTextOversized(text: string): boolean {
+  return text.length > MAX_REGEX_TEXT_CHARS
+}
+
+export type FullMatchStatus = "none" | "partial" | "full"
+
+/** Whether the pattern matches the entire test string (common validation use case) */
+export function getFullMatchStatus(
+  pattern: string,
+  flags: RegexFlags,
+  text: string,
+  matches: RegexMatchInfo[],
+): FullMatchStatus {
+  if (!pattern.trim() || !text || matches.length === 0) return "none"
+  const full = matches.some((m) => m.index === 0 && m.length === text.length)
+  if (full) return "full"
+  return "partial"
+}
+
+/** How many replacements would occur (respects g flag) */
+export function countReplacementMatches(pattern: string, flags: RegexFlags, text: string): number {
+  const trimmed = pattern.trim()
+  if (!trimmed || !text) return 0
+  try {
+    const flagString = flagsToString(flags)
+    if (!flags.g) {
+      return new RegExp(trimmed, flagString).test(text) ? 1 : 0
+    }
+    const globalFlags = flagString.includes("g") ? flagString : `${flagString}g`
+    return [...text.matchAll(new RegExp(trimmed, globalFlags))].length
+  } catch {
+    return 0
+  }
+}
+
 export function formatMatchValuesExport(matches: RegexMatchInfo[], format: MatchExportFormat): string {
   const values = matches.map((m) => m.value)
   if (format === "lines") return values.join("\n")

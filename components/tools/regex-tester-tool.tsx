@@ -1,32 +1,55 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState, type Dispatch, type RefObject, type SetStateAction } from "react"
-import { ClipboardPaste, Copy, Trash2 } from "lucide-react"
+import { useEffect, useMemo, useRef, useState, useDeferredValue, type Dispatch, type RefObject, type SetStateAction } from "react"
+import { ClipboardPaste, Copy, Link2, Trash2 } from "lucide-react"
 import { RegexFilePanel } from "@/components/regex-file-panel"
 import { RegexMatchHighlight, getMatchBorderClass } from "@/components/regex-match-highlight"
 import { RegexExplanationPanel } from "@/components/regex-explanation-panel"
+import { RegexPatternVisual } from "@/components/regex-pattern-visual"
 import { RegexPatternInput } from "@/components/regex-pattern-input"
 import { RegexQuickReference } from "@/components/regex-quick-reference"
+import {
+  RegexHistoryPanel,
+  RegexHubLinks,
+  RegexSplitPanel,
+  RegexSplitPreview,
+  RegexUnitTestsPanel,
+  type UnitTestCase,
+} from "@/components/regex-tool-panels"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { getRegexTesterExamples } from "@/lib/i18n/examples"
 import { defaultLocale, type Locale } from "@/lib/i18n/config"
-import { formatMessage, getMessages } from "@/lib/i18n"
+import { formatMessage, getMessages, localizeHref } from "@/lib/i18n"
 import { buildRegexExplanation } from "@/lib/regex-explain"
 import { buildExportJson, buildExportTxt, downloadTextFile, readRegexTestFile } from "@/lib/regex-file-io"
-import { decodeRegexUrlState } from "@/lib/regex-url-state"
-import { mergeFlags } from "@/lib/regex-history"
+import { buildShareUrl, decodeRegexUrlState, encodeRegexUrlState } from "@/lib/regex-url-state"
+import { getRegexHubLinks } from "@/lib/regex-hub-links"
+import {
+  loadRegexHistory,
+  mergeFlags,
+  saveRegexHistoryEntry,
+  type RegexHistoryEntry,
+} from "@/lib/regex-history"
 import {
   DEFAULT_REGEX_FLAGS,
   buildHighlightSegments,
+  countReplacementMatches,
   executeRegex,
+  executeReplace,
+  executeSplit,
   formatCaptureGroupsForCopy,
   formatMatchResultsForCopy,
+  formatMatchValuesExport,
   formatPatternWithFlags,
   flagsToString,
+  getFullMatchStatus,
+  isRegexTextOversized,
+  runUnitTests,
   type RegexErrorInfo,
   type RegexFlagKey,
   type RegexFlags,
@@ -41,6 +64,12 @@ interface RegexTesterToolProps {
 }
 
 const FLAG_KEYS: RegexFlagKey[] = ["g", "i", "m", "s", "u", "y"]
+
+type ToolMode = "match" | "replace" | "split"
+
+function newUnitTestId(): string {
+  return `ut-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
+}
 
 function PatternLibrary({
   examples,
@@ -123,14 +152,50 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
   const [pattern, setPattern] = useState("")
   const [flags, setFlags] = useState<RegexFlags>({ ...DEFAULT_REGEX_FLAGS })
   const [text, setText] = useState("")
+  const [replacement, setReplacement] = useState("")
+  const [toolMode, setToolMode] = useState<ToolMode>("match")
   const [activeMatch, setActiveMatch] = useState<number | null>(null)
+  const [historyEntries, setHistoryEntries] = useState<RegexHistoryEntry[]>([])
+  const [unitTestCases, setUnitTestCases] = useState<UnitTestCase[]>([])
+  const [urlHydrated, setUrlHydrated] = useState(false)
+
+  const deferredPattern = useDeferredValue(pattern)
+  const deferredText = useDeferredValue(text)
+
+  const hubLinks = useMemo(() => getRegexHubLinks(locale, ui.hubLinks), [locale, ui.hubLinks])
+
+  useEffect(() => {
+    setHistoryEntries(loadRegexHistory())
+  }, [])
 
   useEffect(() => {
     const decoded = decodeRegexUrlState(new URLSearchParams(window.location.search))
     if (decoded.pattern !== undefined) setPattern(decoded.pattern)
     if (decoded.text !== undefined) setText(decoded.text)
     if (decoded.flags) setFlags(mergeFlags(decoded.flags))
+    if (decoded.replacement !== undefined) setReplacement(decoded.replacement)
+    if (decoded.mode) setToolMode(decoded.mode)
+    setUrlHydrated(true)
   }, [])
+
+  useEffect(() => {
+    if (!urlHydrated) return
+    const timer = window.setTimeout(() => {
+      const params = encodeRegexUrlState({
+        pattern,
+        text,
+        flags,
+        replacement,
+        mode: toolMode,
+      })
+      const qs = params.toString()
+      const next = qs ? `${window.location.pathname}?${qs}` : window.location.pathname
+      if (window.location.pathname + window.location.search !== next) {
+        window.history.replaceState(null, "", next)
+      }
+    }, 450)
+    return () => window.clearTimeout(timer)
+  }, [pattern, text, flags, replacement, toolMode, urlHydrated])
 
   const applyExample = (example: RegexTesterExample) => {
     setPattern(example.pattern)
@@ -162,16 +227,41 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
     el.setSelectionRange(start, end)
   }
 
-  const result = useMemo(() => executeRegex(pattern, flags, text), [pattern, flags, text])
+  const result = useMemo(
+    () => executeRegex(deferredPattern, flags, deferredText),
+    [deferredPattern, flags, deferredText],
+  )
   const highlightSegments = useMemo(
-    () => buildHighlightSegments(text, result.matches),
-    [text, result.matches]
+    () => buildHighlightSegments(deferredText, result.matches),
+    [deferredText, result.matches],
   )
   const explanation = useMemo(
-    () => buildRegexExplanation(pattern, ui.explainMeanings),
-    [pattern, ui.explainMeanings]
+    () => buildRegexExplanation(deferredPattern, ui.explainMeanings),
+    [deferredPattern, ui.explainMeanings],
   )
   const flagString = flagsToString(flags)
+  const replaceResult = useMemo(
+    () => executeReplace(deferredPattern, flags, deferredText, replacement),
+    [deferredPattern, flags, deferredText, replacement],
+  )
+  const splitResult = useMemo(
+    () => executeSplit(deferredPattern, flags, deferredText),
+    [deferredPattern, flags, deferredText],
+  )
+  const unitTestResults = useMemo(
+    () => runUnitTests(deferredPattern, flags, unitTestCases),
+    [deferredPattern, flags, unitTestCases],
+  )
+  const fullMatchStatus = useMemo(
+    () => getFullMatchStatus(deferredPattern, flags, deferredText, result.matches),
+    [deferredPattern, flags, deferredText, result.matches],
+  )
+  const replacementCount = useMemo(
+    () => countReplacementMatches(deferredPattern, flags, deferredText),
+    [deferredPattern, flags, deferredText],
+  )
+  const textOversized = isRegexTextOversized(text)
+  const isDeferredStale = deferredPattern !== pattern || deferredText !== text
 
   const scrollToMatch = (matchNumber: number) => {
     setActiveMatch(matchNumber)
@@ -273,6 +363,95 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
     toolNotify(ui.notify.copiedExport)
   }
 
+  const exportMatchValues = (format: "lines" | "csv" | "json") => {
+    const content = formatMatchValuesExport(result.matches, format)
+    if (!content) {
+      toolNotify(ui.notify.nothingToCopy, "warning")
+      return
+    }
+    const ext = format === "json" ? "json" : "txt"
+    const mime = format === "json" ? "application/json;charset=utf-8" : "text/plain;charset=utf-8"
+    downloadTextFile(`regex-match-values.${ext}`, content, mime)
+    toolNotify(ui.notify.copiedExport)
+  }
+
+  const copyReplacePreview = async () => {
+    if (!replaceResult.output || replaceResult.error) {
+      toolNotify(ui.notify.nothingToCopy, "warning")
+      return
+    }
+    await navigator.clipboard.writeText(replaceResult.output)
+    toolNotify(ui.notify.copiedReplace)
+  }
+
+  const copyShareLink = async () => {
+    const path = localizeHref(locale, "tools/regex-tester")
+    const url = buildShareUrl(`${window.location.origin}${path}`, {
+      pattern,
+      text,
+      flags,
+      replacement,
+      mode: toolMode,
+    })
+    await navigator.clipboard.writeText(url)
+    toolNotify(ui.notify.copiedShareLink)
+  }
+
+  const saveHistory = () => {
+    if (!pattern.trim()) return
+    const merged = saveRegexHistoryEntry({ pattern, text, flags })
+    setHistoryEntries(merged)
+  }
+
+  const loadHistoryEntry = (index: number) => {
+    const entry = historyEntries[index]
+    if (!entry) return
+    setPattern(entry.pattern)
+    setText(entry.text)
+    setFlags(entry.flags)
+  }
+
+  const addUnitTest = () => {
+    setUnitTestCases((prev) => [
+      ...prev,
+      { id: newUnitTestId(), text: "", shouldMatch: true },
+    ])
+  }
+
+  const updateUnitTest = (id: string, patch: Partial<UnitTestCase>) => {
+    setUnitTestCases((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)))
+  }
+
+  const removeUnitTest = (id: string) => {
+    setUnitTestCases((prev) => prev.filter((c) => c.id !== id))
+  }
+
+  const historyPanelEntries = historyEntries.map((e) => ({
+    pattern: e.pattern,
+    text: e.text,
+    label: e.text.slice(0, 48) || e.pattern,
+  }))
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "/") {
+        const tag = (e.target as HTMLElement)?.tagName
+        if (tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable) return
+        e.preventDefault()
+        patternRef.current?.focus()
+      }
+    }
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
+  }, [])
+
+  const fullMatchLabel =
+    fullMatchStatus === "full"
+      ? ui.fullMatchFull
+      : fullMatchStatus === "partial"
+        ? ui.fullMatchPartial
+        : ui.fullMatchNone
+
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-4">
       <aside className="hidden lg:col-span-4 lg:flex lg:max-h-[calc(100vh-7rem)] lg:flex-col lg:gap-3 lg:sticky lg:top-20 lg:self-start">
@@ -282,12 +461,50 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
           searchPlaceholder={ui.librarySearchPlaceholder}
           onApply={applyExample}
           expanded
-          className="rounded-lg border border-border bg-card/60 p-3"
+          className="rounded-lg border border-border bg-card/60 p-3 min-h-0 flex-1"
         />
-        <RegexQuickReference ui={ui} onInsert={insertToken} className="max-h-[min(220px,28vh)] shrink-0" />
+        <RegexHistoryPanel
+          title={ui.historyTitle}
+          emptyLabel={ui.historyEmpty}
+          saveLabel={ui.historySave}
+          entries={historyPanelEntries}
+          onSave={saveHistory}
+          onLoad={loadHistoryEntry}
+          className="shrink-0"
+        />
+        <RegexQuickReference ui={ui} onInsert={insertToken} className="max-h-[min(180px,22vh)] shrink-0" />
+        <RegexUnitTestsPanel
+          title={ui.unitTestsTitle}
+          passLabel={ui.unitTestPass}
+          failLabel={ui.unitTestFail}
+          shouldMatchLabel={ui.unitTestShouldMatch}
+          shouldNotMatchLabel={ui.unitTestShouldNotMatch}
+          addLabel={ui.unitTestAdd}
+          placeholder={ui.unitTestPlaceholder}
+          cases={unitTestCases}
+          results={unitTestResults}
+          onChangeCase={updateUnitTest}
+          onAddCase={addUnitTest}
+          onRemoveCase={removeUnitTest}
+          className="max-h-[min(200px,24vh)] shrink-0 overflow-hidden"
+        />
+        <RegexHubLinks
+          title={ui.relatedToolsTitle}
+          description={ui.relatedToolsDesc}
+          links={hubLinks}
+          className="shrink-0"
+        />
       </aside>
 
       <div className="flex flex-col gap-3 lg:col-span-8">
+        <PatternLibrary
+          examples={examples}
+          title={ui.commonExamplesTitle}
+          searchPlaceholder={ui.librarySearchPlaceholder}
+          onApply={applyExample}
+          className="rounded-lg border border-border bg-card/60 p-3 lg:hidden"
+        />
+
         <QuickActionsBar
           ui={ui}
           onCopyPattern={copyPattern}
@@ -295,6 +512,9 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
           onCopyGroups={copyGroups}
           onClearPattern={() => setPattern("")}
           onClearText={() => setText("")}
+          onShareLink={copyShareLink}
+          onExportValues={() => exportMatchValues("lines")}
+          onExportCsv={() => exportMatchValues("csv")}
           hasMatches={result.matches.length > 0}
         />
 
@@ -308,7 +528,18 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
           errorPosition={result.error?.position}
           onCopyPattern={copyPattern}
           onClearPattern={() => setPattern("")}
+          onInsertSnippet={insertToken}
         />
+
+        {textOversized && (
+          <p className="text-xs text-amber-700 dark:text-amber-400">
+            {formatMessage(ui.largeTextWarning, { count: text.length })}
+          </p>
+        )}
+
+        {isDeferredStale && (
+          <p className="text-xs text-muted-foreground animate-pulse">Updating matches…</p>
+        )}
 
         <div className="flex flex-wrap gap-2">
           {examples.slice(0, 6).map((ex) => (
@@ -326,6 +557,64 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
         </div>
 
         <FlagsRow ui={ui} flags={flags} setFlags={setFlags} showNonGlobalHint={!flags.g && !!pattern.trim()} />
+
+        {toolMode === "match" && pattern.trim() && text && result.status === "valid" && (
+          <MatchValidationBadge status={fullMatchStatus} label={fullMatchLabel} />
+        )}
+
+        <Tabs value={toolMode} onValueChange={(v) => setToolMode(v as ToolMode)}>
+          <TabsList className="h-8">
+            <TabsTrigger value="match" className="text-xs px-3">{ui.modeTabMatch}</TabsTrigger>
+            <TabsTrigger value="replace" className="text-xs px-3">{ui.modeTabReplace}</TabsTrigger>
+            <TabsTrigger value="split" className="text-xs px-3">{ui.modeTabSplit}</TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        {toolMode === "replace" && (
+          <section className="space-y-2 rounded-lg border border-border bg-card/50 p-3">
+            <Label htmlFor="regex-replacement">{ui.replaceLabel}</Label>
+            <Input
+              id="regex-replacement"
+              value={replacement}
+              onChange={(e) => setReplacement(e.target.value)}
+              placeholder={ui.replacePlaceholder}
+              className="font-mono text-sm"
+            />
+            <p className="text-xs text-muted-foreground">{ui.replaceHint}</p>
+            {replacementCount > 0 && (
+              <p className="text-xs font-medium text-primary">
+                {formatMessage(ui.replaceCount, { count: replacementCount })}
+              </p>
+            )}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <Label>{ui.replacePreviewLabel}</Label>
+                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={copyReplacePreview}>
+                  <Copy className="mr-1 h-3 w-3" />
+                  {ui.copyReplacePreview}
+                </Button>
+              </div>
+              <RegexSplitPreview value={replaceResult.error ? text : replaceResult.output} />
+            </div>
+          </section>
+        )}
+
+        {toolMode === "split" && (
+          <RegexSplitPanel
+            title={ui.splitTitle}
+            hint={ui.splitHint}
+            emptyLabel={ui.splitEmpty}
+            parts={splitResult.error ? [] : splitResult.parts}
+          />
+        )}
+
+        {!result.error && explanation.length > 0 && (
+          <RegexPatternVisual
+            title={ui.visualExplainTitle}
+            tokens={explanation}
+            onSelectPart={selectPatternPart}
+          />
+        )}
 
         {!result.error && (
           <RegexExplanationPanel
@@ -351,6 +640,7 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
               activeMatch={activeMatch}
               highlightContainerRef={highlightContainerRef}
               onMatchClick={scrollToResult}
+              showHighlight={toolMode === "match"}
             />
             <RegexFilePanel
               title={ui.fileTitle}
@@ -366,29 +656,26 @@ export function RegexTesterTool({ locale = defaultLocale }: RegexTesterToolProps
           </section>
 
           <aside className="space-y-3 xl:col-span-5">
-            <StatsPanel ui={ui} result={result} statusLabel={statusLabel} />
-            <ResultsPanel
-              ui={ui}
-              result={result}
-              pattern={pattern}
-              activeMatch={activeMatch}
-              onCopyResults={copyResults}
-              onCopyGroups={copyGroups}
-              onJumpToMatch={scrollToMatch}
-            />
+            {toolMode === "match" && (
+              <>
+                <StatsPanel ui={ui} result={result} statusLabel={statusLabel} />
+                <ResultsPanel
+                  ui={ui}
+                  result={result}
+                  pattern={pattern}
+                  activeMatch={activeMatch}
+                  onCopyResults={copyResults}
+                  onCopyGroups={copyGroups}
+                  onJumpToMatch={scrollToMatch}
+                />
+              </>
+            )}
           </aside>
         </div>
 
-        <aside className="space-y-4 border-t border-border pt-4 lg:hidden">
-          <PatternLibrary
-            examples={examples}
-            title={ui.commonExamplesTitle}
-            searchPlaceholder={ui.librarySearchPlaceholder}
-            onApply={applyExample}
-            className="rounded-lg border border-border bg-card/60 p-3"
-          />
-          <RegexQuickReference ui={ui} onInsert={insertToken} className="max-h-[240px]" />
-        </aside>
+        <RegexQuickReference ui={ui} onInsert={insertToken} className="max-h-[200px] lg:hidden" />
+
+        <p className="text-xs text-muted-foreground">{ui.shortcutsHint}</p>
       </div>
     </div>
   )
@@ -401,6 +688,9 @@ function QuickActionsBar({
   onCopyGroups,
   onClearPattern,
   onClearText,
+  onShareLink,
+  onExportValues,
+  onExportCsv,
   hasMatches,
 }: {
   ui: RegexToolMessages
@@ -409,6 +699,9 @@ function QuickActionsBar({
   onCopyGroups: () => void
   onClearPattern: () => void
   onClearText: () => void
+  onShareLink: () => void
+  onExportValues: () => void
+  onExportCsv: () => void
   hasMatches: boolean
 }) {
   return (
@@ -425,6 +718,16 @@ function QuickActionsBar({
       <Button variant="outline" size="sm" className="h-7 px-2 text-xs" onClick={onCopyGroups} disabled={!hasMatches}>
         <Copy className="mr-1 h-3 w-3" />
         {ui.copyGroups}
+      </Button>
+      <Button variant="outline" size="sm" className="h-7 px-2 text-xs" onClick={onShareLink}>
+        <Link2 className="mr-1 h-3 w-3" />
+        {ui.shareLink}
+      </Button>
+      <Button variant="outline" size="sm" className="h-7 px-2 text-xs" onClick={onExportValues} disabled={!hasMatches}>
+        {ui.exportMatches}
+      </Button>
+      <Button variant="outline" size="sm" className="h-7 px-2 text-xs" onClick={onExportCsv} disabled={!hasMatches}>
+        {ui.exportCsv}
       </Button>
       <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={onClearPattern}>
         <Trash2 className="mr-1 h-3 w-3" />
@@ -448,6 +751,7 @@ function PatternEditor({
   errorPosition,
   onCopyPattern,
   onClearPattern,
+  onInsertSnippet,
 }: {
   ui: RegexToolMessages
   pattern: string
@@ -458,6 +762,7 @@ function PatternEditor({
   errorPosition?: number | null
   onCopyPattern: () => void
   onClearPattern: () => void
+  onInsertSnippet: (token: string) => void
 }) {
   return (
     <section className="space-y-2">
@@ -507,7 +812,44 @@ function PatternEditor({
           </span>
         </div>
       </div>
+
+      <div className="flex flex-wrap items-center gap-1.5">
+        <span className="text-xs text-muted-foreground">{ui.snippetsTitle}</span>
+        {ui.patternSnippets.map((snippet) => (
+          <Button
+            key={snippet.label}
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-6 px-2 font-mono text-[10px]"
+            onClick={() => onInsertSnippet(snippet.insert)}
+          >
+            {snippet.label}
+          </Button>
+        ))}
+      </div>
     </section>
+  )
+}
+
+function MatchValidationBadge({
+  status,
+  label,
+}: {
+  status: ReturnType<typeof getFullMatchStatus>
+  label: string
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-md border px-3 py-2 text-sm font-medium",
+        status === "full" && "border-green-500/40 bg-green-500/10 text-green-700 dark:text-green-400",
+        status === "partial" && "border-amber-500/40 bg-amber-500/10 text-amber-800 dark:text-amber-300",
+        status === "none" && "border-border bg-muted/30 text-muted-foreground",
+      )}
+    >
+      {label}
+    </div>
   )
 }
 
@@ -575,6 +917,7 @@ function TestTextPanel({
   activeMatch,
   highlightContainerRef,
   onMatchClick,
+  showHighlight = true,
 }: {
   ui: RegexToolMessages
   text: string
@@ -586,6 +929,7 @@ function TestTextPanel({
   activeMatch: number | null
   highlightContainerRef: RefObject<HTMLDivElement | null>
   onMatchClick: (matchNumber: number) => void
+  showHighlight?: boolean
 }) {
   return (
     <>
@@ -616,18 +960,20 @@ function TestTextPanel({
           spellCheck={false}
         />
       </div>
-      <div className="space-y-2">
-        <Label>{ui.highlightLabel}</Label>
-        <RegexMatchHighlight
-          segments={highlightSegments}
-          emptyLabel={ui.highlightEmpty}
-          className="min-h-[140px]"
-          activeMatchNumber={activeMatch}
-          containerRef={highlightContainerRef}
-          onMatchClick={onMatchClick}
-          jumpToResultLabel={ui.jumpToResult}
-        />
-      </div>
+      {showHighlight && (
+        <div className="space-y-2">
+          <Label>{ui.highlightLabel}</Label>
+          <RegexMatchHighlight
+            segments={highlightSegments}
+            emptyLabel={ui.highlightEmpty}
+            className="min-h-[140px]"
+            activeMatchNumber={activeMatch}
+            containerRef={highlightContainerRef}
+            onMatchClick={onMatchClick}
+            jumpToResultLabel={ui.jumpToResult}
+          />
+        </div>
+      )}
     </>
   )
 }

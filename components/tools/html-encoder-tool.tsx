@@ -19,12 +19,13 @@ import { toolNotify } from "@/lib/tool-notify"
 
 interface HtmlEncoderToolProps {
   locale?: Locale
+  defaultMode?: HtmlEntityMode
 }
 
-export function HtmlEncoderTool({ locale = defaultLocale }: HtmlEncoderToolProps) {
+export function HtmlEncoderTool({ locale = defaultLocale, defaultMode = "encode" }: HtmlEncoderToolProps) {
   const ui = getMessages(locale).htmlEncoderTool
   const [input, setInput] = useState("")
-  const [mode, setMode] = useState<HtmlEntityMode>("encode")
+  const [mode, setMode] = useState<HtmlEntityMode>(defaultMode)
   const [encodeAll, setEncodeAll] = useState(false)
 
   const result = useMemo(() => transformHtmlEntity(input, mode, encodeAll), [input, mode, encodeAll])

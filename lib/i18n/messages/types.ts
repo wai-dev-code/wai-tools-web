@@ -88,6 +88,12 @@ export interface Messages {
     adLabel: string
     adDisclaimer: string
     workflowNext: string
+    commandPaletteTitle: string
+    commandPalettePlaceholder: string
+    commandPaletteRecent: string
+    commandPaletteAllTools: string
+    commandPaletteShortcut: string
+    openCommandPalette: string
   }
   workspace: {
     sidebarExpand: string

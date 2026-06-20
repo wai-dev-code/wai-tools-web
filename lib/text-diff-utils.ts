@@ -23,25 +23,40 @@ function lcsTable(a: string[], b: string[]): number[][] {
   return dp
 }
 
-export function diffLines(left: string, right: string): DiffLine[] {
-  const a = left.split("\n")
-  const b = right.split("\n")
+export interface DiffOptions {
+  ignoreWhitespace?: boolean
+}
+
+function normalizeLine(line: string, ignoreWhitespace: boolean): string {
+  if (!ignoreWhitespace) return line
+  return line.trim().replace(/\s+/g, " ")
+}
+
+export function diffLines(left: string, right: string, options?: DiffOptions): DiffLine[] {
+  const ignoreWhitespace = options?.ignoreWhitespace ?? false
+  const aOrig = left.split("\n")
+  const bOrig = right.split("\n")
+  const a = aOrig.map((l) => normalizeLine(l, ignoreWhitespace))
+  const b = bOrig.map((l) => normalizeLine(l, ignoreWhitespace))
   const dp = lcsTable(a, b)
-  const raw: { type: "equal" | "removed" | "added"; value: string; side: "left" | "right"; line: number }[] =
-    []
+  const raw: {
+    type: "equal" | "removed" | "added"
+    leftIdx?: number
+    rightIdx?: number
+  }[] = []
 
   let i = a.length
   let j = b.length
   while (i > 0 || j > 0) {
     if (i > 0 && j > 0 && a[i - 1] === b[j - 1]) {
-      raw.unshift({ type: "equal", value: a[i - 1], side: "left", line: i })
+      raw.unshift({ type: "equal", leftIdx: i - 1, rightIdx: j - 1 })
       i--
       j--
     } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-      raw.unshift({ type: "added", value: b[j - 1], side: "right", line: j })
+      raw.unshift({ type: "added", rightIdx: j - 1 })
       j--
     } else {
-      raw.unshift({ type: "removed", value: a[i - 1], side: "left", line: i })
+      raw.unshift({ type: "removed", leftIdx: i - 1 })
       i--
     }
   }
@@ -54,20 +69,29 @@ export function diffLines(left: string, right: string): DiffLine[] {
     if (current.type === "removed" && next?.type === "added") {
       result.push({
         type: "changed",
-        left: current.value,
-        right: next.value,
-        leftLine: current.line,
-        rightLine: next.line,
+        left: aOrig[current.leftIdx!],
+        right: bOrig[next.rightIdx!],
+        leftLine: current.leftIdx! + 1,
+        rightLine: next.rightIdx! + 1,
       })
       idx += 2
       continue
     }
     if (current.type === "equal") {
-      result.push({ type: "equal", left: current.value, right: current.value, leftLine: current.line, rightLine: current.line })
+      const li = current.leftIdx!
+      result.push({
+        type: "equal",
+        left: aOrig[li],
+        right: bOrig[current.rightIdx!],
+        leftLine: li + 1,
+        rightLine: current.rightIdx! + 1,
+      })
     } else if (current.type === "removed") {
-      result.push({ type: "removed", left: current.value, leftLine: current.line })
+      const li = current.leftIdx!
+      result.push({ type: "removed", left: aOrig[li], leftLine: li + 1 })
     } else {
-      result.push({ type: "added", right: current.value, rightLine: current.line })
+      const ri = current.rightIdx!
+      result.push({ type: "added", right: bOrig[ri], rightLine: ri + 1 })
     }
     idx++
   }
