@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>App Link Test — waihub.net</title>
+  <title>Alchemy Pay 回调测试</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -34,12 +34,37 @@
       line-height: 1.5;
     }
 
+    .section {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .section:last-of-type {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: #8c8c8c;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
     .countdown {
       font-size: 40px;
       font-weight: 700;
-      color: #1677ff;
+      color: #52c41a;
       text-align: center;
-      margin: 12px 0 4px;
+      margin: 8px 0 4px;
       min-height: 48px;
     }
 
@@ -47,7 +72,7 @@
       font-size: 13px;
       color: #8c8c8c;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .btn {
@@ -65,18 +90,21 @@
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
-      margin-bottom: 10px;
     }
 
     .btn:active { background: #0958d9; }
 
-    .btn-secondary {
-      background: #fff;
-      color: #1677ff;
-      border: 1px solid #1677ff;
+    .btn-success {
+      background: #52c41a;
     }
 
-    .btn-secondary:active { background: #f0f7ff; }
+    .btn-success:active { background: #389e0d; }
+
+    .btn-fail {
+      background: #ff4d4f;
+    }
+
+    .btn-fail:active { background: #cf1322; }
 
     .tips {
       margin-top: 18px;
@@ -92,7 +120,7 @@
     .tips strong { color: #614700; }
 
     .target-url {
-      margin-top: 14px;
+      margin-top: 8px;
       font-size: 11px;
       color: #bfbfbf;
       word-break: break-all;
@@ -102,51 +130,52 @@
 </head>
 <body>
   <div class="card">
-    <h1>App Link 测试页</h1>
-    <p class="status" id="statusText">请手动点击按钮测试（自动跳转无法可靠唤起 App）</p>
-    <div class="countdown" id="countdown">5...</div>
-    <p class="countdown-label">倒计时</p>
+    <h1>Alchemy Pay 回调测试</h1>
 
-    <a class="btn" id="appLinkBtn" href="https://waihub.net/alchemyPay/payResult">
-      打开 App Link（需 assetlinks.json）
-    </a>
-
-    <a class="btn btn-secondary" id="intentLinkBtn" href="#">
-      Android Intent 直开 App（无需 assetlinks）
-    </a>
-
-    <div class="tips">
-      <strong>部署说明</strong><br>
-      1. 本页须通过 <strong>HTTPS</strong> 访问，不能用 <code>file://</code><br>
-      2. 推荐部署为 <code>https://waihub.net/alchemyPay/payResult</code>（与 App Manifest 路径一致）<br>
-      3. 服务器需提供 <code>https://waihub.net/.well-known/assetlinks.json</code><br>
-      4. App Link 蓝色按钮需<strong>用户真实点击</strong>；灰色 Intent 按钮可用于开发快速验证<br>
-      5. 修改 Manifest / 重装 APK 后再测
+    <div class="section">
+      <p class="section-title">成功回调</p>
+      <p class="section-desc">倒计时结束后自动跳转到成功回调地址</p>
+      <p class="status" id="successStatus">正在倒计时，即将自动跳转…</p>
+      <div class="countdown" id="countdown">5</div>
+      <p class="countdown-label">秒后自动跳转</p>
+      <a class="btn btn-success" id="successBtn" href="https://cex.eqrrwa.com/app/alchemyPay/payResult?status=success">
+        立即跳转成功回调
+      </a>
+      <p class="target-url" id="successUrl"></p>
     </div>
 
-    <p class="target-url" id="targetUrl"></p>
+    <div class="section">
+      <p class="section-title">失败回调</p>
+      <p class="section-desc">仅手动点击触发，不会自动跳转</p>
+      <a class="btn btn-fail" id="failBtn" href="https://cex.eqrrwa.com/app/alchemyPay/payResult?status=fail">
+        手动触发失败回调
+      </a>
+      <p class="target-url" id="failUrl"></p>
+    </div>
+
+    <div class="tips">
+      <strong>说明</strong><br>
+      1. 成功回调：<code>?status=success</code>，5 秒倒计时后自动跳转<br>
+      2. 失败回调：<code>?status=fail</code>，需用户手动点击红色按钮<br>
+      3. 本页须通过 <strong>HTTPS</strong> 访问
+    </div>
   </div>
 
   <script>
     (function () {
-      var TARGET_URL = "https://waihub.net/alchemyPay/payResult";
-      var ANDROID_PACKAGE = "com.eqr.exchange.android";
+      var SUCCESS_URL = "https://cex.eqrrwa.com/app/alchemyPay/payResult?status=success";
       var countdownEl = document.getElementById("countdown");
-      var statusText = document.getElementById("statusText");
-      var targetUrlEl = document.getElementById("targetUrl");
-      var intentLinkBtn = document.getElementById("intentLinkBtn");
+      var successStatus = document.getElementById("successStatus");
+      var successBtn = document.getElementById("successBtn");
+      var successUrlEl = document.getElementById("successUrl");
+      var failUrlEl = document.getElementById("failUrl");
       var remaining = 5;
       var timerId = null;
+      var redirected = false;
 
-      var intentUrl =
-        "intent://waihub.net/alchemyPay/payResult#Intent;" +
-        "scheme=https;" +
-        "package=" + ANDROID_PACKAGE + ";" +
-        "S.browser_fallback_url=" + encodeURIComponent(TARGET_URL) + ";" +
-        "end";
-
-      intentLinkBtn.href = intentUrl;
-      targetUrlEl.textContent = "目标地址：" + TARGET_URL;
+      successBtn.href = SUCCESS_URL;
+      successUrlEl.textContent = "成功地址：" + SUCCESS_URL;
+      failUrlEl.textContent = "失败地址：https://cex.eqrrwa.com/app/alchemyPay/payResult?status=fail";
 
       function stopTimer() {
         if (timerId !== null) {
@@ -155,16 +184,28 @@
         }
       }
 
+      function redirectToSuccess() {
+        if (redirected) return;
+        redirected = true;
+        stopTimer();
+        successStatus.textContent = "正在跳转到成功回调…";
+        countdownEl.textContent = "0";
+        window.location.href = SUCCESS_URL;
+      }
+
       function updateCountdown() {
-        countdownEl.textContent = remaining + "...";
+        countdownEl.textContent = String(remaining);
         if (remaining <= 0) {
-          stopTimer();
-          countdownEl.textContent = "请点按钮";
-          statusText.textContent = "倒计时结束：请点击上方按钮测试回跳";
+          redirectToSuccess();
           return;
         }
         remaining -= 1;
       }
+
+      successBtn.addEventListener("click", function () {
+        stopTimer();
+        redirected = true;
+      });
 
       updateCountdown();
       timerId = setInterval(updateCountdown, 1000);
