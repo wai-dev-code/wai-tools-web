@@ -138,7 +138,7 @@
       <p class="status" id="successStatus">正在倒计时，即将自动跳转…</p>
       <div class="countdown" id="countdown">5</div>
       <p class="countdown-label">秒后自动跳转</p>
-      <a class="btn btn-success" id="successBtn" href="https://cex.eqrrwa.com/app/alchemyPay/payResult?status=success">
+      <a class="btn btn-success" id="successBtn" href="https://waihub.net/app/alchemyPay/payResult?status=success">
         立即跳转成功回调
       </a>
       <p class="target-url" id="successUrl"></p>
@@ -147,7 +147,7 @@
     <div class="section">
       <p class="section-title">失败回调</p>
       <p class="section-desc">仅手动点击触发，不会自动跳转</p>
-      <a class="btn btn-fail" id="failBtn" href="https://cex.eqrrwa.com/app/alchemyPay/payResult?status=fail">
+      <a class="btn btn-fail" id="failBtn" href="https://waihub.net/app/alchemyPay/payResult?status=fail">
         手动触发失败回调
       </a>
       <p class="target-url" id="failUrl"></p>
@@ -163,7 +163,7 @@
 
   <script>
     (function () {
-      var SUCCESS_URL = "https://cex.eqrrwa.com/app/alchemyPay/payResult?status=success";
+      var SUCCESS_URL = "https://waihub.net/app/alchemyPay/payResult?status=success";
       var countdownEl = document.getElementById("countdown");
       var successStatus = document.getElementById("successStatus");
       var successBtn = document.getElementById("successBtn");
@@ -175,7 +175,7 @@
 
       successBtn.href = SUCCESS_URL;
       successUrlEl.textContent = "成功地址：" + SUCCESS_URL;
-      failUrlEl.textContent = "失败地址：https://cex.eqrrwa.com/app/alchemyPay/payResult?status=fail";
+      failUrlEl.textContent = "失败地址：https://waihub.net/app/alchemyPay/payResult?status=fail";
 
       function stopTimer() {
         if (timerId !== null) {
